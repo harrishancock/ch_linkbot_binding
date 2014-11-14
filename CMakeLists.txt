@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12) 
-project(baromesh_test CXX)
+project(liblinkbot CXX)
 
 ##############################################################################
 # Boost
@@ -25,15 +25,14 @@ add_subdirectory(../ LinkbotLabs)
 
 set(SOURCES
     src/linkbot_wrapper.cpp
-    src/test.cpp
     )
 
-add_executable(baromesh_test ${SOURCES})
+add_library(linkbot ${SOURCES})
 
 set_source_files_properties(${SOURCES}
     PROPERTIES COMPILE_FLAGS "-std=c++11")
 
-target_include_directories(baromesh_test
+target_include_directories(linkbot
     PUBLIC $<TARGET_PROPERTY:sfp,INCLUDE_DIRECTORIES>
            $<TARGET_PROPERTY:robot-interface,INCLUDE_DIRECTORIES>
            $<TARGET_PROPERTY:baromesh,INCLUDE_DIRECTORIES>
@@ -41,7 +40,7 @@ target_include_directories(baromesh_test
            ${Boost_INCLUDE_DIRS}
            include
     )
-target_link_libraries(baromesh_test
+target_link_libraries(linkbot
     PUBLIC sfp cxx-util
            robot-interface dongle-interface
            baromesh
@@ -50,8 +49,11 @@ target_link_libraries(baromesh_test
     )
 
 if(WIN32)
-    target_link_libraries(baromesh_test
+    target_link_libraries(linkbot
         PRIVATE setupapi
         )
 endif()
+
+add_executable(test test/test.cpp)
+target_link_libraries(test linkbot)
 
