@@ -139,6 +139,38 @@ void Linkbot::getJointSpeedRatios(double &ratio1, double &ratio2, double &ratio3
 
 void Linkbot::setJointMovementStateNB(robotJointId_t id, robotJointState_t dir)
 {
+    int index = int(id)-1;
+    c_impl::barobo::JointState::Type state;
+    bool speedNegative = false;
+    switch(dir) {
+        case ROBOT_NEUTRAL:
+            state = c_impl::barobo::JointState::STOP;
+            break;
+        case ROBOT_FORWARD:
+            state = c_impl::barobo::JointState::MOVING;
+            if(index == 2) { speedNegative = true; } 
+            break;
+        case ROBOT_BACKWARD:
+            state = c_impl::barobo::JointState::MOVING;
+            speedNegative = true;
+            if(index == 2) { speedNegative = false; } 
+            break;
+        case ROBOT_HOLD:
+            state = c_impl::barobo::JointState::HOLD;
+            break;
+        case ROBOT_POSITIVE:
+            state = c_impl::barobo::JointState::MOVING;
+            // intentional no-break
+        case ROBOT_NEGATIVE:
+            speedNegative = true;
+            break;
+        default:
+            break;
+    }
+    CALL_C_IMPL(linkbotSetJointStates, 1<<index,
+            state, speedNegative?-1:1,
+            state, speedNegative?-1:1,
+            state, speedNegative?-1:1);
 }
 
 void Linkbot::setJointMovementStateTime(robotJointId_t id, robotJointState_t dir, double seconds)
@@ -219,24 +251,11 @@ void Linkbot::setMovementStateNB( robotJointState_t dir1,
                 break;
         }
     }
-    /* Get the current joint speeds */
-    double speeds[3];
-    getJointSpeeds(speeds[0], speeds[1], speeds[2]);
-    std::cout << speeds[0] << std::endl;
-    for(int i = 0; i < 3; i++) {
-        if(motorNegativeMask & (1<<i)) {
-            speeds[i] = -ABS(speeds[i]);
-        } else {
-            speeds[i] = ABS(speeds[i]);
-        }
-    }
-    CALL_C_IMPL(linkbotSetJointSpeeds, motorMovementMask, 
-        speeds[0], speeds[1], speeds[2]);
     /* Get the joints doing their thing */
-    CALL_C_IMPL(linkbotMoveContinuous, 0x07,
-        _states[0],
-        _states[1],
-        _states[2]);
+    CALL_C_IMPL(linkbotSetJointStates, 0x07,
+        _states[0], 1<<0&motorNegativeMask?-1:1,
+        _states[1], 1<<1&motorNegativeMask?-1:1,
+        _states[2], 1<<2&motorNegativeMask?-1:1);
 }
 
 void Linkbot::setMovementStateTime( robotJointState_t dir1,

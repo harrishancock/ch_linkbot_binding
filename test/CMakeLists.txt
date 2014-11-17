@@ -6,3 +6,6 @@ target_link_libraries(testGetters linkbot)
 
 add_executable(testSetters testSetters.cpp)
 target_link_libraries(testSetters linkbot)
+
+add_executable(setJointMovementState setJointMovementState.cpp)
+target_link_libraries(setJointMovementState linkbot)

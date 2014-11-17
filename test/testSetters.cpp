@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
     sleep(2);
     l->connect();
 
+    std::cout << "Testing joint speeds..." << std::endl;
     /* setJointSpeed */
     l->setMovementStateNB(
             ROBOT_FORWARD, ROBOT_FORWARD, ROBOT_FORWARD);
@@ -25,7 +26,10 @@ int main(int argc, char *argv[]) {
         l->setJointSpeed(ROBOT_JOINT1, s);
     }
     l->stop();
+    std::cout<< "Done." << std::endl;
+    sleep(2);
 
+    std::cout << "Testing motor power..." << std::endl;
     /* setMotorPower */
     for(double power = 0; power < 1.0; power += 0.02) {
         l->setMotorPower(ROBOT_JOINT1, power);
