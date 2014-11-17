@@ -35,5 +35,8 @@ int main(int argc, char *argv[]) {
         l->setMotorPower(ROBOT_JOINT1, power);
     }
 
+    /* Set joint movement state */
+    l->setJointMovementStateTime(ROBOT_JOINT1, ROBOT_FORWARD, 3);
+
     return 0;
 }

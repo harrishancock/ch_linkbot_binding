@@ -45,8 +45,8 @@ class Linkbot {
         void setJointSpeeds(double speed1, double speed2, double speed3);
         void setJointSpeedRatio(robotJointId_t id, double ratio);
         void setJointSpeedRatios(double ratios1, double ratios2, double ratios3);
-        void setMotorPower(robotJointId_t id, int power);
-        void setJointPower(robotJointId_t id, double power);
+        void setMotorPower(robotJointId_t id, double power);
+        void setMotorPowers(double p1, double p2, double p3);
         void setMovementStateNB( robotJointState_t dir1,
                 robotJointState_t dir2,
                 robotJointState_t dir3);

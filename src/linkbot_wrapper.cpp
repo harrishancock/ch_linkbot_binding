@@ -175,6 +175,13 @@ void Linkbot::setJointMovementStateNB(robotJointId_t id, robotJointState_t dir)
 
 void Linkbot::setJointMovementStateTime(robotJointId_t id, robotJointState_t dir, double seconds)
 {
+    setJointMovementStateNB(id, dir);
+    #ifdef _WIN32
+    Sleep(seconds*1000);
+    #else
+    usleep(seconds*1000000);
+    #endif
+    stop();
 }
 
 void Linkbot::setJointSpeed(robotJointId_t id, double speed)
@@ -200,12 +207,18 @@ void Linkbot::setJointSpeedRatios(double ratios1, double ratios2, double ratios3
         ratios3*mMaxSpeed);
 }
 
-void Linkbot::setMotorPower(robotJointId_t id, int power)
+void Linkbot::setMotorPower(robotJointId_t id, double power)
 {
+    power *= 255;
+    CALL_C_IMPL(linkbotMotorPower, 1<<(int(id)-1), power, power, power);
 }
 
-void Linkbot::setJointPower(robotJointId_t id, double power)
+void Linkbot::setMotorPowers(double p1, double p2, double p3)
 {
+    p1 *= 255;
+    p2 *= 255;
+    p3 *= 255;
+    CALL_C_IMPL(linkbotMotorPower, 0x07, p1, p2, p3);
 }
 
 void Linkbot::setMovementStateNB( robotJointState_t dir1,
