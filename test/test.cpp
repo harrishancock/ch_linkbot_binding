@@ -1,10 +1,24 @@
+#ifndef _WIN32
 #include <unistd.h>
+#else
+#include <windows.h>
+#define sleep(x) Sleep((x)*1000)
+#endif
+
+#include <iostream>
 #include "barobo/linkbot.hpp"
 
-int main() {
-    Linkbot *l = new Linkbot("13Z8");
+int main(int argc, char *argv[]) {
+    if(argc != 2) {
+        std::cout << "Usage: " << argv[0] << " <serial_id>"<<std::endl;
+        return 0;
+    }
+
+    Linkbot *l = new Linkbot(argv[1]);
     sleep(2);
     l->connect();
+    l->move(90, 90, 90);
+    l->move(-90, -90, -90);
     l->setMovementStateTime(
             ROBOT_FORWARD, ROBOT_FORWARD, ROBOT_FORWARD, 3);
     l->setMovementStateTime(

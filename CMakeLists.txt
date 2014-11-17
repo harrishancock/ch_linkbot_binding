@@ -54,6 +54,4 @@ if(WIN32)
         )
 endif()
 
-add_executable(test test/test.cpp)
-target_link_libraries(test linkbot)
-
+add_subdirectory(test)
