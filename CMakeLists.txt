@@ -12,7 +12,7 @@ add_subdirectory(../deps/baromesh baromesh)
 
 if(CMAKE_CROSSCOMPILING)
     find_library(PTHREAD pthread ${CMAKE_PREFIX_PATH})
-    link_directories(${link_directories} ${CMAKE_PREFIX_PATH})
+    set(Boost_COMPILER -gcc)
 endif(CMAKE_CROSSCOMPILING)
 
 # Linking statically to Boost is easier for prototyping. For multi-module
