@@ -1,25 +1,14 @@
 cmake_minimum_required(VERSION 2.8.12) 
 project(liblinkbot CXX)
 
-add_subdirectory(../deps/ribbon-bridge ribbon-bridge)
+add_subdirectory(../deps/cxx-util cxx-util)
 add_subdirectory(../deps/libsfp libsfp)
+add_subdirectory(../deps/ribbon-bridge ribbon-bridge)
 add_subdirectory(../deps/ribbon-bridge-interfaces ribbon-bridge-interfaces)
 add_subdirectory(../deps/baromesh baromesh)
-add_subdirectory(../deps/cxx-util cxx-util)
 
 ##############################################################################
 # Boost
-
-# FindBoost.cmake uses BOOST_ROOT as a hint for where to look.
-if(NOT DEFINED BOOST_ROOT)
-    if(DEFINED ENV{BOOST_ROOT})
-        set(BOOST_ROOT "$ENV{BOOST_ROOT}")
-    else()
-        message(WARNING "BOOST_ROOT is undefined.\nIf Boost libraries fail to "
-            "be found, try setting -DBOOST_ROOT=/path/to/boost on the CMake "
-            "command line.\n")
-    endif()
-endif()
 
 if(CMAKE_CROSSCOMPILING)
     find_library(PTHREAD pthread ${CMAKE_PREFIX_PATH})
@@ -30,8 +19,6 @@ endif(CMAKE_CROSSCOMPILING)
 # projects we'll want to use shared libraries and defined -DBOOST_ALL_DYN_LINK
 # or the like.
 set(Boost_USE_STATIC_LIBS ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
-set(Boost_COMPILER -gcc)
 find_package(Boost 1.54.0 REQUIRED COMPONENTS system log filesystem thread)
 find_package(Threads)
 
