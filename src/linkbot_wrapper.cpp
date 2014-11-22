@@ -1,8 +1,9 @@
 #include <iostream>
 namespace c_impl {
-#include "baromesh/linkbot.h"
+//#include "baromesh/linkbot.h"
+#include"../../deps/baromesh/include/baromesh/linkbot.h"
 }
-#include "barobo/linkbot.hpp"
+#include "../include/barobo/linkbot.hpp"
 #include "boost/thread/mutex.hpp"
 #include "boost/thread/condition_variable.hpp"
 #ifdef _WIN32
@@ -48,6 +49,7 @@ void _jointEventCB(int joint, c_impl::barobo::JointState::Type state, int timest
 Linkbot::Linkbot(const char* serialId)
 {
     m = new LinkbotImpl();
+    printf("serial Id %s\n", serialId);
     m->linkbot = c_impl::linkbotNew(serialId);
     for(int i = 0; i < 3; i++) {
         m->jointStates[i] = c_impl::barobo::JointState::STOP;

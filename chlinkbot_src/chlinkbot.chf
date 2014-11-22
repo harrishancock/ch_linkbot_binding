@@ -1,0 +1,91 @@
+/*chf function of the class Linbot for Ch binding*/
+
+#include"linkbot.h"
+#include<dlfcn.h>
+#include<stdarg.h>
+#include<array.h>
+
+/*class constructor*/
+CLinkbotI::CLinkbotI() {
+    void *fptr;
+    const char *serialID="SRS8";  
+    printf("g_handle %p\n", g_chlinkbot_dlhandle);
+    if (g_chlinkbot_dlhandle == NULL || g_chlinkbot_dlcount == 0) {
+        g_chlinkbot_dlhandle = dlopen("liblinkbot.dl", RTLD_LAZY);
+        if (g_chlinkbot_dlhandle == NULL) {
+          printf("Error: %s(): dlopen(): %s\n", __class_func__, dlerror());
+          return;
+       }
+    }
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_CLinkbotI_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, serialID);
+    g_chlinkbot_dlcount++;
+}
+
+/*class destructor*/  
+CLinkbotI::~CLinkbotI(const char * serialID) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_dCLinkbotI_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, serialID);
+    g_chlinkbot_dlcount--;
+    
+    if (g_chlinkbot_dlcount <= 0 && g_chlinkbot_dlhandle != NULL) 
+       if (dlclose(g_chlinkbot_dlhandle) != 0)
+          printf("Error: %s(): dlclose(): %s\n", __class_func__, dlerror());
+}
+
+/*connect*/
+void CLinkbotI::connect() {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_connect_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL);
+}
+
+/*move*/
+void CLinkbotI::move(double j1, double j2, double j3) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_move_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, j1, j2, j3);
+}
+
+/*move NB*/
+void CLinkbotI::moveNB(double j1, double j2, double j3) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_moveNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, j1, j2, j3);
+}
+
+
+
+
+
+
