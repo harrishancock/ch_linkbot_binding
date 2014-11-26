@@ -30,7 +30,7 @@ set(SOURCES
 add_library(linkbot ${SOURCES})
 
 set_source_files_properties(${SOURCES}
-    PROPERTIES COMPILE_FLAGS "-std=c++11")
+    PROPERTIES COMPILE_FLAGS "-std=c++11 -fPIC")
 
 target_include_directories(linkbot
     PUBLIC $<TARGET_PROPERTY:sfp,INCLUDE_DIRECTORIES>

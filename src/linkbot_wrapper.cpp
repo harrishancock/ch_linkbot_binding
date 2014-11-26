@@ -49,8 +49,9 @@ void _jointEventCB(int joint, c_impl::barobo::JointState::Type state, int timest
 Linkbot::Linkbot(const char* serialId)
 {
     m = new LinkbotImpl();
-    printf("serial Id %s\n", serialId);
-    m->linkbot = c_impl::linkbotNew(serialId);
+    /* Crashes here*/
+    printf("Crashes here in Linkbot::Linkbot()\n");
+    //m->linkbot = c_impl::linkbotNew(serialId);
     for(int i = 0; i < 3; i++) {
         m->jointStates[i] = c_impl::barobo::JointState::STOP;
     }
@@ -64,6 +65,7 @@ Linkbot::~Linkbot()
 
 void Linkbot::connect()
 {
+    printf("Crashes here in Linkbot::connect()\n");
     c_impl::linkbotConnect(m->linkbot);
     /* Enable joint callbacks */
     c_impl::linkbotSetJointEventCallback(m->linkbot, _jointEventCB, m);
