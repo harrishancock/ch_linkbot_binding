@@ -56,6 +56,7 @@ void CLinkbotI::connect() {
     dlrunfun(fptr, NULL, NULL, this);
 }
 
+/*MOVEMENT FUNCTIONS/*
 /*move*/
 void CLinkbotI::move(double j1, double j2, double j3) {
     void *fptr;
@@ -236,6 +237,9 @@ void CLinkbotI::stopAllJoints() {
     dlrunfun(fptr, NULL, NULL, this);
 }
 
+/*END MOVEMENT FUNCTIONS*/
+/*GET FUNCTIONS*/
+
 /*getDistance*/
 void CLinkbotI::getDistance(double &distance, double radius) {
     void *fptr;
@@ -326,4 +330,192 @@ void CLinkbotI::getJointSpeedRatios(double &ratio1, double &ratio2, double &rati
     }
      
     dlrunfun(fptr, NULL, NULL, this, &ratio1, &ratio2, &ratio3);
+}
+
+/*END GET FUNCTIONS*/
+/*SET FUNCTIONS*/
+
+/*setJointMovementStateNB*/
+void CLinkbotI::setJointMovementStateNB(robotJointId_t id, robotJointState_t dir) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setJointMovementStateNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, dir);
+}
+
+/*setJointMovementStateTime*/
+void CLinkbotI::setJointMovementStateTime(robotJointId_t id, robotJointState_t dir, double seconds) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setJointMovementStateTime_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, dir, seconds);
+}
+/*setJointSpeed*/
+void CLinkbotI::setJointSpeed(robotJointId_t id, double speed) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setJointSpeed_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, speed);
+}
+
+/*setJointSpeedRatio*/
+void CLinkbotI::setJointSpeedRatio(robotJointId_t id, double ratio) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setJointSpeedRatio_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, ratio);
+}
+
+/*setJointSpeeds*/
+void CLinkbotI::setJointSpeeds(double speed1, double speed2, double speed3) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setJointSpeeds_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, speed1, speed2, speed3);
+}
+
+
+/*setJointSpeedRatios*/
+void CLinkbotI::setJointSpeedRatios(double ratio1, double ratio2, double ratio3) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setJointSpeedRatios_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, ratio1, ratio2, ratio3);
+}
+
+/*setMotorPower*/
+void CLinkbotI::setMotorPower(robotJointId_t id, int power) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setMotorPower_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, power);
+}
+
+/*setJointPower*/
+void CLinkbotI::setMotorPower(robotJointId_t id, double power) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setJointPower_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, power);
+}
+
+/*setMovementStateNB*/
+void CLinkbotI::setMovementStateNB(robotJointState_t dir1, robotJointState_t dir2, robotJointState_t dir3) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setMovementStateNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, dir1, dir2, dir3);
+}
+
+/*setMovementStateTime*/
+void CLinkbotI::setMovementStateTime(robotJointState_t dir1, robotJointState_t dir2, robotJointState_t dir3, double seconds) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setMovementStateTime_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, dir1, dir2, dir3, seconds);
+}
+
+/*setMovementStateTimeNB*/
+void CLinkbotI::setMovementStateTimeNB(robotJointState_t dir1, robotJointState_t dir2, robotJointState_t dir3, double seconds) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setMovementStateTimeNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, dir1, dir2, dir3, seconds);
+}
+
+/*setTwoWheelRobotSpeed*/
+void CLinkbotI::setTwoWheelRobotSpeed(double speed, double radius) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setTwoWheelRobotSpeed_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, speed, radius);
+}
+
+/*END SET FUNCTIONS*/
+/*MISCELLANEOUS FUNCTIONS*/
+
+/*enableButtonCallback*/
+void CLinkbotI::enableButtonCallback(void* userdata, void (*buttonCallback)(void* data, int button, int buttonDown) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_enableButtonCallback_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, userdata, buttonCallback);
+}
+
+/*disableButtonCallback*/
+void CLinkbotI::disableButtonCallback() {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_disableButtonCallback_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
 }
