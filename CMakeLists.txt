@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 2.8.12) 
 project(liblinkbot CXX)
 
+if(CMAKE_CROSSCOMPILING)
+    find_library(PTHREAD pthread ${CMAKE_PREFIX_PATH})
+    #set(Boost_COMPILER -gcc)
+    #add_compile_options(${CMAKE_CROSSCOMPILE_C_FLAGS})
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_CROSSCOMPILE_C_FLAGS} -static-libstdc++ -static-libgcc")
+endif(CMAKE_CROSSCOMPILING)
+
 add_subdirectory(../deps/cxx-util cxx-util)
 add_subdirectory(../deps/libsfp libsfp)
 add_subdirectory(../deps/ribbon-bridge ribbon-bridge)
@@ -9,11 +16,6 @@ add_subdirectory(../deps/baromesh baromesh)
 
 ##############################################################################
 # Boost
-
-if(CMAKE_CROSSCOMPILING)
-    find_library(PTHREAD pthread ${CMAKE_PREFIX_PATH})
-    set(Boost_COMPILER -gcc)
-endif(CMAKE_CROSSCOMPILING)
 
 # Linking statically to Boost is easier for prototyping. For multi-module
 # projects we'll want to use shared libraries and defined -DBOOST_ALL_DYN_LINK

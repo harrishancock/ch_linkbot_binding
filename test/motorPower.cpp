@@ -14,10 +14,14 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
+    std::cout << "Creating new linkbot..." << std::endl;
     Linkbot *l = new Linkbot(argv[1]);
+    std::cout << "sleeping..." << std::endl;
     sleep(2);
+    std::cout << "Connecting..." << std::endl;
     l->connect();
 
+    std::cout << "Setting motor power..." << std::endl;
     for(double p = -1; p < 1.0; p += 0.01) {
         l->setMotorPower(ROBOT_JOINT1, p);
     }
