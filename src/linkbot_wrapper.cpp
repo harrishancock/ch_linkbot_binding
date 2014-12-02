@@ -51,7 +51,7 @@ Linkbot::Linkbot(const char* serialId)
     m = new LinkbotImpl();
     /* Crashes here*/
     printf("Crashes here in Linkbot::Linkbot()\n");
-    //m->linkbot = c_impl::linkbotNew(serialId);
+    m->linkbot = c_impl::linkbotNew(serialId);
     for(int i = 0; i < 3; i++) {
         m->jointStates[i] = c_impl::barobo::JointState::STOP;
     }

@@ -2,7 +2,7 @@
 target: liblinkbot.dl
 
 liblinkbot.dl: chlinkboti_chdl.o
-	ch dllink liblinkbot.dl cplusplus chlinkboti_chdl.o ../build/liblinkbot.a 
+	ch dllink liblinkbot.dl cplusplus chlinkboti_chdl.o ../build/liblinkbot.a  -lboost_filesystem -lboost_system -lboost_log -lboost_coroutine -lboost_thread -lboost_context
 
 chlinkboti_chdl.o: chlinkboti_chdl.cpp
 	ch dlcomp liblinkbot.dl cplusplus chlinkboti_chdl.cpp -I/../include/barobo/linkbot.hpp

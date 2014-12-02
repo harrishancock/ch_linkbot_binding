@@ -7,8 +7,8 @@ EXPORTCH void CLinkbotI_CLinkbotI_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
     char *id;
-    Ch_VaStart(interp, ap, varg);
     
+    Ch_VaStart(interp, ap, varg);
     id = Ch_VaArg(interp, ap, char *);
     class Linkbot *l= new Linkbot(id);
     Ch_CppChangeThisPointer(interp, l, sizeof(Linkbot));

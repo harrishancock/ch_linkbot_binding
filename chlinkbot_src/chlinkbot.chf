@@ -427,7 +427,7 @@ void CLinkbotI::setMotorPower(robotJointId_t id, int power) {
 }
 
 /*setJointPower*/
-void CLinkbotI::setMotorPower(robotJointId_t id, double power) {
+void CLinkbotI::setJointPower(robotJointId_t id, double power) {
     void *fptr;
   
     fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setJointPower_chdl");
@@ -495,7 +495,7 @@ void CLinkbotI::setTwoWheelRobotSpeed(double speed, double radius) {
 /*MISCELLANEOUS FUNCTIONS*/
 
 /*enableButtonCallback*/
-void CLinkbotI::enableButtonCallback(void* userdata, void (*buttonCallback)(void* data, int button, int buttonDown) {
+void CLinkbotI::enableButtonCallback(void* userdata, void (*buttonCallback)(void* data, int button, int buttonDown)) {
     void *fptr;
   
     fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_enableButtonCallback_chdl");

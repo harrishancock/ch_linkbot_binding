@@ -9,9 +9,9 @@ double radius = 1.75;
 CLinkbotI robot;
 sleep(2);
 //robot.connect();
-robot.moveDistanceNB(10, radius);
+//robot.moveDistanceNB(10, radius);
 //robot.moveWait();
-robot.getDistance(distance, radius);
+//robot.getDistance(distance, radius);
 
 
 
