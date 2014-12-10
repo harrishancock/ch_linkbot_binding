@@ -681,6 +681,8 @@ EXPORTCH void CLinkbotI_setTwoWheelRobotSpeed_chdl(void *varg) {
 
 /*linkbot enableButtonCallback*/
 EXPORTCH void CLinkbotI_enableButtonCallback_chdl(void *varg) {
+    return; 
+    #if 0
     ChInterp_t interp;
     ChVaList_t ap;
     class Linkbot *l;
@@ -695,10 +697,13 @@ EXPORTCH void CLinkbotI_enableButtonCallback_chdl(void *varg) {
     l->enableButtonCallback(data, cb);
     Ch_VaEnd(interp, ap);
     return;
+    #endif
 }
 
 /*linkbot disableButtonCallback*/
 EXPORTCH void CLinkbotI_disableButtonCallback_chdl(void *varg) {
+    return;
+    #if 0
     ChInterp_t interp;
     ChVaList_t ap;
     class Linkbot *l;
@@ -709,4 +714,5 @@ EXPORTCH void CLinkbotI_disableButtonCallback_chdl(void *varg) {
     l->disableButtonCallback();
     Ch_VaEnd(interp, ap);
     return;
+    #endif
 }

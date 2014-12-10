@@ -83,8 +83,10 @@ class Linkbot {
         void stopAllJoints();
 
         /* MISC */
+        /*
         void enableButtonCallback(void* userdata, void (*buttonCallback)(void* data, int button, int buttonDown));
         void disableButtonCallback();
+        */
 
         LinkbotImpl *m;
 
