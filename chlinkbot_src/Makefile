@@ -31,3 +31,7 @@ chlinkboti_chdl.o: chlinkboti_chdl.cpp
 
 clean:
 	rm -f *.o *.dl
+
+install:
+	sh ./createpkg.sh
+	ch pkginstall.ch chbarobo-0.2
