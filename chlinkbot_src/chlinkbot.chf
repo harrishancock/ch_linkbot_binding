@@ -10,7 +10,7 @@ CLinkbotI::CLinkbotI() {
     void *fptr;
     const char *serialID="MM5L";  
     if (g_chlinkbot_dlhandle == NULL || g_chlinkbot_dlcount == 0) {
-        g_chlinkbot_dlhandle = dlopen("liblinkbot.dl", RTLD_NOW);
+        g_chlinkbot_dlhandle = dlopen("liblinkbot.dl", RTLD_LAZY);
         if (g_chlinkbot_dlhandle == NULL) {
           printf("Error: %s(): dlopen(): %s\n", __class_func__, dlerror());
           return;
