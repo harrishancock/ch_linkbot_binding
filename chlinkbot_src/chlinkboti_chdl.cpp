@@ -577,19 +577,21 @@ EXPORTCH void CLinkbotI_setMotorPower_chdl(void *varg) {
 }
 
 /*linkbot setJointPower*/
-EXPORTCH void CLinkbotI_setJointPower_chdl(void *varg) {
+EXPORTCH void CLinkbotI_setMotorPowers_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
     class Linkbot *l;
-    robotJointId_t id;
-    double power;
+    double p1;
+    double p2;
+    double p3;
 
     Ch_VaStart(interp, ap, varg);
     
     l=Ch_VaArg(interp, ap, class Linkbot *);
-    id=Ch_VaArg(interp, ap, robotJointId_t);
-    power=Ch_VaArg(interp, ap, double);
-    //l->setJointPower(id, power);
+    p1=Ch_VaArg(interp, ap, double);
+    p2=Ch_VaArg(interp, ap, double);
+    p3=Ch_VaArg(interp, ap, double);
+    l->setMotorPowers(p1, p2, p3);
     Ch_VaEnd(interp, ap);
     return;
 }

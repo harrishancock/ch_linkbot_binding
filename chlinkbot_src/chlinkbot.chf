@@ -8,7 +8,7 @@
 /*class constructor*/
 CLinkbotI::CLinkbotI() {
     void *fptr;
-    const char *serialID="MM5L";  
+    const char *serialID="SRS8";  
     if (g_chlinkbot_dlhandle == NULL || g_chlinkbot_dlcount == 0) {
         g_chlinkbot_dlhandle = dlopen("liblinkbot.dl", RTLD_LAZY);
         if (g_chlinkbot_dlhandle == NULL) {
@@ -427,16 +427,16 @@ void CLinkbotI::setMotorPower(robotJointId_t id, int power) {
 }
 
 /*setJointPower*/
-void CLinkbotI::setJointPower(robotJointId_t id, double power) {
+void CLinkbotI::setMotorPowers(double p1, double p2, double p3) {
     void *fptr;
   
-    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setJointPower_chdl");
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setMotorPowers_chdl");
     if (fptr == NULL) {
        printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
        return;
     }
      
-    dlrunfun(fptr, NULL, NULL, this, id, power);
+    dlrunfun(fptr, NULL, NULL, this, p1, p2, p3);
 }
 
 /*setMovementStateNB*/
