@@ -13,10 +13,6 @@ sleep(2);
 robot.connect();
 robot.setJointSpeeds(50, 0, 50);
 robot.move(180, 0, 180);
-//robot.move(90, 90, 90);
 //robot.moveNB(90, 90, 90);
 //robot.moveWait();
-sleep(2);
-robot.getJointSpeed(ROBOT_JOINT3, angle1);
-printf("Ratio1 = %.3lf\n",angle1);
-robot.stop();
+

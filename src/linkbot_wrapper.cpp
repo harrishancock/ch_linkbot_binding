@@ -10,6 +10,7 @@ namespace c_impl {
 #else
 #include <unistd.h>
 #endif
+#define M_PI            3.14159265358979323846
 
 #define RUNTIME_ERROR \
     std::runtime_error(std::string("Exception in ") + std::string(__func__))
