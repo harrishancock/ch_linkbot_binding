@@ -341,6 +341,57 @@ void CLinkbotI::stopAllJoints() {
     dlrunfun(fptr, NULL, NULL, this);
 }
 
+/*turnLeft*/
+void CLinkbotI::turnLeft(double angle, double radius, double tracklength) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_turnLeft_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle, radius, tracklength);
+}
+
+/*turnLeftNB*/
+void CLinkbotI::turnLeftNB(double angle, double radius, double tracklength) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_turnLeftNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle, radius, tracklength);
+}
+
+/*turnRight*/
+void CLinkbotI::turnRight(double angle, double radius, double tracklength) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_turnRight_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle, radius, tracklength);
+}
+
+/*turnRightNB*/
+void CLinkbotI::turnRightNB(double angle, double radius, double tracklength) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_turnRightNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle, radius, tracklength);
+}
 /*END MOVEMENT FUNCTIONS*/
 /*GET FUNCTIONS*/
 

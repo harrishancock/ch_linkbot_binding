@@ -428,6 +428,84 @@ EXPORTCH void CLinkbotI_stopAllJoints_chdl(void *varg) {
     return;
 }
 
+/*linkbot turnLeft*/
+EXPORTCH void CLinkbotI_turnLeft_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    double angle;
+    double radius;
+	double tracklength;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    angle=Ch_VaArg(interp, ap, double);
+    radius=Ch_VaArg(interp, ap, double);
+	tracklength=Ch_VaArg(interp, ap, double);
+    l->turnLeft(angle, radius, tracklength);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+/*linkbot turnLeftNB*/
+EXPORTCH void CLinkbotI_turnLeftNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    double angle;
+    double radius;
+	double tracklength;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    angle=Ch_VaArg(interp, ap, double);
+    radius=Ch_VaArg(interp, ap, double);
+	tracklength=Ch_VaArg(interp, ap, double);
+    l->turnLeftNB(angle, radius, tracklength);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot turnRight*/
+EXPORTCH void CLinkbotI_turnRight_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    double angle;
+    double radius;
+	double tracklength;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    angle=Ch_VaArg(interp, ap, double);
+    radius=Ch_VaArg(interp, ap, double);
+	tracklength=Ch_VaArg(interp, ap, double);
+    l->turnRight(angle, radius, tracklength);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot turnRightNB*/
+EXPORTCH void CLinkbotI_turnRightNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    double angle;
+    double radius;
+	double tracklength;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    angle=Ch_VaArg(interp, ap, double);
+    radius=Ch_VaArg(interp, ap, double);
+	tracklength=Ch_VaArg(interp, ap, double);
+    l->turnRightNB(angle, radius, tracklength);
+    Ch_VaEnd(interp, ap);
+    return;
+}
 /*END MOVEMENT FUNCTIONS*/
 /*GET FUNCTIONS*/
 

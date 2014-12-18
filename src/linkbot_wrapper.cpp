@@ -450,6 +450,32 @@ void Linkbot::stopAllJoints()
 {
 }
 
+void Linkbot::turnLeft(double angle, double radius, double tracklength)
+{
+   turnLeftNB(angle, radius, tracklength);
+   moveWait();
+}
+
+void Linkbot::turnLeftNB(double angle, double radius, double tracklength)
+{
+   double theta;
+   theta = (angle*tracklength)/(2*radius);
+   CALL_C_IMPL(linkbotMove, 0x07, -theta, 0, -theta);
+
+}
+
+void Linkbot::turnRight(double angle, double radius, double tracklength)
+{
+	turnRightNB(angle, radius, tracklength);
+	moveWait();
+}
+
+void Linkbot::turnRightNB(double angle, double radius, double tracklength)
+{
+   double theta;
+   theta = (angle*tracklength)/(2*radius);
+   CALL_C_IMPL(linkbotMove, 0x07, theta, 0, theta);
+}
 /* MISC */
 
 void LinkbotImpl::jointEventCB(int jointNo, c_impl::barobo::JointState::Type state)

@@ -90,6 +90,10 @@ class Linkbot {
         void stop();
         void stopOneJoint(robotJointId_t id);
         void stopAllJoints();
+		void turnLeft(double angle, double radius, double tracklength);
+        void turnLeftNB(double angle, double radius, double tracklength);
+        void turnRight(double angle, double radius, double tracklength);
+        void turnRightNB(double angle, double radius, double tracklength);
 
         /* MISC */
         /*
