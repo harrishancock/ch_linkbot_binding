@@ -506,6 +506,68 @@ EXPORTCH void CLinkbotI_turnRightNB_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return;
 }
+
+/*linkbot holdJoint*/
+EXPORTCH void CLinkbotI_holdJoint_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    robotJointId_t id;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+    l->holdJoint(id);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot holdJoints*/
+EXPORTCH void CLinkbotI_holdJoints_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    robotJointId_t id;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    l->holdJoints();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot relaxJoint*/
+EXPORTCH void CLinkbotI_relaxJoint_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    robotJointId_t id;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+    l->relaxJoint(id);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot relaxJoints*/
+EXPORTCH void CLinkbotI_relaxJoints_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    robotJointId_t id;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    l->relaxJoints();
+    Ch_VaEnd(interp, ap);
+    return;
+}
 /*END MOVEMENT FUNCTIONS*/
 /*GET FUNCTIONS*/
 
@@ -762,8 +824,8 @@ EXPORTCH void CLinkbotI_setJointSpeedRatios_chdl(void *varg) {
     return;
 }
 
-/*linkbot setMotorPower*/
-EXPORTCH void CLinkbotI_setMotorPower_chdl(void *varg) {
+/*linkbot setJointPower*/
+EXPORTCH void CLinkbotI_setJointPower_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
     class Linkbot *l;
@@ -775,12 +837,12 @@ EXPORTCH void CLinkbotI_setMotorPower_chdl(void *varg) {
     l=Ch_VaArg(interp, ap, class Linkbot *);
     id=Ch_VaArg(interp, ap, robotJointId_t);
     power=Ch_VaArg(interp, ap, int);
-    l->setMotorPower(id, power);
+    l->setJointPower(id, power);
     Ch_VaEnd(interp, ap);
     return;
 }
 
-/*linkbot setJointPower*/
+/*linkbot setMotorPowers*/
 EXPORTCH void CLinkbotI_setMotorPowers_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
@@ -921,4 +983,20 @@ EXPORTCH void CLinkbotI_disableButtonCallback_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return;
     #endif
+}
+
+/*linkbot delaySeconds*/
+EXPORTCH void CLinkbotI_delaySeconds_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    int seconds;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+	seconds=Ch_VaArg(interp, ap, int);
+    l->delaySeconds(seconds);
+    Ch_VaEnd(interp, ap);
+    return;
 }

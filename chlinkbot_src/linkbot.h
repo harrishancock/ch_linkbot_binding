@@ -54,7 +54,7 @@ class CLinkbotI {
         void setJointSpeeds(double speed1, double speed2, double speed3);
         void setJointSpeedRatio(robotJointId_t id, double ratio);
         void setJointSpeedRatios(double ratios1, double ratios2, double ratios3);
-        void setMotorPower(robotJointId_t id, int power);
+        void setJointPower(robotJointId_t id, int power);
         void setMotorPowers(double p1, double p2, double p3);
         void setMovementStateNB( robotJointState_t dir1,
                 robotJointState_t dir2,
@@ -79,6 +79,8 @@ class CLinkbotI {
 	    void driveForward(double angle);
         void driveForwardNB(double angle);
 		void driveTime(double seconds);
+		void holdJoint(robotJointId_t id);
+		void holdJoints();
         void move(double j1, double j2, double j3);
         void moveNB(double j1, double j2, double j3);
         void moveWait();
@@ -95,6 +97,8 @@ class CLinkbotI {
         void moveJointToByTrackPosNB(robotJointId_t id, double angle);
 		void moveToByTrackPos(double angle1, double angle2, double angle3);
         void moveToByTrackPosNB(double angle1, double angle2, double angle3);
+		void relaxJoint(robotJointId_t id);
+	    void relaxJoints();
         void stop();
         void stopOneJoint(robotJointId_t id);
         void stopAllJoints();
@@ -106,6 +110,7 @@ class CLinkbotI {
         /* MISC */
         void enableButtonCallback(void* userdata, void (*buttonCallback)(void* data, int button, int buttonDown));
         void disableButtonCallback();
+		void delaySeconds(int seconds);
 
         LinkbotImpl *m;
 

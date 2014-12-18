@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 
     std::cout << "Setting motor power..." << std::endl;
     for(double p = -1; p < 1.0; p += 0.01) {
-        l->setMotorPower(ROBOT_JOINT1, p);
+        l->setJointPower(ROBOT_JOINT1, p);
     }
     return 0;
 }

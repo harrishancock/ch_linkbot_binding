@@ -211,7 +211,7 @@ void Linkbot::setJointSpeedRatios(double ratios1, double ratios2, double ratios3
         ratios3*mMaxSpeed);
 }
 
-void Linkbot::setMotorPower(robotJointId_t id, double power)
+void Linkbot::setJointPower(robotJointId_t id, double power)
 {
     power *= 255;
     CALL_C_IMPL(linkbotMotorPower, 1<<(int(id)-1), power, power, power);
@@ -377,6 +377,15 @@ void Linkbot::driveTimeNB(double seconds)
 {
 }
 
+void Linkbot::holdJoint(robotJointId_t id)
+{
+	setJointMovementStateNB(id, ROBOT_HOLD);
+}
+
+void Linkbot::holdJoints()
+{
+	setMovementStateNB(ROBOT_HOLD, ROBOT_HOLD, ROBOT_HOLD);
+}
 void Linkbot::move(double j1, double j2, double j3)
 {
     moveNB(j1, j2, j3);
@@ -437,6 +446,16 @@ void Linkbot::moveDistanceNB(double distance, double radius)
 {
 }
 
+void Linkbot::relaxJoint(robotJointId_t id)
+{
+	setJointMovementStateNB(id, ROBOT_NEUTRAL);
+}
+
+void Linkbot::relaxJoints()
+{
+	setMovementStateNB(ROBOT_NEUTRAL, ROBOT_NEUTRAL, ROBOT_NEUTRAL);
+}
+
 void Linkbot::stop()
 {
     CALL_C_IMPL(linkbotStop, 0x07);
@@ -485,3 +504,13 @@ void LinkbotImpl::jointEventCB(int jointNo, c_impl::barobo::JointState::Type sta
     jointStates[jointNo] = state;
     jointStateCond.notify_all();
 }
+
+void Linkbot::delaySeconds(int seconds)
+{
+	#ifdef _WIN32
+    Sleep(seconds*1000);
+    #else
+    sleep(seconds);
+    #endif
+}
+

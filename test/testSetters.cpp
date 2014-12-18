@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     std::cout << "Testing motor power..." << std::endl;
     /* setMotorPower */
     for(double power = 0; power < 1.0; power += 0.02) {
-        l->setMotorPower(ROBOT_JOINT1, power);
+        l->setJointPower(ROBOT_JOINT1, power);
     }
 
     /* Set joint movement state */

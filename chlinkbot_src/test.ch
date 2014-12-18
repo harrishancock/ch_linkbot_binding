@@ -14,7 +14,6 @@ sleep(2);
 robot.connect();
 robot.turnRight(angle, radius, trackwidth);
 printf("Movement 1 done\n");
-robot.turnRightNB(-angle, radius, trackwidth);
-robot.moveWait();
+robot.holdJoints();
 printf("Movement 2 done\n");
 
