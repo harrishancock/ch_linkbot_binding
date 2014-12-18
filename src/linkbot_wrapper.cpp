@@ -303,6 +303,71 @@ void Linkbot::setTwoWheelRobotSpeed(double speed, double radius)
 
 /* MOVEMENT */
 
+void Linkbot::moveForeverNB()
+{
+	setMovementStateNB(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_BACKWARD);
+}
+
+void Linkbot::moveJoint(robotJointId_t id, double angle)
+{
+	switch (id) {
+		case 1:
+			CALL_C_IMPL(linkbotMove, 0x01, angle, angle, angle);
+	        moveWait();
+			break;
+		case 2:
+			CALL_C_IMPL(linkbotMove, 0x02, angle, angle, angle);
+	        moveWait();
+			break;
+		case 3:
+			CALL_C_IMPL(linkbotMove, 0x04, angle, angle, angle);
+	        moveWait();
+			break;
+		default:
+			break;
+	}
+
+}
+
+void Linkbot::moveJointNB(robotJointId_t id, double angle)
+{
+		switch (id) {
+		case 1:
+			CALL_C_IMPL(linkbotMove, 0x01, angle, angle, angle);
+			break;
+		case 2:
+			CALL_C_IMPL(linkbotMove, 0x02, angle, angle, angle);
+			break;
+		case 3:
+			CALL_C_IMPL(linkbotMove, 0x04, angle, angle, angle);
+			break;
+		default:
+			break;
+	}
+}
+
+void Linkbot::moveJointForeverNB(robotJointId_t id)
+{
+	if(id == ROBOT_JOINT3) {
+        setJointMovementStateNB(id, ROBOT_BACKWARD);
+    } else {
+        setJointMovementStateNB(id, ROBOT_FORWARD);
+    }
+}
+
+void Linkbot::moveJointTime(robotJointId_t id, double time)
+{
+	if(id == ROBOT_JOINT3) {
+        setJointMovementStateTime(id, ROBOT_BACKWARD, time);
+    } else {
+        setJointMovementStateTime(id, ROBOT_FORWARD, time);
+    }
+}
+void Linkbot::moveTime(double time)
+{
+	setMovementStateTime(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_BACKWARD, time);
+}
+
 void Linkbot::moveJointToByTrackPos(robotJointId_t id, double angle)
 {
     moveJointToByTrackPosNB(id, angle);

@@ -442,6 +442,82 @@ void CLinkbotI::relaxJoints() {
      
     dlrunfun(fptr, NULL, NULL, this);
 }
+/*moveForever*/
+void CLinkbotI::moveForeverNB() {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_moveForeverNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+}
+/*moveJoint*/
+void CLinkbotI::moveJoint(robotJointId_t id, double angle) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_moveJoint_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, angle);
+}
+
+/*moveJointNB*/
+void CLinkbotI::moveJointNB(robotJointId_t id, double angle) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_moveJointNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, angle);
+}
+
+/*moveJointForeverNB*/
+void CLinkbotI::moveJointForeverNB(robotJointId_t id) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_moveJointForeverNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id);
+}
+
+/*moveJointTime*/
+void CLinkbotI::moveJointTime(robotJointId_t id, double time) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_moveJointTime_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, time);
+}
+
+/*moveTime*/
+void CLinkbotI::moveTime(double time) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_moveTime_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, time);
+}
 /*END MOVEMENT FUNCTIONS*/
 /*GET FUNCTIONS*/
 

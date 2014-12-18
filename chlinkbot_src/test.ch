@@ -12,8 +12,6 @@ double trackwidth = 3.69;
 CLinkbotI robot;
 sleep(2);
 robot.connect();
-robot.turnRight(angle, radius, trackwidth);
-printf("Movement 1 done\n");
-robot.holdJoints();
-printf("Movement 2 done\n");
+robot.moveTime(seconds);
+
 
