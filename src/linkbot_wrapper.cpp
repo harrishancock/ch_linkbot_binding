@@ -303,26 +303,78 @@ void Linkbot::setTwoWheelRobotSpeed(double speed, double radius)
 
 /* MOVEMENT */
 
-void Linkbot::driveJointTo(robotJointId_t id, double angle)
+void Linkbot::moveJointToByTrackPos(robotJointId_t id, double angle)
 {
-    driveJointToNB(id, angle);
+    moveJointToByTrackPosNB(id, angle);
     moveWait(1<<(int(id)-1));
 }
 
-void Linkbot::driveJointToNB(robotJointId_t id, double angle)
+void Linkbot::moveJointToByTrackPosNB(robotJointId_t id, double angle)
 {
     CALL_C_IMPL(linkbotDriveTo, 1<<(int(id)-1), angle, angle, angle);
 }
 
-void Linkbot::driveTo(double angle1, double angle2, double angle3)
+void Linkbot::moveToByTrackPos(double angle1, double angle2, double angle3)
 {
-    driveToNB(angle1, angle2, angle3);
+    moveToByTrackPosNB(angle1, angle2, angle3);
     moveWait();
 }
 
-void Linkbot::driveToNB(double angle1, double angle2, double angle3)
+void Linkbot::moveToByTrackPosNB(double angle1, double angle2, double angle3)
 {
     CALL_C_IMPL(linkbotDriveTo, 0x07, angle1, angle2, angle3);
+}
+
+void Linkbot::driveBackward(double angle)
+{
+	CALL_C_IMPL(linkbotMove, 0x07, -angle, 0, angle);
+	moveWait();
+}
+
+void Linkbot::driveBackwardNB(double angle)
+{
+	CALL_C_IMPL(linkbotMove, 0x07, -angle, 0, angle);
+}
+
+void Linkbot::driveDistance(double distance, double radius)
+{
+	double theta;
+    theta = distance/radius;
+	
+	CALL_C_IMPL(linkbotMove, 0x07, theta, 0, -theta);
+	moveWait();
+
+}
+
+void Linkbot::driveDistanceNB(double distance, double radius)
+{
+	double theta;
+    theta = distance/radius;
+	CALL_C_IMPL(linkbotMove, 0x07, theta, 0, -theta);
+}
+
+void Linkbot::driveForeverNB()
+{
+	setMovementStateNB(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_NEGATIVE);
+}
+
+void Linkbot::driveForward(double angle)
+{
+	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+	moveWait();
+}
+void Linkbot::driveForwardNB(double angle)
+{
+	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+}
+
+void Linkbot::driveTime(double seconds)
+{
+	setMovementStateTime(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_NEGATIVE, seconds);
+}
+
+void Linkbot::driveTimeNB(double seconds)
+{
 }
 
 void Linkbot::move(double j1, double j2, double j3)

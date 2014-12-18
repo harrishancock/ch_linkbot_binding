@@ -62,10 +62,15 @@ class Linkbot {
 
         /* MOVEMENT */
 
-        void driveJointTo(robotJointId_t id, double angle);
-        void driveJointToNB(robotJointId_t id, double angle);
-        void driveTo(double angle1, double angle2, double angle3);
-        void driveToNB(double angle1, double angle2, double angle3);
+		void driveBackward(double angle);
+        void driveBackwardNB(double angle);
+	    void driveDistance(double distance, double radius);
+        void driveDistanceNB(double distance, double radius);
+	    void driveForeverNB();
+	    void driveForward(double angle);
+        void driveForwardNB(double angle);
+		void driveTime(double time);
+	    void driveTimeNB(double time);
         void move(double j1, double j2, double j3);
         void moveNB(double j1, double j2, double j3);
         void moveWait(int mask=0x07);
@@ -78,6 +83,10 @@ class Linkbot {
                 double seconds);
         void moveDistance(double distance, double radius);
         void moveDistanceNB(double distance, double radius);
+		void moveJointToByTrackPos(robotJointId_t id, double angle);
+        void moveJointToByTrackPosNB(robotJointId_t id, double angle);
+		void moveToByTrackPos(double angle1, double angle2, double angle3);
+        void moveToByTrackPosNB(double angle1, double angle2, double angle3);
         void stop();
         void stopOneJoint(robotJointId_t id);
         void stopAllJoints();

@@ -12,10 +12,10 @@
 
 typedef enum robotJoints_e {
   ROBOT_ZERO,
-  ROBOT_JOINT1,
-  ROBOT_JOINT2,
-  ROBOT_JOINT3,
-  ROBOT_JOINT4,
+  JOINT1,
+  JOINT2,
+  JOINT3,
+  JOINT4,
   ROBOT_NUM_JOINTS = 4
 } robotJointId_t;
 
@@ -71,10 +71,14 @@ class CLinkbotI {
 
         /* MOVEMENT */
 
-        void driveJointTo(robotJointId_t id, double angle);
-        void driveJointToNB(robotJointId_t id, double angle);
-        void driveTo(double angle1, double angle2, double angle3);
-        void driveToNB(double angle1, double angle2, double angle3);
+		void driveBackward(double angle);
+        void driveBackwardNB(double angle);
+	    void driveDistance(double distance, double radius);
+        void driveDistanceNB(double distance, double radius);
+	    void driveForeverNB();
+	    void driveForward(double angle);
+        void driveForwardNB(double angle);
+		void driveTime(double seconds);
         void move(double j1, double j2, double j3);
         void moveNB(double j1, double j2, double j3);
         void moveWait();
@@ -87,6 +91,10 @@ class CLinkbotI {
                 double seconds);
         void moveDistance(double distance, double radius);
         void moveDistanceNB(double distance, double radius);
+		void moveJointToByTrackPos(robotJointId_t id, double angle);
+        void moveJointToByTrackPosNB(robotJointId_t id, double angle);
+		void moveToByTrackPos(double angle1, double angle2, double angle3);
+        void moveToByTrackPosNB(double angle1, double angle2, double angle3);
         void stop();
         void stopOneJoint(robotJointId_t id);
         void stopAllJoints();
