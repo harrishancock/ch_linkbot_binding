@@ -36,6 +36,7 @@ class CLinkbotI {
         CLinkbotI();
         ~CLinkbotI();
         void connect();
+		void disconnect();
 
         /* GETTERS */
 

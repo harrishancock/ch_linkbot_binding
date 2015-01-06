@@ -12,6 +12,7 @@ double trackwidth = 3.69;
 CLinkbotI robot;
 sleep(2);
 robot.connect();
-robot.moveTime(seconds);
+robot.move(180,0,0);
+robot.disconnect();
 
 

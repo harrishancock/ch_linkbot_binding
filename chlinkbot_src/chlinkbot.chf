@@ -56,6 +56,20 @@ void CLinkbotI::connect() {
     dlrunfun(fptr, NULL, NULL, this);
 }
 
+/*disconnect*/
+void CLinkbotI::disconnect() {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_disconnect_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+        printf("Disconnected\n");
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+}
+
 /*MOVEMENT FUNCTIONS/*
 /*move*/
 void CLinkbotI::move(double j1, double j2, double j3) {

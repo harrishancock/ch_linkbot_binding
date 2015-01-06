@@ -85,6 +85,11 @@ void Linkbot::connect()
     }
 }
 
+void Linkbot::disconnect() 
+{
+	c_impl::linkbotDisconnect(m->linkbot);
+}
+
 /* GETTERS */
 
 void Linkbot::getDistance(double &distance, double radius)
