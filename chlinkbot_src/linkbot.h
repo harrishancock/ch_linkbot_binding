@@ -74,6 +74,7 @@ class CLinkbotI {
 
         /* MOVEMENT */
 
+		void closeGripper();
 		void driveBackward(double angle);
         void driveBackwardNB(double angle);
 	    void driveDistance(double distance, double radius);
@@ -106,6 +107,7 @@ class CLinkbotI {
 		void moveTime(double time);
 		void moveToByTrackPos(double angle1, double angle2, double angle3);
         void moveToByTrackPosNB(double angle1, double angle2, double angle3);
+		void openGripper(double angle);
 		void relaxJoint(robotJointId_t id);
 	    void relaxJoints();
         void stop();

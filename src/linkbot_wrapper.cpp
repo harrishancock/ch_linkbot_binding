@@ -576,6 +576,42 @@ void Linkbot::turnRightNB(double angle, double radius, double tracklength)
    theta = (angle*tracklength)/(2*radius);
    CALL_C_IMPL(linkbotMove, 0x07, theta, 0, theta);
 }
+
+void Linkbot::openGripper(double angle)
+{
+	CALL_C_IMPL(linkbotMoveTo, 0x07, -angle/2.0, 0, -angle/2.0);
+}
+
+void Linkbot::closeGripper()
+{
+   double gripperAngleOld= 0;
+   double gripperAngleNew;
+   
+   getJointAngle(ROBOT_JOINT1, gripperAngleNew); // get the new position
+   
+    /* Close the gripper to grab an object */
+    while(fabs(gripperAngleNew - gripperAngleOld) > 0.1) {
+        gripperAngleOld = gripperAngleNew;    // update the old position
+        getJointAngle(ROBOT_JOINT1, gripperAngleNew); // get the new position
+		
+		moveNB( 8, 0, 8); // move 8 degrees
+        #ifndef _WIN32
+        usleep(1000000);
+        #else
+        Sleep(1000);
+        #endif
+        getJointAngle(ROBOT_JOINT1, gripperAngleNew); // get the new position
+		
+    }
+	moveNB(8, 0, 8);            // try to move another 8 degrees 
+    #ifndef _WIN32
+        usleep(1000000);
+    #else
+        Sleep(1000);
+    #endif            // closing for 1 second
+	setMovementStateNB(ROBOT_HOLD, ROBOT_HOLD, ROBOT_HOLD); // hold the object
+
+}
 /* MISC */
 
 void LinkbotImpl::jointEventCB(int jointNo, c_impl::barobo::JointState::Type state)

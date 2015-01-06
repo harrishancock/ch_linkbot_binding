@@ -678,6 +678,36 @@ EXPORTCH void CLinkbotI_moveJointTime_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return;
 }
+
+/*linkbot openGripper*/
+EXPORTCH void CLinkbotI_openGripper_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+	double angle;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+	angle=Ch_VaArg(interp, ap, double);
+    l->openGripper(angle);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot closeGripper*/
+EXPORTCH void CLinkbotI_closeGripper_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    l->closeGripper();
+    Ch_VaEnd(interp, ap);
+    return;
+}
 /*END MOVEMENT FUNCTIONS*/
 /*GET FUNCTIONS*/
 
