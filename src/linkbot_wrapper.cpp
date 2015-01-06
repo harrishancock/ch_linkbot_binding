@@ -92,6 +92,12 @@ void Linkbot::disconnect()
 
 /* GETTERS */
 
+void Linkbot::getAccelerometerData(double &x, double &y, double &z)
+{
+	int timestamp;
+	CALL_C_IMPL(linkbotGetAccelerometer, &timestamp, &x, &y, &z);
+}
+
 void Linkbot::getDistance(double &distance, double radius)
 {
     double angle;
@@ -142,6 +148,11 @@ void Linkbot::getJointSpeedRatios(double &ratio1, double &ratio2, double &ratio3
     ratio1 = speeds[0] / mMaxSpeed;
     ratio2 = speeds[1] / mMaxSpeed;
     ratio3 = speeds[2] / mMaxSpeed;
+}
+
+void Linkbot::getLEDColorRGB(int &r, int &g, int &b)
+{
+	CALL_C_IMPL(linkbotGetLedColor, &r, &g, &b);
 }
 
 /* SETTERS */

@@ -681,6 +681,48 @@ EXPORTCH void CLinkbotI_moveJointTime_chdl(void *varg) {
 /*END MOVEMENT FUNCTIONS*/
 /*GET FUNCTIONS*/
 
+/*linkbot getAccelerometerData*/
+EXPORTCH void CLinkbotI_getAccelerometerData_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    double *x;
+    double *y;
+	double *z;
+
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    x=Ch_VaArg(interp, ap, double *);
+    y=Ch_VaArg(interp, ap, double *);
+	z=Ch_VaArg(interp, ap, double *);
+    l->getAccelerometerData(*x, *y, *z);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot getLEDColorRGB*/
+EXPORTCH void CLinkbotI_getLEDColorRGB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    int *r;
+    int *g;
+	int *b;
+
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    r=Ch_VaArg(interp, ap, int *);
+    g=Ch_VaArg(interp, ap, int *);
+	b=Ch_VaArg(interp, ap, int *);
+    l->getLEDColorRGB(*r, *g, *b);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
 /*linkbot getDistance*/
 EXPORTCH void CLinkbotI_getDistance_chdl(void *varg) {
     ChInterp_t interp;

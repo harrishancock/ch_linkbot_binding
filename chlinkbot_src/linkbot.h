@@ -40,13 +40,15 @@ class CLinkbotI {
 
         /* GETTERS */
 
-        void getDistance(double &distance, double radius);
+        void getAccelerometerData(double &x, double &y, double &z); 
+		void getDistance(double &distance, double radius);
         void getJointAngle(robotJointId_t id, double &angle);
         void getJointAngles(double &angle1, double &angle2, double &angle3);
         void getJointSpeed(robotJointId_t id, double &speed);
         void getJointSpeedRatio(robotJointId_t id, double &ratio);
         void getJointSpeeds(double &speed1, double &speed2, double &speed3);
         void getJointSpeedRatios(double &ratio1, double &ratio2, double &ratio3);
+		void getLEDColorRGB(int &r, int &g, int &b);
 
         /* SETTERS */
         void setJointMovementStateNB(robotJointId_t id, robotJointState_t dir);

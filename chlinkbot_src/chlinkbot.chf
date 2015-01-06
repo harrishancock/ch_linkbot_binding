@@ -627,6 +627,31 @@ void CLinkbotI::getJointSpeedRatios(double &ratio1, double &ratio2, double &rati
     dlrunfun(fptr, NULL, NULL, this, &ratio1, &ratio2, &ratio3);
 }
 
+/*getAccelerometerData*/
+void CLinkbotI::getAccelerometerData(double &x, double &y, double &z) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_getAccelerometerData_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, &x, &y, &z);
+}
+
+/*getLEDColorRGB*/
+void CLinkbotI::getLEDColorRGB(int &r, int &g, int &b) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_getLEDColorRGB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, &r, &g, &b);
+}
 /*END GET FUNCTIONS*/
 /*SET FUNCTIONS*/
 
