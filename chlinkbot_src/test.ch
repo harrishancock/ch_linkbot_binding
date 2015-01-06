@@ -14,9 +14,9 @@ CLinkbotI robot;
 sleep(2);
 robot.connect();
 
-robot.openGripper(10);
-sleep(2);
-robot.closeGripper();
+robot.moveForeverNB();
+sleep(5);
+robot.stop();
 
 
 

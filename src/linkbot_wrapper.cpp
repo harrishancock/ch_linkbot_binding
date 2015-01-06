@@ -64,13 +64,13 @@ Linkbot::~Linkbot()
     delete m;
 }
 
-void Linkbot::connect()
+/*void Linkbot::connect()
 {
-    c_impl::linkbotConnect(m->linkbot);
+    c_impl::linkbotConnect(m->linkbot);*/
     /* Enable joint callbacks */
-    c_impl::linkbotSetJointEventCallback(m->linkbot, _jointEventCB, m);
+    //c_impl::linkbotSetJointEventCallback(m->linkbot, _jointEventCB, m);
     /* Get the form factor */
-    c_impl::barobo::FormFactor::Type formFactor;
+    /*c_impl::barobo::FormFactor::Type formFactor;
     c_impl::linkbotGetFormFactor(m->linkbot, &formFactor);
     switch (formFactor) {
         case c_impl::barobo::FormFactor::I:
@@ -83,12 +83,12 @@ void Linkbot::connect()
             m->motorMask = 0x07;
             break;
     }
-}
+}*/
 
-void Linkbot::disconnect() 
+/*void Linkbot::disconnect() 
 {
 	c_impl::linkbotDisconnect(m->linkbot);
-}
+}*/
 
 /* GETTERS */
 

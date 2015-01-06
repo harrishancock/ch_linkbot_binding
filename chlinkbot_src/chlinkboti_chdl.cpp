@@ -34,27 +34,27 @@ EXPORTCH void CLinkbotI_dCLinkbotI_chdl(void *varg) {
 
 /*linkbot connect*/
 EXPORTCH void CLinkbotI_connect_chdl(void *varg) {
-    ChInterp_t interp;
+    /*ChInterp_t interp;
     ChVaList_t ap;
     class Linkbot *l;
     Ch_VaStart(interp, ap, varg);
     
     l=Ch_VaArg(interp, ap, class Linkbot *);
     l->connect();
-    Ch_VaEnd(interp, ap);
+    Ch_VaEnd(interp, ap);*/
     return;
 }
 
 /*linkbot disconnect*/
 EXPORTCH void CLinkbotI_disconnect_chdl(void *varg) {
-    ChInterp_t interp;
+    /*ChInterp_t interp;
     ChVaList_t ap;
     class Linkbot *l;
     Ch_VaStart(interp, ap, varg);
     
     l=Ch_VaArg(interp, ap, class Linkbot *);
     l->disconnect();
-    Ch_VaEnd(interp, ap);
+    Ch_VaEnd(interp, ap);*/
     return;
 }
 
