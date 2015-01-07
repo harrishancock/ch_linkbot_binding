@@ -17,6 +17,9 @@ robot.connect();
 robot.moveForeverNB();
 sleep(5);
 robot.stop();
+robot.setBuzzerFrequencyOn(150);
+sleep(3);
+robot.setBuzzerFrequencyOff();
 
 
 

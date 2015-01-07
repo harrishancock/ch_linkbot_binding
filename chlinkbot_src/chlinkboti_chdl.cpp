@@ -1126,6 +1126,54 @@ EXPORTCH void CLinkbotI_setTwoWheelRobotSpeed_chdl(void *varg) {
     return;
 }
 
+/*linkbot setBuzzerFrequnencyOn*/
+EXPORTCH void CLinkbotI_setBuzzerFrequencyOn_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    int frequency;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    frequency=Ch_VaArg(interp, ap, int);
+    l->setBuzzerFrequencyOn(frequency);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot setBuzzerFrequnencyOff*/
+EXPORTCH void CLinkbotI_setBuzzerFrequencyOff_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    l->setBuzzerFrequencyOff();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot setBuzzerFrequnency*/
+EXPORTCH void CLinkbotI_setBuzzerFrequency_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    int frequency;
+	double time;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    frequency=Ch_VaArg(interp, ap, int);
+	time=Ch_VaArg(interp, ap, double);
+    l->setBuzzerFrequency(frequency, time);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
 /*END SET FUNCTIONS*/
 /*MISCELLANEOUS FUNCTIONS*/
 

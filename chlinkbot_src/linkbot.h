@@ -51,7 +51,10 @@ class CLinkbotI {
 		void getLEDColorRGB(int &r, int &g, int &b);
 
         /* SETTERS */
-        void setJointMovementStateNB(robotJointId_t id, robotJointState_t dir);
+        void setBuzzerFrequency(int frequency, double time);
+		void setBuzzerFrequencyOn(int frequency);
+		void setBuzzerFrequencyOff();
+		void setJointMovementStateNB(robotJointId_t id, robotJointState_t dir);
         void setJointMovementStateTime(robotJointId_t id, robotJointState_t dir, double seconds);
         void setJointSpeed(robotJointId_t id, double speed);
         void setJointSpeeds(double speed1, double speed2, double speed3);

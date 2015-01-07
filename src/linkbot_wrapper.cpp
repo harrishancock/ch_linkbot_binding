@@ -316,6 +316,26 @@ void Linkbot::setTwoWheelRobotSpeed(double speed, double radius)
 {
 }
 
+void Linkbot::setBuzzerFrequencyOn(int frequency)
+{
+	CALL_C_IMPL(linkbotSetBuzzerFrequencyOn, frequency);
+}
+
+void Linkbot::setBuzzerFrequencyOff()
+{
+	CALL_C_IMPL(linkbotSetBuzzerFrequencyOn, 0);
+}
+
+void Linkbot::setBuzzerFrequency(int frequency, double time)
+{
+	setBuzzerFrequencyOn(frequency);
+    #ifdef _WIN32
+    Sleep(time*1000);
+    #else
+    usleep(seconds*1000000);
+    #endif
+	setBuzzerFrequencyOff();
+}
 
 /* MOVEMENT */
 

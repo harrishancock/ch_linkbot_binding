@@ -837,6 +837,45 @@ void CLinkbotI::setTwoWheelRobotSpeed(double speed, double radius) {
     dlrunfun(fptr, NULL, NULL, this, speed, radius);
 }
 
+/*setBuzzerFrequencyOn*/
+void CLinkbotI::setBuzzerFrequencyOn(int frequency) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setBuzzerFrequencyOn_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, frequency);
+}
+
+/*setBuzzerFrequencyOff*/
+void CLinkbotI::setBuzzerFrequencyOff() {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setBuzzerFrequencyOff_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+}
+
+/*setBuzzerFrequency*/
+void CLinkbotI::setBuzzerFrequency(int frequency, double time) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setBuzzerFrequency_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, frequency, time);
+}
+
 /*END SET FUNCTIONS*/
 /*MISCELLANEOUS FUNCTIONS*/
 
