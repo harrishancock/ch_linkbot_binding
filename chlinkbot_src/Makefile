@@ -7,8 +7,6 @@ LINKLIBS="../build-linux/liblinkbot.a -lbaromesh -pthread -lboost_thread \
 -lboost_filesystem \
 -lboost_system \
 -lboost_log \
--lboost_coroutine \
--lboost_context \
 -lsfp \
 -lrpc \
 -lrpc-proto \
@@ -18,10 +16,10 @@ LINKLIBS="../build-linux/liblinkbot.a -lbaromesh -pthread -lboost_thread \
 -lcommontypes-proto"
 
 LINKDIRS="-L$(BOOST_LIBS) \
--L../build-linux/baromesh \
--L../build-linux/baromesh/libsfp \
--L../build-linux/baromesh/ribbon-bridge \
--L../build-linux/baromesh/ribbon-bridge-interfaces"
+-L../build-linux/baromesh/library \
+-L../build-linux/baromesh/library/libsfp \
+-L../build-linux/baromesh/library/ribbon-bridge \
+-L../build-linux/baromesh/library/baromesh/interfaces"
 
 liblinkbot.dl: chlinkboti_chdl.o
 	ch dllink liblinkbot.dl cplusplus chlinkboti_chdl.o $(LINKDIRS) $(LINKLIBS)
