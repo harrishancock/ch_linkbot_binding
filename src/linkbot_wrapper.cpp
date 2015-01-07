@@ -90,7 +90,7 @@ int Linkbot::connect(const char* serialId)
 int Linkbot::disconnect()
 {
     if(m && m->linkbot) {
-        c_impl::linkbotDelete(m->linkbot);
+        //c_impl::linkbotDelete(m->linkbot);
         delete m;
     }
     return 0;
@@ -695,12 +695,13 @@ void Linkbot::moveTo(double angle1, double angle2, double angle3)
 
 void Linkbot::moveToZero()
 {
-	moveTo(0, 0, 0);
+    CALL_C_IMPL(linkbotMoveTo, 0x07, 0, 0, 0);
+	moveWait();
 }
 
 void Linkbot::moveToZeroNB()
 {
-	moveToNB(0, 0, 0);
+	CALL_C_IMPL(linkbotMoveTo, 0x07, 0, 0, 0);
 }
 /* MISC */
 

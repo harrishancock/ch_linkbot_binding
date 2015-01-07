@@ -11,15 +11,22 @@ double t;
 
 CLinkbotI robot;
 sleep(2);
-if(robot.connect("4QFS")) {
+if(robot.connect("SRS8")) {
     printf("Connect failed.\n");
     exit(-1);
 }
 
-robot.move(30, 30, 30);
-robot.move(-30, -30, -30);
 
-robot.driveTime(seconds);
+robot.moveToNB(180, 0, 180);
+robot.moveWait();
+sleep(5);
+robot.moveToZeroNB();
+robot.moveWait();
+sleep(5);
+//robot.moveToZero();
+
+robot.moveJointTo(JOINT3, 20);
+
 robot.systemTime(t);
 printf("t = %lf\n", t);
 
