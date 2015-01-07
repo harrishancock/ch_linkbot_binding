@@ -1335,16 +1335,17 @@ EXPORTCH void CLinkbotI_delaySeconds_chdl(void *varg) {
 }
 
 /*linkbot systemTime*/
-EXPORTCH double CLinkbotI_systemTime_chdl(void *varg) {
+EXPORTCH void CLinkbotI_systemTime_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
     class Linkbot *l;
-	double retval;
+	double *time;
     
     Ch_VaStart(interp, ap, varg);
     
     l=Ch_VaArg(interp, ap, class Linkbot *);
-    retval=l->systemTime();
+	time=Ch_VaArg(interp, ap, double *);
+    l->systemTime(*time);
     Ch_VaEnd(interp, ap);
-    return retval;
+    return;
 }

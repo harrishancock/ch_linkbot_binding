@@ -16,7 +16,7 @@ sleep(2);
 robot.connect();
 
 robot.driveTime(seconds);
-t = robot.systemTime();
+robot.systemTime(t);
 printf("t = %lf\n", t);
 
 

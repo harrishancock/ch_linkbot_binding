@@ -710,12 +710,11 @@ void Linkbot::delaySeconds(int seconds)
     #endif
 }
 
-double Linkbot::systemTime()
+void Linkbot::systemTime(double &time)
 {
     #ifdef _WIN32
-    return (GetTickCount()/1000.0);
+    time = (GetTickCount()/1000.0);
     #elif defined __MACH__
-    double t;
     clock_serv_t cclock;
     mach_timespec_t mts;
     mach_timespec_t cur_time;
@@ -723,16 +722,13 @@ double Linkbot::systemTime()
     clock_get_time(cclock, &mts);
     mach_port_deallocate(mach_task_self(), cclock);
     cur_time.tv_nsec = mts.tv_nsec;
-    t = mts.tv_sec;
-    t += (mts.tv_nsec / 1000000000.0);
-    return t;
+    time = mts.tv_sec;
+    time += (mts.tv_nsec / 1000000000.0);
     #else
-    double t;
     struct timespec cur_time;
     clock_gettime(CLOCK_REALTIME, &cur_time);
-    t = cur_time.tv_sec;
-    t += (cur_time.tv_nsec/1000000000.0);
-    return t;
+    time = cur_time.tv_sec;
+    time += (cur_time.tv_nsec/1000000000.0);
     #endif
 }
 
