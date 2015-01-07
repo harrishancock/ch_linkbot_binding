@@ -2,8 +2,6 @@
 
 #include"linkbot.h"
 
-const char* id = "SRS8";
-printf("id %s\n", id);
 double radius = 1.75;
 double seconds = 5;
 double angle=90;
@@ -13,7 +11,13 @@ double t;
 
 CLinkbotI robot;
 sleep(2);
-robot.connect();
+if(robot.connect("4QFS")) {
+    printf("Connect failed.\n");
+    exit(-1);
+}
+
+robot.move(30, 30, 30);
+robot.move(-30, -30, -30);
 
 robot.driveTime(seconds);
 robot.systemTime(t);

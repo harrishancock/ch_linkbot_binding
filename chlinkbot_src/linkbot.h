@@ -35,7 +35,7 @@ class CLinkbotI {
     public:
         CLinkbotI();
         ~CLinkbotI();
-        void connect();
+        int connect();
 		void disconnect();
 
         /* GETTERS */

@@ -46,31 +46,32 @@ void _jointEventCB(int joint, c_impl::barobo::JointState::Type state, int timest
     l->jointEventCB(joint, state);
 }
 
-Linkbot::Linkbot(const char* serialId)
+Linkbot::Linkbot()
+{
+}
+
+int Linkbot::connect(const char* serialId)
 {
     std::cout << "In cons..." << std::endl;
     m = new LinkbotImpl();
     std::cout << "Creating impl..." << std::endl;
-    m->linkbot = c_impl::linkbotNew(serialId);
+    try {
+        m->linkbot = c_impl::linkbotNew(serialId);
+    }
+    catch (std::exception& e){
+        fprintf(stderr, "Could not connect to robot: %s\n", e.what());
+        return -1;
+    }
     std::cout << "setting joint states..." << std::endl;
     for(int i = 0; i < 3; i++) {
         m->jointStates[i] = c_impl::barobo::JointState::STOP;
     }
     mMaxSpeed = 200;
-}
 
-Linkbot::~Linkbot()
-{
-    delete m;
-}
-
-/*void Linkbot::connect()
-{
-    c_impl::linkbotConnect(m->linkbot);*/
     /* Enable joint callbacks */
-    //c_impl::linkbotSetJointEventCallback(m->linkbot, _jointEventCB, m);
+    c_impl::linkbotSetJointEventCallback(m->linkbot, _jointEventCB, m);
     /* Get the form factor */
-    /*c_impl::barobo::FormFactor::Type formFactor;
+    c_impl::barobo::FormFactor::Type formFactor;
     c_impl::linkbotGetFormFactor(m->linkbot, &formFactor);
     switch (formFactor) {
         case c_impl::barobo::FormFactor::I:
@@ -83,12 +84,22 @@ Linkbot::~Linkbot()
             m->motorMask = 0x07;
             break;
     }
-}*/
+    return 0;
+}
 
-/*void Linkbot::disconnect() 
+int Linkbot::disconnect()
 {
-	c_impl::linkbotDisconnect(m->linkbot);
-}*/
+    if(m && m->linkbot) {
+        c_impl::linkbotDelete(m->linkbot);
+        delete m;
+    }
+    return 0;
+}
+
+Linkbot::~Linkbot()
+{
+    disconnect();
+}
 
 /* GETTERS */
 

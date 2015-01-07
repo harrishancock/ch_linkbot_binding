@@ -6,11 +6,9 @@
 EXPORTCH void CLinkbotI_CLinkbotI_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    char *id;
     
     Ch_VaStart(interp, ap, varg);
-    id = Ch_VaArg(interp, ap, char *);
-    class Linkbot *l= new Linkbot(id);
+    class Linkbot *l= new Linkbot();
     Ch_CppChangeThisPointer(interp, l, sizeof(Linkbot));
     Ch_VaEnd(interp, ap);
     return;
@@ -33,28 +31,32 @@ EXPORTCH void CLinkbotI_dCLinkbotI_chdl(void *varg) {
 }
 
 /*linkbot connect*/
-EXPORTCH void CLinkbotI_connect_chdl(void *varg) {
-    /*ChInterp_t interp;
+EXPORTCH int CLinkbotI_connect_chdl(void *varg) {
+    ChInterp_t interp;
     ChVaList_t ap;
     class Linkbot *l;
+    const char *id;
+    int rc;
     Ch_VaStart(interp, ap, varg);
-    
+   
     l=Ch_VaArg(interp, ap, class Linkbot *);
-    l->connect();
-    Ch_VaEnd(interp, ap);*/
-    return;
+    id = Ch_VaArg(interp, ap, const char*);
+    printf("Connecting to %s\n", id);
+    rc = l->connect(id);
+    Ch_VaEnd(interp, ap);
+    return rc;
 }
 
 /*linkbot disconnect*/
 EXPORTCH void CLinkbotI_disconnect_chdl(void *varg) {
-    /*ChInterp_t interp;
+    ChInterp_t interp;
     ChVaList_t ap;
     class Linkbot *l;
     Ch_VaStart(interp, ap, varg);
     
     l=Ch_VaArg(interp, ap, class Linkbot *);
     l->disconnect();
-    Ch_VaEnd(interp, ap);*/
+    Ch_VaEnd(interp, ap);
     return;
 }
 

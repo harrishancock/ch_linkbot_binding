@@ -8,7 +8,6 @@
 /*class constructor*/
 CLinkbotI::CLinkbotI() {
     void *fptr;
-    const char *serialID="SRS8";  
     if (g_chlinkbot_dlhandle == NULL || g_chlinkbot_dlcount == 0) {
         g_chlinkbot_dlhandle = dlopen("liblinkbot.dl", RTLD_LAZY);
         if (g_chlinkbot_dlhandle == NULL) {
@@ -22,7 +21,7 @@ CLinkbotI::CLinkbotI() {
        return;
     }
      
-    dlrunfun(fptr, NULL, NULL, serialID);
+    dlrunfun(fptr, NULL, NULL);
     g_chlinkbot_dlcount++;
 }
 
@@ -44,16 +43,18 @@ CLinkbotI::~CLinkbotI() {
 }
 
 /*connect*/
-void CLinkbotI::connect() {
+int CLinkbotI::connect(const char* id) {
     void *fptr;
+    int rc;
   
     fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_connect_chdl");
     if (fptr == NULL) {
        printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
-       return;
+       return -1;
     }
      
-    dlrunfun(fptr, NULL, NULL, this);
+    dlrunfun(fptr, &rc, NULL, this, id);
+    return rc;
 }
 
 /*disconnect*/
