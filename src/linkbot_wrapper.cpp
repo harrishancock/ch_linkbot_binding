@@ -323,10 +323,6 @@ void Linkbot::setMovementStateTimeNB( robotJointState_t dir1,
 {
 }
 
-void Linkbot::setTwoWheelRobotSpeed(double speed, double radius)
-{
-}
-
 void Linkbot::setBuzzerFrequencyOn(int frequency)
 {
 	CALL_C_IMPL(linkbotSetBuzzerFrequencyOn, frequency);
@@ -575,26 +571,6 @@ void Linkbot::moveWait(int mask)
     }
 }
 
-void Linkbot::moveContinuousNB(robotJointState_t dir1, 
-        robotJointState_t dir2, 
-        robotJointState_t dir3)
-{
-}
-
-void Linkbot::moveContinuousTime(robotJointState_t dir1, 
-        robotJointState_t dir2, 
-        robotJointState_t dir3, 
-        double seconds)
-{
-}
-
-void Linkbot::moveDistance(double distance, double radius)
-{
-}
-
-void Linkbot::moveDistanceNB(double distance, double radius)
-{
-}
 
 void Linkbot::relaxJoint(robotJointId_t id)
 {
@@ -615,9 +591,6 @@ void Linkbot::stopOneJoint(robotJointId_t id)
 {
 }
 
-void Linkbot::stopAllJoints()
-{
-}
 
 void Linkbot::turnLeft(double angle, double radius, double tracklength)
 {

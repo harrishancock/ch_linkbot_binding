@@ -64,7 +64,6 @@ class Linkbot {
                 robotJointState_t dir2,
                 robotJointState_t dir3,
                 double seconds);
-        void setTwoWheelRobotSpeed(double speed, double radius);
 
         /* MOVEMENT */
 
@@ -83,15 +82,6 @@ class Linkbot {
         void move(double j1, double j2, double j3);
         void moveNB(double j1, double j2, double j3);
         void moveWait(int mask=0x07);
-        void moveContinuousNB(robotJointState_t dir1, 
-                robotJointState_t dir2, 
-                robotJointState_t dir3);
-        void moveContinuousTime(robotJointState_t dir1, 
-                robotJointState_t dir2, 
-                robotJointState_t dir3, 
-                double seconds);
-        void moveDistance(double distance, double radius);
-        void moveDistanceNB(double distance, double radius);
 		void moveForeverNB();
 		void moveJoint(robotJointId_t id, double angle);
 	    void moveJointNB(robotJointId_t id, double angle);
@@ -113,7 +103,6 @@ class Linkbot {
 	    void relaxJoints();
         void stop();
         void stopOneJoint(robotJointId_t id);
-        void stopAllJoints();
 		void turnLeft(double angle, double radius, double tracklength);
         void turnLeftNB(double angle, double radius, double tracklength);
         void turnRight(double angle, double radius, double tracklength);

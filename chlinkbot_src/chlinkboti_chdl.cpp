@@ -321,84 +321,6 @@ EXPORTCH void CLinkbotI_moveWait_chdl(void *varg) {
     return;
 }
 
-/*linkbot moveContinuousNB*/
-EXPORTCH void CLinkbotI_moveContinuousNB_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    class Linkbot *l;
-    robotJointState_t dir1;
-    robotJointState_t dir2;
-    robotJointState_t dir3;
-    
-    Ch_VaStart(interp, ap, varg);
-    
-    l=Ch_VaArg(interp, ap, class Linkbot *);
-    dir1=Ch_VaArg(interp, ap, robotJointState_t);
-    dir2=Ch_VaArg(interp, ap, robotJointState_t);
-    dir3=Ch_VaArg(interp, ap, robotJointState_t);
-    l->moveContinuousNB(dir1, dir2, dir3);
-    Ch_VaEnd(interp, ap);
-    return;
-}
-
-/*linkbot moveContinuousTime*/
-EXPORTCH void CLinkbotI_moveContinuousTime_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    class Linkbot *l;
-    robotJointState_t dir1;
-    robotJointState_t dir2;
-    robotJointState_t dir3;
-    double seconds;
-    
-    Ch_VaStart(interp, ap, varg);
-    
-    l=Ch_VaArg(interp, ap, class Linkbot *);
-    dir1=Ch_VaArg(interp, ap, robotJointState_t);
-    dir2=Ch_VaArg(interp, ap, robotJointState_t);
-    dir3=Ch_VaArg(interp, ap, robotJointState_t);
-    seconds=Ch_VaArg(interp, ap, double);
-    l->moveContinuousTime(dir1, dir2, dir3,seconds);
-    Ch_VaEnd(interp, ap);
-    return;
-}
-
-/*linkbot moveDistance*/
-EXPORTCH void CLinkbotI_moveDistance_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    class Linkbot *l;
-    double distance;
-    double radius;
-    
-    Ch_VaStart(interp, ap, varg);
-    
-    l=Ch_VaArg(interp, ap, class Linkbot *);
-    distance=Ch_VaArg(interp, ap, double);
-    radius=Ch_VaArg(interp, ap, double);
-    l->moveDistance(distance, radius);
-    Ch_VaEnd(interp, ap);
-    return;
-}
-
-/*linkbot moveDistanceNB*/
-EXPORTCH void CLinkbotI_moveDistanceNB_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    class Linkbot *l;
-    double distance;
-    double radius;
-    
-    Ch_VaStart(interp, ap, varg);
-    
-    l=Ch_VaArg(interp, ap, class Linkbot *);
-    distance=Ch_VaArg(interp, ap, double);
-    radius=Ch_VaArg(interp, ap, double);
-    l->moveDistanceNB(distance, radius);
-    Ch_VaEnd(interp, ap);
-    return;
-}
-
 /*linkbot stop*/
 EXPORTCH void CLinkbotI_stop_chdl(void *varg) {
     ChInterp_t interp;
@@ -425,20 +347,6 @@ EXPORTCH void CLinkbotI_stopOneJoint_chdl(void *varg) {
     l=Ch_VaArg(interp, ap, class Linkbot *);
     id=Ch_VaArg(interp, ap, robotJointId_t);
     l->stopOneJoint(id);
-    Ch_VaEnd(interp, ap);
-    return;
-}
-
-/*linkbot stopAllJoins*/
-EXPORTCH void CLinkbotI_stopAllJoints_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    class Linkbot *l;
-    
-    Ch_VaStart(interp, ap, varg);
-    
-    l=Ch_VaArg(interp, ap, class Linkbot *);
-    l->stopAllJoints();
     Ch_VaEnd(interp, ap);
     return;
 }
@@ -1213,23 +1121,6 @@ EXPORTCH void CLinkbotI_setMovementStateTimeNB_chdl(void *varg) {
     return;
 }
 
-/*linkbot setTwoWheelRobotSpeed*/
-EXPORTCH void CLinkbotI_setTwoWheelRobotSpeed_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    class Linkbot *l;
-    double speed;
-    double radius;
-
-    Ch_VaStart(interp, ap, varg);
-    
-    l=Ch_VaArg(interp, ap, class Linkbot *);
-    speed=Ch_VaArg(interp, ap, double);
-    radius=Ch_VaArg(interp, ap, double);
-    l->setTwoWheelRobotSpeed(speed, radius);
-    Ch_VaEnd(interp, ap);
-    return;
-}
 
 /*linkbot setBuzzerFrequnencyOn*/
 EXPORTCH void CLinkbotI_setBuzzerFrequencyOn_chdl(void *varg) {
