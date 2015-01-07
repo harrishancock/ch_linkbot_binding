@@ -97,11 +97,17 @@ class Linkbot {
 	    void moveJointNB(robotJointId_t id, double angle);
 	    void moveJointForeverNB(robotJointId_t id);
 		void moveJointTime(robotJointId_t id, double time);
+		void moveJointTo(robotJointId_t id, double angle);
+		void moveJointToNB(robotJointId_t id, double angle);
 		void moveJointToByTrackPos(robotJointId_t id, double angle);
         void moveJointToByTrackPosNB(robotJointId_t id, double angle);
 		void moveTime(double time);
+		void moveTo(double angle1, double angle2, double angle3);
+		void moveToNB(double angle1, double angle2, double angle3);
 		void moveToByTrackPos(double angle1, double angle2, double angle3);
         void moveToByTrackPosNB(double angle1, double angle2, double angle3);
+		void moveToZero();
+		void moveToZeroNB();
 		void openGripper(double angle);
 		void relaxJoint(robotJointId_t id);
 	    void relaxJoints();

@@ -105,11 +105,17 @@ class CLinkbotI {
                 double seconds);
         void moveDistance(double distance, double radius);
         void moveDistanceNB(double distance, double radius);
+		void moveJointTo(robotJointId_t id, double angle);
+		void moveJointToNB(robotJointId_t id, double angle);
 		void moveJointToByTrackPos(robotJointId_t id, double angle);
         void moveJointToByTrackPosNB(robotJointId_t id, double angle);
 		void moveTime(double time);
+		void moveTo(double angle1, double angle2, double angle3);
+		void moveToNB(double angle1, double angle2, double angle3);
 		void moveToByTrackPos(double angle1, double angle2, double angle3);
         void moveToByTrackPosNB(double angle1, double angle2, double angle3);
+		void moveToZero();
+		void moveToZeroNB();
 		void openGripper(double angle);
 		void relaxJoint(robotJointId_t id);
 	    void relaxJoints();

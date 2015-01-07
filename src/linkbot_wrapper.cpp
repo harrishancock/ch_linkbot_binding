@@ -382,6 +382,44 @@ void Linkbot::moveJointNB(robotJointId_t id, double angle)
 	}
 }
 
+void Linkbot::moveJointTo(robotJointId_t id, double angle)
+{
+	switch (id) {
+		case 1:
+			CALL_C_IMPL(linkbotMoveTo, 0x01, angle, angle, angle);
+	        moveWait();
+			break;
+		case 2:
+			CALL_C_IMPL(linkbotMoveTo, 0x02, angle, angle, angle);
+	        moveWait();
+			break;
+		case 3:
+			CALL_C_IMPL(linkbotMoveTo, 0x04, angle, angle, angle);
+	        moveWait();
+			break;
+		default:
+			break;
+	}
+
+}
+
+void Linkbot::moveJointToNB(robotJointId_t id, double angle)
+{
+		switch (id) {
+		case 1:
+			CALL_C_IMPL(linkbotMoveTo, 0x01, angle, angle, angle);
+			break;
+		case 2:
+			CALL_C_IMPL(linkbotMoveTo, 0x02, angle, angle, angle);
+			break;
+		case 3:
+			CALL_C_IMPL(linkbotMoveTo, 0x04, angle, angle, angle);
+			break;
+		default:
+			break;
+	}
+}
+
 void Linkbot::moveJointForeverNB(robotJointId_t id)
 {
 	if(id == ROBOT_JOINT3) {
@@ -631,6 +669,27 @@ void Linkbot::closeGripper()
     #endif            // closing for 1 second
 	setMovementStateNB(ROBOT_HOLD, ROBOT_HOLD, ROBOT_HOLD); // hold the object
 
+}
+
+void Linkbot::moveToNB(double angle1, double angle2, double angle3)
+{
+	CALL_C_IMPL(linkbotMoveTo, 0x07, angle1, angle2, angle3);
+}
+
+void Linkbot::moveTo(double angle1, double angle2, double angle3)
+{
+	moveToNB(angle1, angle2, angle3);
+	moveWait();
+}
+
+void Linkbot::moveToZero()
+{
+	moveTo(0, 0, 0);
+}
+
+void Linkbot::moveToZeroNB()
+{
+	moveToNB(0, 0, 0);
 }
 /* MISC */
 
