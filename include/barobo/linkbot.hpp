@@ -125,6 +125,7 @@ class Linkbot {
         void disableButtonCallback();
         */
 		void delaySeconds(int seconds);
+		double systemTime();
 
         LinkbotImpl *m;
 

@@ -995,3 +995,18 @@ void CLinkbotI::delaySeconds(int seconds) {
      
     dlrunfun(fptr, NULL, NULL, this, seconds);
 }
+
+/*systemTime*/
+double CLinkbotI::systemTime() {
+    void *fptr;
+    double retval;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_systemTime_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return 0;
+    }
+     
+    dlrunfun(fptr, &retval, NULL, this);
+    return retval;
+}

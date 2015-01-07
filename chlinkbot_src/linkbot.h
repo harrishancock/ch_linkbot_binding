@@ -131,6 +131,7 @@ class CLinkbotI {
         void enableButtonCallback(void* userdata, void (*buttonCallback)(void* data, int button, int buttonDown));
         void disableButtonCallback();
 		void delaySeconds(int seconds);
+		double systemTime();
 
         LinkbotImpl *m;
 

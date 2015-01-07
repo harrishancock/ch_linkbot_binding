@@ -9,13 +9,16 @@ double seconds = 5;
 double angle=90;
 double distance=20;
 double trackwidth = 3.69;
+double t;
 
 CLinkbotI robot;
 sleep(2);
 robot.connect();
 
-robot.driveForwardNB(distance);
-robot.moveWait();
+robot.driveTime(seconds);
+t = robot.systemTime();
+printf("t = %lf\n", t);
+
 
 
 
