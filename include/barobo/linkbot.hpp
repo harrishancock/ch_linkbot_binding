@@ -35,6 +35,8 @@ class Linkbot {
 		void getDistance(double &distance, double radius);
         void getJointAngle(robotJointId_t id, double &angle);
         void getJointAngles(double &angle1, double &angle2, double &angle3);
+		void getJointAngleInstant(robotJointId_t id, double &angle);
+        void getJointAnglesInstant(double &angle1, double &angle2, double &angle3);
         void getJointSpeed(robotJointId_t id, double &speed);
         void getJointSpeedRatio(robotJointId_t id, double &ratio);
         void getJointSpeeds(double &speed1, double &speed2, double &speed3);

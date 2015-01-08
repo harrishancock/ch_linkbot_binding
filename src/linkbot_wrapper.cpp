@@ -116,14 +116,14 @@ void Linkbot::getDistance(double &distance, double radius)
     distance = (angle*M_PI/180.0)*radius;
 }
 
-void Linkbot::getJointAngle(robotJointId_t id, double &angle)
+void Linkbot::getJointAngleInstant(robotJointId_t id, double &angle)
 {
     double angles[3];
     getJointAngles(angles[0], angles[1], angles[2]);
     angle = angles[int(id)-1];
 }
 
-void Linkbot::getJointAngles(double &angle1, double &angle2, double &angle3)
+void Linkbot::getJointAnglesInstant(double &angle1, double &angle2, double &angle3)
 {
     int timestamp;
     CALL_C_IMPL(linkbotGetJointAngles, 
@@ -132,7 +132,41 @@ void Linkbot::getJointAngles(double &angle1, double &angle2, double &angle3)
         &angle2,
         &angle3);
 }
+void Linkbot::getJointAngle(robotJointId_t id, double &angle)
+{
+    double angles[3];
+	int i;
+	static int numReadings = 10;
 
+	angle = 0;
+	for ( i=0; i<numReadings; i++)
+	{
+		getJointAnglesInstant(angles[0], angles[1], angles[2]);
+        angle += angles[int(id)-1];
+	}
+	angle = angle/numReadings;
+}
+
+void Linkbot::getJointAngles(double &angle1, double &angle2, double &angle3)
+{
+    double angles[3];
+	int i;
+	static int numReadings = 10;
+
+	angle1 = 0;
+	angle2 = 0;
+	angle3 = 0;
+	for ( i=0; i<numReadings; i++)
+	{
+		getJointAnglesInstant(angles[0], angles[1], angles[2]);
+        angle1 += angles[0];
+		angle2 += angles[1];
+		angle3 += angles[2];
+	}
+	angle1 = angle1/numReadings;
+	angle2 = angle2/numReadings;
+	angle3 = angle3/numReadings;
+}
 void Linkbot::getJointSpeed(robotJointId_t id, double &speed)
 {
     double speeds[3];

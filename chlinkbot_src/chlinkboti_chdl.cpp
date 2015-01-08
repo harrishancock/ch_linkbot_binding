@@ -785,6 +785,45 @@ EXPORTCH void CLinkbotI_getDistance_chdl(void *varg) {
     return;
 }
 
+/*linkbot getJointAngleInstant*/
+EXPORTCH void CLinkbotI_getJointAngleInstant_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    double *angle;
+    robotJointId_t id;
+
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    id=Ch_VaArg(interp, ap, robotJointId_t);
+    angle=Ch_VaArg(interp, ap, double *);
+    l->getJointAngleInstant(id, *angle);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot getJointAnglesInstant*/
+EXPORTCH void CLinkbotI_getJointAnglesInstant_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    double *angle1;
+    double *angle2;
+    double *angle3;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    angle1=Ch_VaArg(interp, ap, double *);
+    angle2=Ch_VaArg(interp, ap, double *);
+    angle3=Ch_VaArg(interp, ap, double *);
+    l->getJointAnglesInstant(*angle1, *angle2, *angle3);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
 /*linkbot getJointAngle*/
 EXPORTCH void CLinkbotI_getJointAngle_chdl(void *varg) {
     ChInterp_t interp;
