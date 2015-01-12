@@ -26,11 +26,15 @@ LINKLIBS=../build-linux/liblinkbot.a \
 ./libwsock32.a \
 -lpthread 
 
-liblinkbot.dl: chlinkboti_chdl.o
-	g++ -shared -o liblinkbot.dl chlinkboti_chdl.o $(LINKLIBS) $(LFLAG) 
+liblinkbot.dl: chlinkboti_chdl.o chlinkbotl_chdl.o
+	g++ -shared -o liblinkbot.dl chlinkboti_chdl.o chlinkbotl_chdl.o $(LINKLIBS) $(LFLAG) 
 
 chlinkboti_chdl.o: chlinkboti_chdl.cpp
 	g++ -c chlinkboti_chdl.cpp -I../include/barobo -IC:/Ch/extern/include
+
+chlinkbotl_chdl.o: chlinkbotl_chdl.cpp
+	g++ -c chlinkbotl_chdl.cpp -I../include/barobo -IC:/Ch/extern/include
+
 
 clean:
 	del *.o

@@ -31,6 +31,7 @@ typedef enum robotJointState_e
 } robotJointState_t;
 
 struct LinkbotImpl;
+/*Linkbot I*/
 class CLinkbotI {
     public:
         CLinkbotI();
@@ -134,7 +135,101 @@ class CLinkbotI {
         
 };
 
+/*Linkbot L*/
+class CLinkbotL {
+    public:
+        CLinkbotL();
+        ~CLinkbotL();
+        int connect();
+		void disconnect();
+
+        /* GETTERS */
+
+        void getAccelerometerData(double &x, double &y, double &z); 
+        void getJointAngle(robotJointId_t id, double &angle);
+        void getJointAngles(double &angle1, double &angle2, double &angle3);
+		void getJointAngleInstant(robotJointId_t id, double &angle);
+        void getJointAnglesInstant(double &angle1, double &angle2, double &angle3);
+        void getJointSpeed(robotJointId_t id, double &speed);
+        void getJointSpeedRatio(robotJointId_t id, double &ratio);
+        void getJointSpeeds(double &speed1, double &speed2, double &speed3);
+        void getJointSpeedRatios(double &ratio1, double &ratio2, double &ratio3);
+		void getLEDColorRGB(int &r, int &g, int &b);
+
+        /* SETTERS */
+        void setBuzzerFrequency(int frequency, double time);
+		void setBuzzerFrequencyOn(int frequency);
+		void setBuzzerFrequencyOff();
+		void setJointMovementStateNB(robotJointId_t id, robotJointState_t dir);
+        void setJointMovementStateTime(robotJointId_t id, robotJointState_t dir, double seconds);
+        void setJointSpeed(robotJointId_t id, double speed);
+        void setJointSpeeds(double speed1, double speed2, double speed3);
+        void setJointSpeedRatio(robotJointId_t id, double ratio);
+        void setJointSpeedRatios(double ratios1, double ratios2, double ratios3);
+        void setJointPower(robotJointId_t id, int power);
+        void setMotorPowers(double p1, double p2, double p3);
+        void setMovementStateNB( robotJointState_t dir1,
+                robotJointState_t dir2,
+                robotJointState_t dir3);
+        void setMovementStateTime( robotJointState_t dir1,
+                robotJointState_t dir2,
+                robotJointState_t dir3,
+                double seconds);
+        void setMovementStateTimeNB( robotJointState_t dir1,
+                robotJointState_t dir2,
+                robotJointState_t dir3,
+                double seconds);
+
+        /* MOVEMENT */
+
+		void holdJoint(robotJointId_t id);
+		void holdJoints();
+		void moveForeverNB();
+		void moveJoint(robotJointId_t id, double angle);
+	    void moveJointNB(robotJointId_t id, double angle);
+	    void moveJointForeverNB(robotJointId_t id);
+		void moveJointTime(robotJointId_t id, double time);
+        void move(double j1, double j2, double j3);
+        void moveNB(double j1, double j2, double j3);
+        void moveWait();
+		void moveJointTo(robotJointId_t id, double angle);
+		void moveJointToNB(robotJointId_t id, double angle);
+		void moveJointToByTrackPos(robotJointId_t id, double angle);
+        void moveJointToByTrackPosNB(robotJointId_t id, double angle);
+		void moveTime(double time);
+		void moveTo(double angle1, double angle2, double angle3);
+		void moveToNB(double angle1, double angle2, double angle3);
+		void moveToByTrackPos(double angle1, double angle2, double angle3);
+        void moveToByTrackPosNB(double angle1, double angle2, double angle3);
+		void moveToZero();
+		void moveToZeroNB();
+		void relaxJoint(robotJointId_t id);
+	    void relaxJoints();
+        void stop();
+        void stopOneJoint(robotJointId_t id);
+
+        /* MISC */
+        void enableButtonCallback(void* userdata, void (*buttonCallback)(void* data, int button, int buttonDown));
+        void disableButtonCallback();
+		void delaySeconds(int seconds);
+		void systemTime(double &time);
+
+        LinkbotImpl *m;
+
+        static void *g_chlinkbot_dlhandle;
+        static int g_chlinkbot_dlcount;
+
+        private:
+        double mMaxSpeed;
+        
+};
+
+
 void *CLinkbotI::g_chlinkbot_dlhandle=NULL;
 int CLinkbotI::g_chlinkbot_dlcount=0;
-#pragma importf "chlinkbot.chf"
+void *CLinkbotL::g_chlinkbot_dlhandle=NULL;
+int CLinkbotL::g_chlinkbot_dlcount=0;
+
+#pragma importf "chlinkboti.chf"
+#pragma importf "chlinkbotl.chf"
 #endif

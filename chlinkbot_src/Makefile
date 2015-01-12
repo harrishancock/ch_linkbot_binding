@@ -21,11 +21,15 @@ LINKDIRS="-L$(BOOST_LIBS) \
 -L../build-linux/baromesh/library/ribbon-bridge \
 -L../build-linux/baromesh/library/baromesh/interfaces"
 
-liblinkbot.dl: chlinkboti_chdl.o
-	ch dllink liblinkbot.dl cplusplus chlinkboti_chdl.o $(LINKDIRS) $(LINKLIBS)
+liblinkbot.dl: chlinkboti_chdl.o chlinkbotl_chdl.o
+	ch dllink liblinkbot.dl cplusplus chlinkboti_chdl.o chlinkbotl_chdl.o $(LINKDIRS) $(LINKLIBS)
 
 chlinkboti_chdl.o: chlinkboti_chdl.cpp
 	ch dlcomp liblinkbot.dl cplusplus chlinkboti_chdl.cpp -I/../include/barobo/linkbot.hpp
+
+chlinkbotl_chdl.o: chlinkbotl_chdl.cpp
+	ch dlcomp liblinkbot.dl cplusplus chlinkbotl_chdl.cpp -I/../include/barobo/linkbot.hpp
+
 
 clean:
 	rm -f *.o *.dl

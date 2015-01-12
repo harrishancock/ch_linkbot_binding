@@ -12,7 +12,8 @@ mkdir $PKGDIR/demos
 mkdir $PKGDIR/dl
 mkdir $PKGDIR/include
 mkdir $PKGDIR/docs
-cp chlinkbot.chf $PKGDIR/lib
+cp chlinkboti.chf $PKGDIR/lib
+cp chlinkbotl.chf $PKGDIR/lib
 cp liblinkbot.dl $PKGDIR/dl
 cp linkbot.h $PKGDIR/include
 zip -rq $PACKAGE-$VERSION.zip $PACKAGE-$VERSION
