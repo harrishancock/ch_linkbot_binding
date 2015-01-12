@@ -359,12 +359,12 @@ void Linkbot::setMovementStateTimeNB( robotJointState_t dir1,
 
 void Linkbot::setBuzzerFrequencyOn(int frequency)
 {
-	CALL_C_IMPL(linkbotSetBuzzerFrequencyOn, frequency);
+	CALL_C_IMPL(linkbotSetBuzzerFrequency, frequency);
 }
 
 void Linkbot::setBuzzerFrequencyOff()
 {
-	CALL_C_IMPL(linkbotSetBuzzerFrequencyOn, 0);
+	CALL_C_IMPL(linkbotSetBuzzerFrequency, 0);
 }
 
 void Linkbot::setBuzzerFrequency(int frequency, double time)
