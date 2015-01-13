@@ -10,14 +10,14 @@ double trackwidth = 3.69;
 double t;
 double angle1, angle2, angle3;
 
-CLinkbotL robot;
+CLinkbotI robot;
 sleep(2);
 if(robot.connect("SRS8")) {
     printf("Connect failed.\n");
     exit(-1);
 }
 
-robot.moveTo(20, 0, 80);
+robot.move(20, 0, 80);
 
 
 

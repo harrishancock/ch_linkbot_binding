@@ -50,7 +50,7 @@ Linkbot::Linkbot()
 {
 }
 
-int Linkbot::connect(const char* serialId)
+int Linkbot::connect(const char* serialId, int *type)
 {
     std::cout << "In cons..." << std::endl;
     m = new LinkbotImpl();
@@ -76,12 +76,15 @@ int Linkbot::connect(const char* serialId)
     switch (formFactor) {
         case c_impl::barobo::FormFactor::I:
             m->motorMask = 0x05;
+			*type = 0;
             break;
         case c_impl::barobo::FormFactor::L:
             m->motorMask = 0x03;
+			*type = 1;
             break;
         case c_impl::barobo::FormFactor::T:
             m->motorMask = 0x07;
+			*type = 2;
             break;
     }
     return 0;
