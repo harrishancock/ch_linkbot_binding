@@ -902,6 +902,19 @@ void CLinkbotI::setBuzzerFrequency(int frequency, double time) {
     dlrunfun(fptr, NULL, NULL, this, frequency, time);
 }
 
+/*setSpeed*/
+void CLinkbotI::setSpeed(double speed, double radius) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setSpeed_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, speed, radius);
+}
+
 /*END SET FUNCTIONS*/
 /*MISCELLANEOUS FUNCTIONS*/
 

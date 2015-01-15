@@ -381,6 +381,18 @@ void Linkbot::setBuzzerFrequency(int frequency, double time)
 	setBuzzerFrequencyOff();
 }
 
+void Linkbot::setSpeed(double speed, double radius)
+{
+	double omega;
+	omega = speed/radius; // in rad/s
+	omega = (omega*180.0)/M_PI; // in deg/s
+	if (omega >= 240) {
+		std::cout<<"Warning: cannot set joint speeds to "<<omega<<" degrees/second."<<std::endl;
+		std::cout<<"It is beyond the limit of 240 degrees/second. Joints speeds will be set to 240 degrees/second."<<std::endl;
+		omega = 240.0;
+	}
+	CALL_C_IMPL(linkbotSetJointSpeeds, 0x07, omega, 0, omega);
+}
 /* MOVEMENT */
 
 void Linkbot::moveForeverNB()
@@ -522,8 +534,9 @@ void Linkbot::driveBackwardNB(double angle)
 void Linkbot::driveDistance(double distance, double radius)
 {
 	double theta;
-    theta = distance/radius;
-	
+    theta = distance/radius; // in radians
+	theta = (theta *180.0)/M_PI; // in degrees
+
 	CALL_C_IMPL(linkbotMove, 0x07, theta, 0, -theta);
 	moveWait();
 
@@ -532,7 +545,8 @@ void Linkbot::driveDistance(double distance, double radius)
 void Linkbot::driveDistanceNB(double distance, double radius)
 {
 	double theta;
-    theta = distance/radius;
+    theta = distance/radius; // in radians
+	theta = (theta *180.0)/M_PI; // in degrees
 	CALL_C_IMPL(linkbotMove, 0x07, theta, 0, -theta);
 }
 

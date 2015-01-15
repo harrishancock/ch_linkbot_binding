@@ -76,6 +76,7 @@ class CLinkbotI {
                 robotJointState_t dir2,
                 robotJointState_t dir3,
                 double seconds);
+		void setSpeed(double speed, double radius);
 
         /* MOVEMENT */
 

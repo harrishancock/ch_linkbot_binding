@@ -1216,6 +1216,24 @@ EXPORTCH void CLinkbotI_setBuzzerFrequency_chdl(void *varg) {
     return;
 }
 
+/*linkbot setSpeed*/
+EXPORTCH void CLinkbotI_setSpeed_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+	double speed;
+	double radius;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    speed=Ch_VaArg(interp, ap, double);
+	radius=Ch_VaArg(interp, ap, double);
+    l->setSpeed(speed, radius);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
 /*END SET FUNCTIONS*/
 /*MISCELLANEOUS FUNCTIONS*/
 
