@@ -722,6 +722,32 @@ void CLinkbotL::setBuzzerFrequency(int frequency, double time) {
     dlrunfun(fptr, NULL, NULL, this, frequency, time);
 }
 
+/*setLEDColorRGB*/
+void CLinkbotL::setLEDColorRGB(int r, int g, int b) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_setLEDColorRGB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, r, g, b);
+}
+
+/*setLEDColor*/
+void CLinkbotL::setLEDColor(char *color) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_setLEDColor_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, color);
+}
+
 /*END SET FUNCTIONS*/
 /*MISCELLANEOUS FUNCTIONS*/
 

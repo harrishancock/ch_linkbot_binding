@@ -979,6 +979,43 @@ EXPORTCH void CLinkbotL_setBuzzerFrequency_chdl(void *varg) {
     return;
 }
 
+/*linkbot setLEDColorRGB*/
+EXPORTCH void CLinkbotL_setLEDColorRGB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+	int r;
+	int g;
+	int b;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    r=Ch_VaArg(interp, ap, int);
+	g=Ch_VaArg(interp, ap, int);
+	b=Ch_VaArg(interp, ap, int);
+    l->setLEDColorRGB(r, g, b);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot setLEDColor*/
+EXPORTCH void CLinkbotL_setLEDColor_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+	char *color;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    color=Ch_VaArg(interp, ap, char*);
+    l->setLEDColor(color);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+
 /*END SET FUNCTIONS*/
 /*MISCELLANEOUS FUNCTIONS*/
 

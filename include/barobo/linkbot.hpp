@@ -55,6 +55,8 @@ class Linkbot {
         void setJointSpeedRatio(robotJointId_t id, double ratio);
         void setJointSpeedRatios(double ratios1, double ratios2, double ratios3);
         void setJointPower(robotJointId_t id, double power);
+		void setLEDColorRGB(int r, int g, int b);
+		void setLEDColor(char *color);
         void setMotorPowers(double p1, double p2, double p3);
         void setMovementStateNB( robotJointState_t dir1,
                 robotJointState_t dir2,

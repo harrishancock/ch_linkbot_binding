@@ -931,6 +931,32 @@ void CLinkbotI::setSpeed(double speed, double radius) {
     dlrunfun(fptr, NULL, NULL, this, speed, radius);
 }
 
+/*setLEDColorRGB*/
+void CLinkbotI::setLEDColorRGB(int r, int g, int b) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setLEDColorRGB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, r, g, b);
+}
+
+/*setLEDColor*/
+void CLinkbotI::setLEDColor(char *color) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_setLEDColor_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, color);
+}
+
 /*END SET FUNCTIONS*/
 /*MISCELLANEOUS FUNCTIONS*/
 

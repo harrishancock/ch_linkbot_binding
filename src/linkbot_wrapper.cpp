@@ -409,6 +409,24 @@ void Linkbot::setSpeed(double speed, double radius)
 	}
 	CALL_C_IMPL(linkbotSetJointSpeeds, 0x07, omega, 0, omega);
 }
+
+void Linkbot::setLEDColorRGB(int r, int g, int b)
+{
+	CALL_C_IMPL(linkbotSetLedColor, r, g, b);
+}
+
+void Linkbot::setLEDColor(char *color)
+{
+	int htRetval;
+    int getRGB[3];
+    rgbHashTable * rgbTable = HT_Create();
+
+	htRetval = HT_Get(rgbTable, color, getRGB);
+	HT_Destroy(rgbTable);
+
+	CALL_C_IMPL(linkbotSetLedColor, getRGB[0], getRGB[1], getRGB[2]);
+}
+
 /* MOVEMENT */
 
 void Linkbot::moveForeverNB()
