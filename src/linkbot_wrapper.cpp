@@ -10,6 +10,9 @@ namespace c_impl {
 #else
 #include <unistd.h>
 #endif
+
+#include "../include/rgbhashtable.h"
+
 #define M_PI            3.14159265358979323846
 
 #define RUNTIME_ERROR \
@@ -201,6 +204,19 @@ void Linkbot::getJointSpeedRatios(double &ratio1, double &ratio2, double &ratio3
 void Linkbot::getLEDColorRGB(int &r, int &g, int &b)
 {
 	CALL_C_IMPL(linkbotGetLedColor, &r, &g, &b);
+}
+
+void Linkbot::getLEDColor(char color[])
+{
+	int getRGB[3];
+	int retval;
+	rgbHashTable * rgbTable = NULL;
+
+	CALL_C_IMPL(linkbotGetLedColor, &getRGB[0], &getRGB[1], &getRGB[2]);
+
+	rgbTable = HT_Create();
+    retval = HT_GetKey(rgbTable, getRGB, color);
+    HT_Destroy(rgbTable);
 }
 
 /* SETTERS */

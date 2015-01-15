@@ -10,6 +10,7 @@ double trackwidth = 3.69;
 double t;
 double angle1, angle2, angle3;
 int r, g, b;
+string_t color;
 
 CLinkbotI robot;
 sleep(2);
@@ -18,9 +19,11 @@ if(robot.connect("SRS8")) {
     exit(-1);
 }
 
-robot.setSpeed(0.5, radius);
-robot.driveDistanceNB(distance, radius);
-robot.moveWait();
+robot.getLEDColorRGB(r, g, b);
+printf("r %d, g %d, b %d\n", r, g, b);
+robot.getLEDColor(color);
+printf("color %s\n", color);
+
 
 
 

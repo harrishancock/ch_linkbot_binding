@@ -52,6 +52,7 @@ class CLinkbotI {
         void getJointSpeeds(double &speed1, double &speed2, double &speed3);
         void getJointSpeedRatios(double &ratio1, double &ratio2, double &ratio3);
 		void getLEDColorRGB(int &r, int &g, int &b);
+		void getLEDColor(string_t &color);
 
         /* SETTERS */
         void setBuzzerFrequency(int frequency, double time);
@@ -156,6 +157,7 @@ class CLinkbotL {
         void getJointSpeeds(double &speed1, double &speed2, double &speed3);
         void getJointSpeedRatios(double &ratio1, double &ratio2, double &ratio3);
 		void getLEDColorRGB(int &r, int &g, int &b);
+		void getLEDColor(string_t &color);
 
         /* SETTERS */
         void setBuzzerFrequency(int frequency, double time);

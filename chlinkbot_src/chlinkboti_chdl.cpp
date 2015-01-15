@@ -773,6 +773,23 @@ EXPORTCH void CLinkbotI_getLEDColorRGB_chdl(void *varg) {
     return;
 }
 
+/*linkbot getLEDColor*/
+EXPORTCH void CLinkbotI_getLEDColor_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    char * color;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    color=Ch_VaArg(interp, ap, char *);
+    l->getLEDColor(color);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+
 /*linkbot getDistance*/
 EXPORTCH void CLinkbotI_getDistance_chdl(void *varg) {
     ChInterp_t interp;

@@ -31,13 +31,14 @@ find_package(Boost 1.54.0 REQUIRED COMPONENTS system log filesystem thread)
 find_package(Threads)
 
 set(SOURCES
-    src/linkbot_wrapper.cpp
+    src/linkbot_wrapper.cpp 
+    src/rgbhashtable.c.cpp
     )
 
 add_library(linkbot ${SOURCES})
 
 set_source_files_properties(${SOURCES}
-    PROPERTIES COMPILE_FLAGS "-std=c++11")
+    PROPERTIES COMPILE_FLAGS "-std=c++11 -Wno-write-strings")
 
 target_include_directories(linkbot
     PUBLIC $<TARGET_PROPERTY:sfp,INCLUDE_DIRECTORIES>

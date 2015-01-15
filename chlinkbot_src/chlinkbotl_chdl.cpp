@@ -539,6 +539,22 @@ EXPORTCH void CLinkbotL_getLEDColorRGB_chdl(void *varg) {
     return;
 }
 
+/*linkbot getLEDColor*/
+EXPORTCH void CLinkbotL_getLEDColor_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    char * color;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    color=Ch_VaArg(interp, ap, char *);
+    l->getLEDColor(color);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
 /*linkbot getJointAngleInstant*/
 EXPORTCH void CLinkbotL_getJointAngleInstant_chdl(void *varg) {
     ChInterp_t interp;

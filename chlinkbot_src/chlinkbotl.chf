@@ -522,6 +522,21 @@ void CLinkbotL::getLEDColorRGB(int &r, int &g, int &b) {
      
     dlrunfun(fptr, NULL, NULL, this, &r, &g, &b);
 }
+
+/*getLEDColor*/
+void CLinkbotL::getLEDColor(string_t &color) {
+    void *fptr;
+    char color1[25];
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_getLEDColor_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, color1);
+    color = color1;
+}
 /*END GET FUNCTIONS*/
 /*SET FUNCTIONS*/
 
