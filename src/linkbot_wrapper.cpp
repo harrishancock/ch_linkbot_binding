@@ -104,7 +104,8 @@ int Linkbot::disconnect()
 
 Linkbot::~Linkbot()
 {
-    disconnect();
+    stop(); //stop motors
+	disconnect();
 }
 
 /* GETTERS */

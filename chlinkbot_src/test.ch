@@ -19,13 +19,16 @@ if(robot.connect("SRS8")) {
     exit(-1);
 }
 
-robot.setLEDColorRGB(0, 255, 0);
+/*robot.setLEDColorRGB(0, 255, 0);
 robot.getLEDColorRGB(r, g, b);
 printf("r %d, g %d, b %d\n", r, g, b);
-sleep(5);
+sleep(5);*/
 robot.setLEDColor("red");
 robot.getLEDColor(color);
 printf("color %s\n", color);
+
+robot.driveDistance(distance, radius);
+
 
 
 
