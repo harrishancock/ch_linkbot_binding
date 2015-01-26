@@ -128,4 +128,24 @@ class Linkbot {
         double mMaxSpeed;
 };
 
+class LinkbotGroup {
+
+public:
+	LinkbotGroup();
+	~LinkbotGroup();
+	void addRobot(char* serialID);
+	void connect();
+
+private:
+	Linkbot **_robots;
+	int _numRobots;
+    int argInt;
+    double argDouble;
+    int _numAllocated;
+	int _motionInProgress;
+	void *_thread;
+	char **_ID; //Array that stores the Id of the robots to add to the group
+};
+
+
 #endif

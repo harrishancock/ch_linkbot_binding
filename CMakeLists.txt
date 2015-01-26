@@ -33,6 +33,7 @@ find_package(Threads)
 set(SOURCES
     src/linkbot_wrapper.cpp 
     src/rgbhashtable.c.cpp
+    src/linkbot_group.cpp
     )
 
 add_library(linkbot ${SOURCES})
