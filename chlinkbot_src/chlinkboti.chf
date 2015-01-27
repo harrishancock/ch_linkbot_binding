@@ -1011,3 +1011,81 @@ void CLinkbotI::systemTime(double &time) {
      
     dlrunfun(fptr, NULL, NULL, this, &time);
 }
+
+/*CLinkbotIGroup class */
+
+/* Constructor */
+CLinkbotIGroup::CLinkbotIGroup() {
+    void *fptr;
+    /* Here to load the dynamically loaded library if necessary.
+     CLinkbotI::g_chmobot_dlhandle is a global pointer pointing to the loaded DLL
+     CLinkbotI::g_chmobot_dlcount is a global int counting instances for all classes
+     They are declared in the header file class1_ch.h for Ch space.
+     */
+    
+    if(CLinkbotI::g_chlinkbot_dlhandle == NULL || CLinkbotI::g_chlinkbot_dlcount == 0) {
+        CLinkbotI::g_chlinkbot_dlhandle = dlopen("liblinkbot.dl", RTLD_LAZY);
+        if(CLinkbotI::g_chlinkbot_dlhandle == NULL) {
+          printf("Error: %s(): dlopen(): %s\n", __class_func__, dlerror());
+          return;
+        }
+    }
+    /* to get the address by function name */
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_CLinkbotIGroup_chdl");
+    if(fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+    /* to call the chdl function in dynamically loaded
+     library by address */
+     dlrunfun(fptr, NULL, NULL);
+    CLinkbotI::g_chlinkbot_dlcount++; // to increase count of instance
+}
+
+/* Destructor */
+CLinkbotIGroup::~CLinkbotIGroup() {
+  void *fptr;
+  fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_dCLinkbotIGroup_chdl");
+  if(fptr == NULL) {
+    printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+    return;
+  }
+  /* call the chdl function in DLL by address */
+  dlrunfun(fptr, NULL, NULL, this);
+  CLinkbotI::g_chlinkbot_dlcount--; // to decrease count of instance
+  if(CLinkbotI::g_chlinkbot_dlcount <= 0 && CLinkbotI::g_chlinkbot_dlhandle != NULL) {
+    if(dlclose(CLinkbotI::g_chlinkbot_dlhandle)!=0)
+      printf("Error: %s(): dlclose(): %s\n", __class_func__, dlerror());
+  }
+}
+
+/* addRobot*/
+void CLinkbotIGroup::addRobot(char* id) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_addRobot_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id);
+    return;
+}
+
+/* connect*/
+void CLinkbotIGroup::connect() {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_connect_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+    return;
+}
+

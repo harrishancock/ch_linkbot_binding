@@ -22,10 +22,12 @@ EXPORTCH void CLinkbotI_dCLinkbotI_chdl(void *varg) {
      
     Ch_VaStart(interp, ap, varg);
     l=Ch_VaArg(interp, ap, class Linkbot *);
-    if(Ch_CppIsArrayElement(interp))
+	if(Ch_CppIsArrayElement(interp)){
         l->~Linkbot();
-    else
+	}
+	else{
         delete l;
+	}
     Ch_VaEnd(interp, ap);
     return;
 }
@@ -1359,4 +1361,66 @@ EXPORTCH void CLinkbotI_systemTime_chdl(void *varg) {
     l->systemTime(*time);
     Ch_VaEnd(interp, ap);
     return;
+}
+
+
+/* CLinkbotIGroup functions */
+
+/*Constructor*/
+EXPORTCH void CLinkbotIGroup_CLinkbotIGroup_chdl(void *varg) {
+  ChInterp_t interp;
+  ChVaList_t ap;
+
+  Ch_VaStart(interp, ap, varg);
+  class LinkbotGroup *c=new LinkbotGroup();
+  Ch_CppChangeThisPointer(interp, c, sizeof(LinkbotGroup));
+  Ch_VaEnd(interp, ap);
+}
+
+/*Destructor*/
+EXPORTCH void CLinkbotIGroup_dCLinkbotIGroup_chdl(void *varg) {
+  ChInterp_t interp;
+  ChVaList_t ap;
+  class LinkbotGroup *c;
+  
+  Ch_VaStart(interp, ap, varg);
+  c = Ch_VaArg(interp, ap, class LinkbotGroup *);
+  if(Ch_CppIsArrayElement(interp)){
+    c->~LinkbotGroup();
+	printf("Calling group destructor\n");
+  }
+  else {
+    delete c;
+  }
+  Ch_VaEnd(interp, ap);
+  return;
+}
+
+/*linkbotGroup addRobot*/
+EXPORTCH void CLinkbotIGroup_addRobot_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+    char *id;
+
+    Ch_VaStart(interp, ap, varg);
+   
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    id = Ch_VaArg(interp, ap, char*);
+    printf("Adding %s\n", id);
+    g->addRobot(id);
+    Ch_VaEnd(interp, ap);
+}
+
+/*linkbotGroup connect*/
+EXPORTCH void CLinkbotIGroup_connect_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+
+    Ch_VaStart(interp, ap, varg);
+
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    g->connect();
+    Ch_VaEnd(interp, ap);
 }

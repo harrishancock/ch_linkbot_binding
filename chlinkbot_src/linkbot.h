@@ -231,6 +231,26 @@ class CLinkbotL {
         
 };
 
+/*GroupI*/
+class CLinkbotIGroup {
+
+public:
+	CLinkbotIGroup();
+	~CLinkbotIGroup();
+	void addRobot(char* serialID);
+	void connect();
+
+private:
+	CLinkbotI **_robots;
+	int _numRobots;
+    int argInt;
+    double argDouble;
+    int _numAllocated;
+	int _motionInProgress;
+	void *_thread;
+	char **_ID; //Array that stores the Id of the robots to add to the group
+};
+
 
 void *CLinkbotI::g_chlinkbot_dlhandle=NULL;
 int CLinkbotI::g_chlinkbot_dlcount=0;

@@ -58,8 +58,12 @@ int Linkbot::connect(const char* serialId, int *type)
     std::cout << "In cons..." << std::endl;
     m = new LinkbotImpl();
     std::cout << "Creating impl..." << std::endl;
+	std::cout << "serialID " << serialId << std::endl;
+	
     try {
         m->linkbot = c_impl::linkbotNew(serialId);
+		std::cout<<"m->linkbot "<<m->linkbot<<std::endl;
+		std::cout<<"Crashes here?"<<std::endl;
     }
     catch (std::exception& e){
         fprintf(stderr, "Could not connect to robot: %s\n", e.what());
@@ -104,8 +108,10 @@ int Linkbot::disconnect()
 
 Linkbot::~Linkbot()
 {
-    stop(); //stop motors
+	if(m && m->linkbot) { 
+	stop(); //stop motors
 	disconnect();
+	}
 }
 
 /* GETTERS */

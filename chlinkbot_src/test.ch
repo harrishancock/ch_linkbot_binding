@@ -13,7 +13,11 @@ int r, g, b;
 string_t color;
 
 CLinkbotI robot;
+CLinkbotIGroup group;
 sleep(2);
+
+/*group.addRobot("SRS8");
+group.connect();*/
 if(robot.connect("SRS8")) {
     printf("Connect failed.\n");
     exit(-1);
@@ -23,11 +27,11 @@ if(robot.connect("SRS8")) {
 robot.getLEDColorRGB(r, g, b);
 printf("r %d, g %d, b %d\n", r, g, b);
 sleep(5);*/
-robot.setLEDColor("red");
+/*robot.setLEDColor("red");
 robot.getLEDColor(color);
 printf("color %s\n", color);
 
-robot.driveDistance(distance, radius);
+robot.driveDistance(distance, radius);*/
 
 
 

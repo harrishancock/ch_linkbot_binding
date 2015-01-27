@@ -34,7 +34,8 @@ do { \
 
 LinkbotGroup::LinkbotGroup()
 {
-	_numRobots = 0;
+	
+  _numRobots = 0;
   _motionInProgress = 0;
   //_thread = (THREAD_T*)malloc(sizeof(THREAD_T));
   _numAllocated = 0;
@@ -44,6 +45,7 @@ LinkbotGroup::LinkbotGroup()
 
 LinkbotGroup::~LinkbotGroup()
 {
+	
 }
 
 void LinkbotGroup::addRobot(char* serialID)
@@ -70,13 +72,16 @@ void LinkbotGroup::addRobot(char* serialID)
 		_numAllocated += allocStep;
 	}
 	_ID[_numRobots] = serialID;
+	std::cout<<"_ID[_numRobots]"<<_ID[_numRobots]<<std::endl;
 	_numRobots++;
 }
 
 void LinkbotGroup::connect()
 {
 	int type;
+	std::cout<<"_numRobots "<<_numRobots<<std::endl;
 	for(int i = 0; i < _numRobots; i++) {
-    _robots[i]->connect(_ID[_numRobots], &type);
-  }
+		std::cout<<"connecting to "<<_ID[i]<<std::endl;
+		_robots[i]->connect(_ID[i], &type);
+	}
 }
