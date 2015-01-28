@@ -22,6 +22,7 @@ LINKLIBS=../build-linux/liblinkbot.a \
 ../build-linux/baromesh/library/baromesh/interfaces/libdongle-interface.a \
 ../build-linux/baromesh/library/baromesh/interfaces/libcommontypes-proto.a \
 ../build-linux/baromesh/library/baromesh/common/libbaromesh-common.a \
+../build-linux/baromesh/library/cxx-util/libcxx-util.a \
 ./libws2_32.a \
 ./libwsock32.a \
 -lpthread 

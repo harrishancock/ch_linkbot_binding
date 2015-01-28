@@ -15,22 +15,24 @@ string_t color;
 
 CLinkbotIGroup group;
 printf("addRobot\n");
-group.addRobot("ZC22");
+group.addRobot("SRS8");
+group.addRobot("TP51");
 printf("connect\n");
 group.connect();
 
-/*
-CLinkbotI robot;
-if(robot.connect("ZC22")) {
+
+/*CLinkbotI robot;
+if(robot.connect("SRS8")) {
     printf("Connect failed.\n");
     exit(-1);
 }
-*/
 
-/*robot.setLEDColorRGB(0, 255, 0);
+
+robot.setLEDColorRGB(0, 255, 0);
 robot.getLEDColorRGB(r, g, b);
 printf("r %d, g %d, b %d\n", r, g, b);
-sleep(5);*/
+sleep(1);
+robot.driveDistance(distance, radius);*/
 /*robot.setLEDColor("red");
 robot.getLEDColor(color);
 printf("color %s\n", color);
