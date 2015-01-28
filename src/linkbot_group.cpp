@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 namespace c_impl {
 #include "baromesh/linkbot.h"
 }
@@ -32,15 +33,21 @@ do { \
 
 #define ABS(x) ( (x<0) ? (-(x)) : (x) )
 
+struct LinkbotGroupImpl
+{
+    std::vector<Linkbot*> robots;
+    std::vector<std::string> ids;
+    int argInt;
+    double argDouble;
+	int motionInProgress;
+	void *thread;
+};
+
 LinkbotGroup::LinkbotGroup()
 {
-	
-  _numRobots = 0;
-  _motionInProgress = 0;
+  m = new LinkbotGroupImpl();	
+  m->motionInProgress = 0;
   //_thread = (THREAD_T*)malloc(sizeof(THREAD_T));
-  _numAllocated = 0;
-  _robots = NULL;
-  _ID = NULL;
 }
 
 LinkbotGroup::~LinkbotGroup()
@@ -50,38 +57,13 @@ LinkbotGroup::~LinkbotGroup()
 
 void LinkbotGroup::addRobot(char* serialID)
 {
-	int idLength = 5; /*number of letters in the robot ID + \0 */
-	int allocStep=64;
-	/* See if we need to allocate more robots. The space allocated in reality is more than the actual number of robots */
-	if(_numRobots >= _numAllocated){
-		char** tmpid; /*store all the robot IDs*/
-		Linkbot** tmp; /*store the objects of class robot*/
-
-		tmpid = (char**)malloc(sizeof(char*)*(_numAllocated + allocStep)); /*allocate more memory for IDs*/
-		tmp = (Linkbot**)malloc(sizeof(Linkbot*)*(_numAllocated + allocStep)); /*allocate more memory for robots*/
-		if (_ID != NULL) { /*already some robots*/
-			memcpy(tmp, _ID, sizeof(char*)*_numRobots);
-			free(_ID);
-		}
-		if (_robots != NULL) {
-			memcpy(tmp, _robots, sizeof(Linkbot*)*_numRobots);
-			free(_robots);
-		}
-		_ID = tmpid; /*copy over the IDs*/
-		_robots = tmp; /*copy over the objects*/
-		_numAllocated += allocStep;
-	}
-	_ID[_numRobots] = serialID;
-	std::cout<<"_ID[_numRobots]"<<_ID[_numRobots]<<std::endl;
-	_numRobots++;
+    m->ids.push_back(std::string(serialID));
 }
 
 void LinkbotGroup::connect()
 {
-	int type;
-	std::cout<<"_numRobots "<<_numRobots<<std::endl;
-	for(int i = 0; i < _numRobots; i++) {
-		std::cout<<"connecting to "<<_ID[i]<<std::endl;
-		_robots[i]->connect(_ID[i], &type);
-	}
+    for (std::string id : m->ids) {
+        m->robots.push_back(new Linkbot());
+        m->robots.back()->connect(id.c_str());
+    }
 }

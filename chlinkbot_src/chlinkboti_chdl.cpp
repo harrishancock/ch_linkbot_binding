@@ -45,8 +45,9 @@ EXPORTCH int CLinkbotI_connect_chdl(void *varg) {
     l=Ch_VaArg(interp, ap, class Linkbot *);
     id = Ch_VaArg(interp, ap, const char*);
     printf("Connecting to %s\n", id);
-    rc = l->connect(id, &type);
+    rc = l->connect(id);
     Ch_VaEnd(interp, ap);
+    l->getFormFactor(type);
 	if (type == 1)
 	{
 		printf("A LinkbotL is connected, not a LinkbotI.\nPlease connect a LinbotI. Exit..\n");

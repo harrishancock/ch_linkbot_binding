@@ -26,13 +26,14 @@ class Linkbot {
     public:
         Linkbot();
         ~Linkbot();
-        int connect(const char* serialID, int *type);
+        int connect(const char* serialID);
 		int disconnect();
 
         /* GETTERS */
 
         void getAccelerometerData(double &x, double &y, double &z);
 		void getDistance(double &distance, double radius);
+        void getFormFactor(int &type);
         void getJointAngle(robotJointId_t id, double &angle);
         void getJointAngles(double &angle1, double &angle2, double &angle3);
 		void getJointAngleInstant(robotJointId_t id, double &angle);
@@ -128,6 +129,8 @@ class Linkbot {
         double mMaxSpeed;
 };
 
+struct LinkbotGroupImpl;
+
 class LinkbotGroup {
 
 public:
@@ -137,14 +140,7 @@ public:
 	void connect();
 
 private:
-	Linkbot **_robots;
-	int _numRobots;
-    int argInt;
-    double argDouble;
-    int _numAllocated;
-	int _motionInProgress;
-	void *_thread;
-	char **_ID; //Array that stores the Id of the robots to add to the group
+    LinkbotGroupImpl *m;
 };
 
 

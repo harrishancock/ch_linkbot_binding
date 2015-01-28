@@ -13,13 +13,17 @@ LINKLIBS="../build-linux/liblinkbot.a -lbaromesh -pthread -lboost_thread \
 -lrobot-interface \
 -ldaemon-interface \
 -ldongle-interface \
--lcommontypes-proto"
+-lcommontypes-proto \
+-lbaromesh-common \
+-lcxx-util"
 
 LINKDIRS="-L$(BOOST_LIBS) \
 -L../build-linux/baromesh/library \
 -L../build-linux/baromesh/library/libsfp \
 -L../build-linux/baromesh/library/ribbon-bridge \
--L../build-linux/baromesh/library/baromesh/interfaces"
+-L../build-linux/baromesh/library/baromesh/interfaces \
+-L../build-linux/baromesh/library/baromesh/common \
+-L../build-linux/baromesh/library/cxx-util"
 
 liblinkbot.dl: chlinkboti_chdl.o chlinkbotl_chdl.o
 	ch dllink liblinkbot.dl cplusplus chlinkboti_chdl.o chlinkbotl_chdl.o $(LINKDIRS) $(LINKLIBS)

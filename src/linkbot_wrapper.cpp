@@ -53,7 +53,7 @@ Linkbot::Linkbot()
 {
 }
 
-int Linkbot::connect(const char* serialId, int *type)
+int Linkbot::connect(const char* serialId)
 {
     std::cout << "In cons..." << std::endl;
     m = new LinkbotImpl();
@@ -61,8 +61,9 @@ int Linkbot::connect(const char* serialId, int *type)
 	std::cout << "serialID " << serialId << std::endl;
 	
     try {
+        std::cout<<"Creating Linkbot object..."<<std::endl;
         m->linkbot = c_impl::linkbotNew(serialId);
-		std::cout<<"m->linkbot "<<m->linkbot<<std::endl;
+		//std::cout<<"m->linkbot "<<m->linkbot<<std::endl;
 		std::cout<<"Crashes here?"<<std::endl;
     }
     catch (std::exception& e){
@@ -83,15 +84,12 @@ int Linkbot::connect(const char* serialId, int *type)
     switch (formFactor) {
         case c_impl::barobo::FormFactor::I:
             m->motorMask = 0x05;
-			*type = 0;
             break;
         case c_impl::barobo::FormFactor::L:
             m->motorMask = 0x03;
-			*type = 1;
             break;
         case c_impl::barobo::FormFactor::T:
             m->motorMask = 0x07;
-			*type = 2;
             break;
     }
     return 0;
@@ -127,6 +125,24 @@ void Linkbot::getDistance(double &distance, double radius)
     double angle;
     getJointAngle(robotJointId_t(1), angle);
     distance = (angle*M_PI/180.0)*radius;
+}
+
+void Linkbot::getFormFactor(int &type)
+{
+    /* Get the form factor */
+    c_impl::barobo::FormFactor::Type formFactor;
+    c_impl::linkbotGetFormFactor(m->linkbot, &formFactor);
+    switch (formFactor) {
+        case c_impl::barobo::FormFactor::I:
+			type = 0;
+            break;
+        case c_impl::barobo::FormFactor::L:
+			type = 1;
+            break;
+        case c_impl::barobo::FormFactor::T:
+			type = 2;
+            break;
+    }
 }
 
 void Linkbot::getJointAngleInstant(robotJointId_t id, double &angle)
@@ -399,7 +415,7 @@ void Linkbot::setBuzzerFrequency(int frequency, double time)
     #ifdef _WIN32
     Sleep(time*1000);
     #else
-    usleep(seconds*1000000);
+    usleep(time*1000000);
     #endif
 	setBuzzerFrequencyOff();
 }

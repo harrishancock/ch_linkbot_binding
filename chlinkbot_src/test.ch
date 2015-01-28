@@ -12,16 +12,20 @@ double angle1, angle2, angle3;
 int r, g, b;
 string_t color;
 
-CLinkbotI robot;
-CLinkbotIGroup group;
-sleep(2);
 
-/*group.addRobot("SRS8");
-group.connect();*/
-if(robot.connect("SRS8")) {
+CLinkbotIGroup group;
+printf("addRobot\n");
+group.addRobot("ZC22");
+printf("connect\n");
+group.connect();
+
+/*
+CLinkbotI robot;
+if(robot.connect("ZC22")) {
     printf("Connect failed.\n");
     exit(-1);
 }
+*/
 
 /*robot.setLEDColorRGB(0, 255, 0);
 robot.getLEDColorRGB(r, g, b);
