@@ -1103,6 +1103,125 @@ void CLinkbotIGroup::driveDistanceNB(double distance, double radius) {
     dlrunfun(fptr, NULL, NULL, this, distance, radius);
     return;
 }
+/* driveDistance*/
+void CLinkbotIGroup::driveDistance(double distance, double radius) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_driveDistance_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, distance, radius);
+    return;
+}
+
+/* driveBackwardNB*/
+void CLinkbotIGroup::driveBackwardNB(double angle) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_driveBackwardNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle);
+    return;
+}
+
+/* driveBackward*/
+void CLinkbotIGroup::driveBackward(double angle) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_driveBackward_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle);
+    return;
+}
+
+/* driveForwardNB*/
+void CLinkbotIGroup::driveForwardNB(double angle) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_driveForwardNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle);
+    return;
+}
+
+/* driveForward*/
+void CLinkbotIGroup::driveForward(double angle) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_driveForward_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle);
+    return;
+}
+
+/* driveTimeNB*/
+void CLinkbotIGroup::driveTimeNB(double time) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_driveTimeNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, time);
+    return;
+}
+
+/* driveTime*/
+void CLinkbotIGroup::driveTime(double time) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_driveTime_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, time);
+    return;
+}
+
+/* driveForeverNB*/
+void CLinkbotIGroup::driveForeverNB() {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_driveForeverNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+    return;
+}
 
 /* moveWait*/
 void CLinkbotIGroup::moveWait() {

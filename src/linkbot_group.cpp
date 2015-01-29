@@ -73,6 +73,22 @@ void LinkbotGroup::connect()
     }
 }
 
+/* movement functions */
+void LinkbotGroup::driveBackwardNB(double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->driveBackwardNB(angle);
+	}
+} 
+
+void LinkbotGroup::driveBackward(double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->driveBackwardNB(angle);
+	}
+	moveWait();
+}
+
 void LinkbotGroup::driveDistanceNB(double distance, double radius)
 {
 	for (Linkbot* robot : m->robots) {
@@ -80,11 +96,54 @@ void LinkbotGroup::driveDistanceNB(double distance, double radius)
 	}
 }
 
+void LinkbotGroup::driveDistance(double distance, double radius)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->driveDistanceNB(distance, radius);
+	}
+	moveWait();
+}
+
+void LinkbotGroup::driveForeverNB()
+{
+	for (Linkbot* robot : m->robots) {
+		robot->driveForeverNB();
+	}
+}
+
+void LinkbotGroup::driveForwardNB(double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->driveForwardNB(angle);
+	}
+}
+
+void LinkbotGroup::driveForward(double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->driveForwardNB(angle);
+	}
+	moveWait();
+}
+
+void LinkbotGroup::driveTimeNB(double time)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->driveTimeNB(time);
+	}
+}
+
+void LinkbotGroup::driveTime(double time)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->driveTimeNB(time);
+	}
+	moveWait();
+}
+
 void LinkbotGroup::moveWait()
 {
 	int mask = 0x07;
-	for (Linkbot* robot : m->robots) {
-		//m->robots.back()->moveWait(mask);
-		robot->moveWait(mask);
-	}
+	/*Wait for the last robot to stop*/
+	m->robots.back()->moveWait();
 }

@@ -239,7 +239,17 @@ public:
 	~CLinkbotIGroup();
 	void addRobot(char* serialID);
 	void connect();
-	void driveDistanceNB(double distance, double radius);
+	
+	/* MOVEMENT FUNCTIONS */
+	void driveBackward(double angle);
+    void driveBackwardNB(double angle);
+	void driveDistance(double distance, double radius);
+    void driveDistanceNB(double distance, double radius);
+	void driveForeverNB();
+	void driveForward(double angle);
+    void driveForwardNB(double angle);
+	void driveTime(double time);
+	void driveTimeNB(double time);
 	void moveWait();
 
 private:
