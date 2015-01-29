@@ -58,13 +58,10 @@ int Linkbot::connect(const char* serialId)
     std::cout << "In cons..." << std::endl;
     m = new LinkbotImpl();
     std::cout << "Creating impl..." << std::endl;
-	std::cout << "serialID " << serialId << std::endl;
 	
     try {
-        std::cout<<"Creating Linkbot object..."<<std::endl;
         m->linkbot = c_impl::linkbotNew(serialId);
 		//std::cout<<"m->linkbot "<<m->linkbot<<std::endl;
-		std::cout<<"Crashes here?"<<std::endl;
     }
     catch (std::exception& e){
         fprintf(stderr, "Could not connect to robot: %s\n", e.what());

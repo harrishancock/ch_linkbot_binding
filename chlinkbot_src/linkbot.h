@@ -239,6 +239,8 @@ public:
 	~CLinkbotIGroup();
 	void addRobot(char* serialID);
 	void connect();
+	void driveDistanceNB(double distance, double radius);
+	void moveWait();
 
 private:
 	CLinkbotI **_robots;

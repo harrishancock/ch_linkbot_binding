@@ -1425,3 +1425,35 @@ EXPORTCH void CLinkbotIGroup_connect_chdl(void *varg) {
     g->connect();
     Ch_VaEnd(interp, ap);
 }
+
+/*linkbotGroup driveDistanceNB*/
+EXPORTCH void CLinkbotIGroup_driveDistanceNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+    double distance;
+	double radius;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    distance=Ch_VaArg(interp, ap, double);
+	radius=Ch_VaArg(interp, ap, double);
+    g->driveDistanceNB(distance, radius);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveWait*/
+EXPORTCH void CLinkbotIGroup_moveWait_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    g->moveWait();
+    Ch_VaEnd(interp, ap);
+    return;
+}

@@ -138,6 +138,8 @@ public:
 	~LinkbotGroup();
 	void addRobot(char* serialID);
 	void connect();
+	void driveDistanceNB(double distance, double radius);
+	void moveWait();
 
 private:
     LinkbotGroupImpl *m;

@@ -1089,3 +1089,32 @@ void CLinkbotIGroup::connect() {
     return;
 }
 
+/* driveDistanceNB*/
+void CLinkbotIGroup::driveDistanceNB(double distance, double radius) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_driveDistanceNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, distance, radius);
+    return;
+}
+
+/* moveWait*/
+void CLinkbotIGroup::moveWait() {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_moveWait_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+    return;
+}
