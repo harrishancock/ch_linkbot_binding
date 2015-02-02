@@ -53,7 +53,7 @@ LinkbotGroup::LinkbotGroup()
 
 LinkbotGroup::~LinkbotGroup()
 {
-	
+	stop();
 }
 
 void LinkbotGroup::addRobot(char* serialID)
@@ -190,3 +190,26 @@ void LinkbotGroup::turnRight(double angle, double radius, double tracklength)
 	}
 	moveWait();
 }
+
+void LinkbotGroup::relaxJoint(robotJointId_t id)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->relaxJoint(id);
+	}
+}
+
+void LinkbotGroup::relaxJoints()
+{
+	for (Linkbot* robot : m->robots) {
+		robot->relaxJoints();
+	}
+}
+void LinkbotGroup::stop()
+{
+	for (Linkbot* robot : m->robots) {
+		robot->stop();
+	}
+}
+
+
+

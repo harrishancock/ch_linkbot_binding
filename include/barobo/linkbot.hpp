@@ -152,6 +152,9 @@ public:
 	void holdJoint(robotJointId_t id);
     void holdJoints();
 	void moveWait();
+	void relaxJoint(robotJointId_t id);
+	void relaxJoints();
+    void stop();
 	void turnLeft(double angle, double radius, double tracklength);
     void turnLeftNB(double angle, double radius, double tracklength);
     void turnRight(double angle, double radius, double tracklength);

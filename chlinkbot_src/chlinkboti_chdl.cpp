@@ -1690,3 +1690,47 @@ EXPORTCH void CLinkbotIGroup_turnRight_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return;
 }
+
+/*linkbotGroup relaxJoint*/
+EXPORTCH void CLinkbotIGroup_relaxJoint_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+    g->relaxJoint(id);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup relaxJoints*/
+EXPORTCH void CLinkbotIGroup_relaxJoints_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    g->relaxJoints();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup stop*/
+EXPORTCH void CLinkbotIGroup_stop_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    g->stop();
+    Ch_VaEnd(interp, ap);
+    return;
+}

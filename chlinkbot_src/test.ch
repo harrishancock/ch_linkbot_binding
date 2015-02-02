@@ -21,10 +21,9 @@ printf("connect\n");
 group.connect();
 //group.driveForeverNB();
 group.driveDistance(5, radius);
-group.turnLeftNB(90, radius, trackwidth);
-group.driveDistance(5, radius);
-group.turnRightNB(90, radius, trackwidth);
-group.moveWait();
+
+
+
 
 
 
