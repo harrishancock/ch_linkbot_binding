@@ -250,9 +250,13 @@ public:
     void driveForwardNB(double angle);
 	void driveTime(double time);
 	void driveTimeNB(double time);
-	void moveWait();
 	void holdJoint(robotJointId_t id);
     void holdJoints();
+	void moveWait();
+	void turnLeft(double angle, double radius, double tracklength);
+    void turnLeftNB(double angle, double radius, double tracklength);
+    void turnRight(double angle, double radius, double tracklength);
+    void turnRightNB(double angle, double radius, double tracklength);
 
 private:
 	CLinkbotI **_robots;

@@ -152,6 +152,10 @@ public:
 	void holdJoint(robotJointId_t id);
     void holdJoints();
 	void moveWait();
+	void turnLeft(double angle, double radius, double tracklength);
+    void turnLeftNB(double angle, double radius, double tracklength);
+    void turnRight(double angle, double radius, double tracklength);
+    void turnRightNB(double angle, double radius, double tracklength);
 
 private:
     LinkbotGroupImpl *m;

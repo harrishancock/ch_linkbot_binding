@@ -161,3 +161,32 @@ void LinkbotGroup::holdJoints()
 		robot->holdJoints();
 	}
 }
+
+void LinkbotGroup::turnLeftNB(double angle, double radius, double tracklength)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->turnLeftNB(angle, radius, tracklength);
+	}
+}
+
+void LinkbotGroup::turnLeft(double angle, double radius, double tracklength)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->turnLeftNB(angle, radius, tracklength);
+	}
+	moveWait();
+}
+
+void LinkbotGroup::turnRightNB(double angle, double radius, double tracklength)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->turnRightNB(angle, radius, tracklength);
+	}
+}
+void LinkbotGroup::turnRight(double angle, double radius, double tracklength)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->turnRightNB(angle, radius, tracklength);
+	}
+	moveWait();
+}

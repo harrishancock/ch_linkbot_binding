@@ -20,8 +20,12 @@ group.addRobot("TP51");
 printf("connect\n");
 group.connect();
 //group.driveForeverNB();
-group.driveDistance(distance, radius);
-group.holdJoint(JOINT1);
+group.driveDistance(5, radius);
+group.turnLeftNB(90, radius, trackwidth);
+group.driveDistance(5, radius);
+group.turnRightNB(90, radius, trackwidth);
+group.moveWait();
+
 
 
 
