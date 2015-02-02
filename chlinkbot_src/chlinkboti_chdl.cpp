@@ -1582,3 +1582,33 @@ EXPORTCH void CLinkbotIGroup_driveTime_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return;
 }
+
+/*linkbotGroup holdJoint*/
+EXPORTCH void CLinkbotIGroup_holdJoint_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+    robotJointId_t id;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    id=Ch_VaArg(interp, ap, robotJointId_t);
+    g->holdJoint(id);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup holdJoints*/
+EXPORTCH void CLinkbotIGroup_holdJoints_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    g->holdJoints();
+    Ch_VaEnd(interp, ap);
+    return;
+}

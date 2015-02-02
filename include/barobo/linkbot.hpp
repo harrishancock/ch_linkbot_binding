@@ -149,6 +149,8 @@ public:
     void driveForwardNB(double angle);
 	void driveTime(double time);
 	void driveTimeNB(double time);
+	void holdJoint(robotJointId_t id);
+    void holdJoints();
 	void moveWait();
 
 private:

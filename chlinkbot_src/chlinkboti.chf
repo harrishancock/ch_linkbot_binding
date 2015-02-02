@@ -1237,3 +1237,33 @@ void CLinkbotIGroup::moveWait() {
     dlrunfun(fptr, NULL, NULL, this);
     return;
 }
+
+/* holdJoint*/
+void CLinkbotIGroup::holdJoint(robotJointId_t id) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_holdJoint_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id);
+    return;
+}
+
+/* holdJoints*/
+void CLinkbotIGroup::holdJoints() {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_holdJoints_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+    return;
+}

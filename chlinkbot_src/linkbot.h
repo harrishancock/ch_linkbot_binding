@@ -251,6 +251,8 @@ public:
 	void driveTime(double time);
 	void driveTimeNB(double time);
 	void moveWait();
+	void holdJoint(robotJointId_t id);
+    void holdJoints();
 
 private:
 	CLinkbotI **_robots;
