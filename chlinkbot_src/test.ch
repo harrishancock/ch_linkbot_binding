@@ -19,10 +19,10 @@ group.addRobot("SRS8");
 group.addRobot("TP51");
 printf("connect\n");
 group.connect();
-/*group.driveForeverNB();
-sleep(4);
-group.stop();*/
-group.moveToByTrackPos(90, NaN, -90);
+group.moveToZero();
+group.moveJointToByTrackPos(JOINT1, 180);
+
+
 
 
 

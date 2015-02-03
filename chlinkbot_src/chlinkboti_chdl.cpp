@@ -1896,3 +1896,129 @@ EXPORTCH void CLinkbotIGroup_moveToByTrackPos_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return;
 }
+
+/*linkbotGroup moveJointNB*/
+EXPORTCH void CLinkbotIGroup_moveJointNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+	double angle;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+	angle=Ch_VaArg(interp, ap, double);
+    g->moveJointNB(id, angle);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+
+/*linkbotGroup moveJoint*/
+EXPORTCH void CLinkbotIGroup_moveJoint_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+	double angle;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+	angle=Ch_VaArg(interp, ap, double);
+    g->moveJoint(id, angle);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+
+/*linkbotGroup moveJointForeverNB*/
+EXPORTCH void CLinkbotIGroup_moveJointForeverNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+    g->moveJointForeverNB(id);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveJointToNB*/
+EXPORTCH void CLinkbotIGroup_moveJointToNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+	double angle;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+	angle=Ch_VaArg(interp, ap, double);
+    g->moveJointToNB(id, angle);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveJointTo*/
+EXPORTCH void CLinkbotIGroup_moveJointTo_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+	double angle;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+	angle=Ch_VaArg(interp, ap, double);
+    g->moveJointTo(id, angle);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveJointToByTrackPosNB*/
+EXPORTCH void CLinkbotIGroup_moveJointToByTrackPosNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+	double angle;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+	angle=Ch_VaArg(interp, ap, double);
+    g->moveJointToByTrackPosNB(id, angle);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveJointToByTrackPos*/
+EXPORTCH void CLinkbotIGroup_moveJointToByTrackPos_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+	double angle;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+	angle=Ch_VaArg(interp, ap, double);
+    g->moveJointToByTrackPos(id, angle);
+    Ch_VaEnd(interp, ap);
+    return;
+}

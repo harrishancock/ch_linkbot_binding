@@ -254,6 +254,13 @@ public:
     void holdJoints();
 	void move(double j1, double j2, double j3);
 	void moveForeverNB();
+	void moveJoint(robotJointId_t id, double angle);
+	void moveJointNB(robotJointId_t id, double angle);
+	void moveJointForeverNB(robotJointId_t id);
+	void moveJointTo(robotJointId_t id, double angle);
+	void moveJointToNB(robotJointId_t id, double angle);
+	void moveJointToByTrackPos(robotJointId_t id, double angle);
+    void moveJointToByTrackPosNB(robotJointId_t id, double angle);
     void moveNB(double j1, double j2, double j3);
 	void moveTo(double angle1, double angle2, double angle3);
 	void moveToNB(double angle1, double angle2, double angle3);

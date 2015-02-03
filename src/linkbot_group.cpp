@@ -278,7 +278,57 @@ void LinkbotGroup::moveToByTrackPos(double angle1, double angle2, double angle3)
 	moveWait();
 }
 
+void LinkbotGroup::moveJointNB(robotJointId_t id, double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveJointNB(id, angle);
+	}
+}
 
+void LinkbotGroup::moveJoint(robotJointId_t id, double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveJointNB(id, angle);
+	}
+	moveWait();
+}
+
+void LinkbotGroup::moveJointForeverNB(robotJointId_t id)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveJointForeverNB(id);
+	}
+}
+
+void LinkbotGroup::moveJointToNB(robotJointId_t id, double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveJointToNB(id, angle);
+	}
+}
+
+void LinkbotGroup::moveJointTo(robotJointId_t id, double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveJointToNB(id, angle);
+	}
+	moveWait();
+}
+
+void LinkbotGroup::moveJointToByTrackPosNB(robotJointId_t id, double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveJointToByTrackPosNB(id, angle);
+	}
+}
+
+void LinkbotGroup::moveJointToByTrackPos(robotJointId_t id, double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveJointToByTrackPosNB(id, angle);
+	}
+	moveWait();
+}
 
 
 
