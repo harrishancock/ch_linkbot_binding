@@ -211,5 +211,74 @@ void LinkbotGroup::stop()
 	}
 }
 
+void LinkbotGroup::moveNB(double j1, double j2, double j3)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveNB(j1, j2, j3);
+	}
+}
+
+void LinkbotGroup::move(double j1, double j2, double j3)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveNB(j1, j2, j3);
+	}
+	moveWait();
+}
+
+void LinkbotGroup::moveForeverNB()
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveForeverNB();
+	}
+}
+
+void LinkbotGroup::moveToNB(double angle1, double angle2, double angle3)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveToNB(angle1, angle2, angle3);
+	}
+}
+
+void LinkbotGroup::moveTo(double angle1, double angle2, double angle3)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveToNB(angle1, angle2, angle3);
+	}
+	moveWait();
+}
+
+void LinkbotGroup::moveToZeroNB()
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveToZeroNB();
+	}
+}
+
+void LinkbotGroup::moveToZero()
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveToZeroNB();
+	}
+	moveWait();
+}
+
+void LinkbotGroup::moveToByTrackPosNB(double angle1, double angle2, double angle3)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveToByTrackPosNB(angle1, angle2, angle3);
+	}
+}
+
+void LinkbotGroup::moveToByTrackPos(double angle1, double angle2, double angle3)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveToByTrackPosNB(angle1, angle2, angle3);
+	}
+	moveWait();
+}
+
+
+
 
 

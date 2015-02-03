@@ -12,15 +12,20 @@ double angle1, angle2, angle3;
 int r, g, b;
 string_t color;
 
-//CLinkbotI robot;
+CLinkbotI robot;
 CLinkbotIGroup group;
 printf("addRobot\n");
 group.addRobot("SRS8");
 group.addRobot("TP51");
 printf("connect\n");
 group.connect();
-//group.driveForeverNB();
-group.driveDistance(5, radius);
+/*group.driveForeverNB();
+sleep(4);
+group.stop();*/
+group.moveToByTrackPos(90, NaN, -90);
+
+
+
 
 
 

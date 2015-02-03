@@ -252,6 +252,15 @@ public:
 	void driveTimeNB(double time);
 	void holdJoint(robotJointId_t id);
     void holdJoints();
+	void move(double j1, double j2, double j3);
+	void moveForeverNB();
+    void moveNB(double j1, double j2, double j3);
+	void moveTo(double angle1, double angle2, double angle3);
+	void moveToNB(double angle1, double angle2, double angle3);
+	void moveToByTrackPos(double angle1, double angle2, double angle3);
+    void moveToByTrackPosNB(double angle1, double angle2, double angle3);
+    void moveToZero();
+    void moveToZeroNB();
 	void moveWait();
 	void relaxJoint(robotJointId_t id);
 	void relaxJoints();

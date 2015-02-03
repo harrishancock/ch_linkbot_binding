@@ -1734,3 +1734,165 @@ EXPORTCH void CLinkbotIGroup_stop_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return;
 }
+
+/*linkbotGroup moveNB*/
+EXPORTCH void CLinkbotIGroup_moveNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double j1;
+	double j2;
+	double j3;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	j1=Ch_VaArg(interp, ap, double);
+	j2=Ch_VaArg(interp, ap, double);
+	j3=Ch_VaArg(interp, ap, double);
+    g->moveNB(j1, j2, j3);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup move*/
+EXPORTCH void CLinkbotIGroup_move_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double j1;
+	double j2;
+	double j3;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	j1=Ch_VaArg(interp, ap, double);
+	j2=Ch_VaArg(interp, ap, double);
+	j3=Ch_VaArg(interp, ap, double);
+    g->move(j1, j2, j3);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveForeverNB*/
+EXPORTCH void CLinkbotIGroup_moveForeverNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    g->moveForeverNB();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveToNB*/
+EXPORTCH void CLinkbotIGroup_moveToNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double angle1;
+	double angle2;
+	double angle3;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	angle1=Ch_VaArg(interp, ap, double);
+	angle2=Ch_VaArg(interp, ap, double);
+	angle3=Ch_VaArg(interp, ap, double);
+    g->moveToNB(angle1, angle2, angle3);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveTo*/
+EXPORTCH void CLinkbotIGroup_moveTo_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double angle1;
+	double angle2;
+	double angle3;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	angle1=Ch_VaArg(interp, ap, double);
+	angle2=Ch_VaArg(interp, ap, double);
+	angle3=Ch_VaArg(interp, ap, double);
+    g->moveTo(angle1, angle2, angle3);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveToNB*/
+EXPORTCH void CLinkbotIGroup_moveToZeroNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    g->moveToZeroNB();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveToNB*/
+EXPORTCH void CLinkbotIGroup_moveToZero_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    g->moveToZero();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveToByTrackPosNB*/
+EXPORTCH void CLinkbotIGroup_moveToByTrackPosNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double angle1;
+	double angle2;
+	double angle3;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	angle1=Ch_VaArg(interp, ap, double);
+	angle2=Ch_VaArg(interp, ap, double);
+	angle3=Ch_VaArg(interp, ap, double);
+    g->moveToByTrackPosNB(angle1, angle2, angle3);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveToByTrackPos*/
+EXPORTCH void CLinkbotIGroup_moveToByTrackPos_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double angle1;
+	double angle2;
+	double angle3;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	angle1=Ch_VaArg(interp, ap, double);
+	angle2=Ch_VaArg(interp, ap, double);
+	angle3=Ch_VaArg(interp, ap, double);
+    g->moveToByTrackPos(angle1, angle2, angle3);
+    Ch_VaEnd(interp, ap);
+    return;
+}

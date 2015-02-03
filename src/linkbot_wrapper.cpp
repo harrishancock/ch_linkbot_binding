@@ -773,13 +773,32 @@ void Linkbot::moveTo(double angle1, double angle2, double angle3)
 
 void Linkbot::moveToZero()
 {
-    CALL_C_IMPL(linkbotMoveTo, 0x07, 0, 0, 0);
+    moveToZeroNB();
 	moveWait();
 }
 
 void Linkbot::moveToZeroNB()
 {
-	CALL_C_IMPL(linkbotMoveTo, 0x07, 0, 0, 0);
+	    int type;
+	int mask;
+	getFormFactor(type);
+
+	switch (type) {
+		case 0:
+			mask = 0x05;
+			break;
+		case 1:
+			mask = 0x03;
+			break;
+		case 2:
+			mask = 0x07;
+			break;
+		default:
+			mask = 0x07;
+			break;
+	}
+	
+	CALL_C_IMPL(linkbotMoveTo, mask, 0, 0, 0);
 }
 /* MISC */
 
