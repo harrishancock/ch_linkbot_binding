@@ -1614,3 +1614,78 @@ void CLinkbotIGroup::moveJointToByTrackPos(robotJointId_t id, double angle) {
     dlrunfun(fptr, NULL, NULL, this, id, angle);
     return;
 }
+
+/* setJointSpeed*/
+void CLinkbotIGroup::setJointSpeed(robotJointId_t id, double speed) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_setJointSpeed_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, speed);
+    return;
+}
+
+/* setJointSpeedRatio*/
+void CLinkbotIGroup::setJointSpeedRatio(robotJointId_t id, double ratio) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_setJointSpeedRatio_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, ratio);
+    return;
+}
+
+/* setJointSpeeds*/
+void CLinkbotIGroup::setJointSpeeds(double speed1, double speed2, double speed3) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_setJointSpeeds_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, speed1, speed2, speed3);
+    return;
+}
+
+/* setJointSpeedRatios*/
+void CLinkbotIGroup::setJointSpeedRatios(double ratio1, double ratio2, double ratio3) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_setJointSpeeds_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, ratio1, ratio2, ratio3);
+    return;
+}
+
+/* setSpeed*/
+void CLinkbotIGroup::setSpeed(double speed, double radius) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_setSpeed_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, speed, radius);
+    return;
+}

@@ -176,6 +176,14 @@ public:
     void turnRight(double angle, double radius, double tracklength);
     void turnRightNB(double angle, double radius, double tracklength);
 
+	/* SET FUNCTIONS */
+
+	void setJointSpeed(robotJointId_t id, double speed);
+    void setJointSpeeds(double speed1, double speed2, double speed3);
+    void setJointSpeedRatio(robotJointId_t id, double ratio);
+    void setJointSpeedRatios(double ratios1, double ratios2, double ratios3);
+	void setSpeed(double speed, double radius);
+
 private:
     LinkbotGroupImpl *m;
 };

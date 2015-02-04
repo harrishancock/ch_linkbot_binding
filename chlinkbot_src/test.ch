@@ -19,8 +19,13 @@ group.addRobot("SRS8");
 group.addRobot("TP51");
 printf("connect\n");
 group.connect();
-group.moveToZero();
-group.moveJointToByTrackPos(JOINT1, 180);
+group.setJointSpeeds(45, 0, 45);
+group.move(90, 0, -90);
+/*group.setSpeed(5, radius);
+group.driveForward(angle);*/
+/*robot.connect("TP51");
+robot.setJointSpeedRatios(0.5, 0, 0.8);
+robot.move(90, 0, -90);*/
 
 
 

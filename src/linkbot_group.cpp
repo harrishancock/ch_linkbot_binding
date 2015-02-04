@@ -330,5 +330,42 @@ void LinkbotGroup::moveJointToByTrackPos(robotJointId_t id, double angle)
 	moveWait();
 }
 
+/* set functions */
+void LinkbotGroup::setJointSpeed(robotJointId_t id, double speed)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->setJointSpeed(id, speed);
+	}
+}
+
+void LinkbotGroup::setJointSpeedRatio(robotJointId_t id, double ratio)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->setJointSpeedRatio(id, ratio);
+	}
+}
+
+void LinkbotGroup::setJointSpeeds(double speed1, double speed2, double speed3)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->setJointSpeeds(speed1, speed2, speed3);
+	}
+}
+
+void LinkbotGroup::setJointSpeedRatios(double ratio1, double ratio2, double ratio3)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->setJointSpeedRatios(ratio1, ratio2, ratio3);
+	}
+}
+
+void LinkbotGroup::setSpeed(double speed, double radius)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->setSpeed(speed, radius);
+	}
+}
+
+
 
 

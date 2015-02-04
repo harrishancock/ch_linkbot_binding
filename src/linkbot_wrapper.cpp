@@ -295,7 +295,26 @@ void Linkbot::setJointSpeed(robotJointId_t id, double speed)
 
 void Linkbot::setJointSpeeds(double speed1, double speed2, double speed3)
 {
-    CALL_C_IMPL(linkbotSetJointSpeeds, 0x07, speed1, speed2, speed3);
+    int type;
+	int mask;
+	getFormFactor(type);
+
+	switch (type) {
+		case 0:
+			mask = 0x05;
+			break;
+		case 1:
+			mask = 0x03;
+			break;
+		case 2:
+			mask = 0x07;
+			break;
+		default:
+			mask = 0x07;
+			break;
+	}
+	std::cout<<"mask "<<mask<<std::endl;
+	CALL_C_IMPL(linkbotSetJointSpeeds, mask, speed1, speed2, speed3);
 }
 
 void Linkbot::setJointSpeedRatio(robotJointId_t id, double ratio)
@@ -779,7 +798,7 @@ void Linkbot::moveToZero()
 
 void Linkbot::moveToZeroNB()
 {
-	    int type;
+	int type;
 	int mask;
 	getFormFactor(type);
 

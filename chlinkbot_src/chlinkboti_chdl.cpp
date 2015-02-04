@@ -2022,3 +2022,98 @@ EXPORTCH void CLinkbotIGroup_moveJointToByTrackPos_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return;
 }
+
+/*linkbotGroup setJointSpeed*/
+EXPORTCH void CLinkbotIGroup_setJointSpeed_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+	double speed;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+	speed=Ch_VaArg(interp, ap, double);
+    g->setJointSpeed(id, speed);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup setJointSpeedRatio*/
+EXPORTCH void CLinkbotIGroup_setJointSpeedRatio_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+	double ratio;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+	ratio=Ch_VaArg(interp, ap, double);
+    g->setJointSpeedRatio(id, ratio);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup setJointSpeeds*/
+EXPORTCH void CLinkbotIGroup_setJointSpeeds_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double speed1;
+	double speed2;
+	double speed3;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	speed1=Ch_VaArg(interp, ap, double);
+	speed2=Ch_VaArg(interp, ap, double);
+	speed2=Ch_VaArg(interp, ap, double);
+    g->setJointSpeeds(speed1, speed2, speed3);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup setJointSpeedRatios*/
+EXPORTCH void CLinkbotIGroup_setJointSpeedRatios_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double ratio1;
+	double ratio2;
+	double ratio3;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	ratio1=Ch_VaArg(interp, ap, double);
+	ratio2=Ch_VaArg(interp, ap, double);
+	ratio2=Ch_VaArg(interp, ap, double);
+    g->setJointSpeedRatios(ratio1, ratio2, ratio3);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup setSpeed*/
+EXPORTCH void CLinkbotIGroup_setSpeed_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double speed;
+	double radius;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	speed=Ch_VaArg(interp, ap, double);
+	radius=Ch_VaArg(interp, ap, double);
+    g->setSpeed(speed, radius);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
