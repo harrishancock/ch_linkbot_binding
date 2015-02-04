@@ -19,6 +19,7 @@ group.addRobot("SRS8");
 group.addRobot("TP51");
 printf("connect\n");
 group.connect();
+/*This makes the robots crash */
 group.setJointSpeeds(45, 0, 45);
 group.move(90, 0, -90);
 /*group.setSpeed(5, radius);
