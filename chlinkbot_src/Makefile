@@ -1,9 +1,10 @@
+BUILD_DIR=../build-linux
 CFLAGS= -std=c++11
 BOOST_LIBS=$(BOOST_ROOT)/stage/lib
 
 target: liblinkbot.dl
 
-LINKLIBS="../build-linux/liblinkbot.a -lbaromesh -pthread -lboost_thread \
+LINKLIBS="$(BUILD_DIR)/liblinkbot.a -lbaromesh -pthread -lboost_thread \
 -lboost_filesystem \
 -lboost_system \
 -lboost_log \
@@ -18,12 +19,12 @@ LINKLIBS="../build-linux/liblinkbot.a -lbaromesh -pthread -lboost_thread \
 -lcxx-util"
 
 LINKDIRS="-L$(BOOST_LIBS) \
--L../build-linux/baromesh/library \
--L../build-linux/baromesh/library/libsfp \
--L../build-linux/baromesh/library/ribbon-bridge \
--L../build-linux/baromesh/library/baromesh/interfaces \
--L../build-linux/baromesh/library/baromesh/common \
--L../build-linux/baromesh/library/cxx-util"
+-L$(BUILD_DIR)/baromesh/library \
+-L$(BUILD_DIR)/baromesh/library/libsfp \
+-L$(BUILD_DIR)/baromesh/library/ribbon-bridge \
+-L$(BUILD_DIR)/baromesh/library/baromesh/interfaces \
+-L$(BUILD_DIR)/baromesh/library/baromesh/common \
+-L$(BUILD_DIR)/baromesh/library/cxx-util"
 
 liblinkbot.dl: chlinkboti_chdl.o chlinkbotl_chdl.o
 	ch dllink liblinkbot.dl cplusplus chlinkboti_chdl.o chlinkbotl_chdl.o $(LINKDIRS) $(LINKLIBS)

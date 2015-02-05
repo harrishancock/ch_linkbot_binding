@@ -15,8 +15,8 @@ string_t color;
 CLinkbotI robot;
 CLinkbotIGroup group;
 printf("addRobot\n");
-group.addRobot("SRS8");
-group.addRobot("TP51");
+group.addRobot("PB7D");
+group.addRobot("1LCR");
 printf("connect\n");
 group.connect();
 /*This makes the robots crash */

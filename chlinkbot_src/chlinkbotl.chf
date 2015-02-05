@@ -3,7 +3,7 @@
 #include"linkbot.h"
 #include<dlfcn.h>
 #include<stdarg.h>
-#include<array.h>
+//#include<array.h>
 
 /*class constructor*/
 CLinkbotL::CLinkbotL() {

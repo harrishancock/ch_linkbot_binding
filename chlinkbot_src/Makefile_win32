@@ -1,5 +1,7 @@
 # Makefile to build liblinkbot.dl in Windows
 
+BUILD_DIR=../build-windows
+
 CFLAGS= -std=c++11
 BOOST_LIBS=$(BOOST_ROOT)/stage/lib
 
@@ -7,24 +9,22 @@ target: liblinkbot.dl
 
 LFLAG= C:/ch/extern/lib/chsdk.lib C:/ch/bin/ch.dll 	
 
-LINKLIBS=../build-linux/liblinkbot.a \
-../build-linux/baromesh/library/libbaromesh.a  \
+LINKLIBS=$(BUILD_DIR)/liblinkbot.a \
+$(BUILD_DIR)/baromesh/library/libbaromesh.a  \
 ../../deps/boost_1_57_0/stage/lib/libboost_thread-mgw49-mt-1_57.a \
 ../../deps/boost_1_57_0/stage/lib/libboost_filesystem-mgw49-mt-1_57.a \
 ../../deps/boost_1_57_0/stage/lib/libboost_system-mgw49-mt-1_57.a \
 ../../deps/boost_1_57_0/stage/lib/libboost_log-mgw49-mt-1_57.a \
-../../deps/boost_1_57_0/stage/lib/libboost_coroutine-mgw49-mt-1_57.a \
-../build-linux/baromesh/library/libsfp/libsfp.a \
-../build-linux/baromesh/library/ribbon-bridge/librpc.a \
-../build-linux/baromesh/library/ribbon-bridge/librpc-proto.a \
-../build-linux/baromesh/library/baromesh/interfaces/librobot-interface.a \
-../build-linux/baromesh/library/baromesh/interfaces/libdaemon-interface.a \
-../build-linux/baromesh/library/baromesh/interfaces/libdongle-interface.a \
-../build-linux/baromesh/library/baromesh/interfaces/libcommontypes-proto.a \
-../build-linux/baromesh/library/baromesh/common/libbaromesh-common.a \
-../build-linux/baromesh/library/cxx-util/libcxx-util.a \
-./libws2_32.a \
-./libwsock32.a \
+$(BUILD_DIR)/baromesh/library/libsfp/libsfp.a \
+$(BUILD_DIR)/baromesh/library/ribbon-bridge/librpc.a \
+$(BUILD_DIR)/baromesh/library/ribbon-bridge/librpc-proto.a \
+$(BUILD_DIR)/baromesh/library/baromesh/interfaces/librobot-interface.a \
+$(BUILD_DIR)/baromesh/library/baromesh/interfaces/libdaemon-interface.a \
+$(BUILD_DIR)/baromesh/library/baromesh/interfaces/libdongle-interface.a \
+$(BUILD_DIR)/baromesh/library/baromesh/interfaces/libcommontypes-proto.a \
+$(BUILD_DIR)/baromesh/library/baromesh/common/libbaromesh-common.a \
+$(BUILD_DIR)/baromesh/library/cxx-util/libcxx-util.a \
+-lws2_32 \
 -lpthread 
 
 liblinkbot.dl: chlinkboti_chdl.o chlinkbotl_chdl.o
