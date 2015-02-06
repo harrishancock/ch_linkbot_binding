@@ -2073,7 +2073,7 @@ EXPORTCH void CLinkbotIGroup_setJointSpeeds_chdl(void *varg) {
     g=Ch_VaArg(interp, ap, class LinkbotGroup *);
 	speed1=Ch_VaArg(interp, ap, double);
 	speed2=Ch_VaArg(interp, ap, double);
-	speed2=Ch_VaArg(interp, ap, double);
+	speed3=Ch_VaArg(interp, ap, double);
     g->setJointSpeeds(speed1, speed2, speed3);
     Ch_VaEnd(interp, ap);
     return;
@@ -2093,7 +2093,7 @@ EXPORTCH void CLinkbotIGroup_setJointSpeedRatios_chdl(void *varg) {
     g=Ch_VaArg(interp, ap, class LinkbotGroup *);
 	ratio1=Ch_VaArg(interp, ap, double);
 	ratio2=Ch_VaArg(interp, ap, double);
-	ratio2=Ch_VaArg(interp, ap, double);
+	ratio3=Ch_VaArg(interp, ap, double);
     g->setJointSpeedRatios(ratio1, ratio2, ratio3);
     Ch_VaEnd(interp, ap);
     return;
