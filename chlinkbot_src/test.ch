@@ -13,20 +13,22 @@ int r, g, b;
 string_t color;
 
 
-CLinkbotIGroup group;
+/*CLinkbotIGroup group;
 printf("addRobot\n");
 group.addRobot("SRS8");
 group.addRobot("TP51");
 group.connect();
 group.move(180, 0, -180);
 group.resetToZero();
-//group.moveWait();
-/*CLinkbotL robot;
-robot.connect("JBPC");
-robot.moveNB(180, 80, 0);
+group.moveWait();*/
+CLinkbotI robot;
+robot.connect("SRS8");
+robot.moveNB(360, 0, -360);
+sleep(2);
+robot.stopOneJoint(JOINT3);
 robot.moveWait();
 robot.resetToZero();
-robot.moveWait();*/
+
 
 
 

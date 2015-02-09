@@ -713,6 +713,7 @@ void Linkbot::stop()
 
 void Linkbot::stopOneJoint(robotJointId_t id)
 {
+	CALL_C_IMPL(linkbotStop, 1<<(int(id)-1));
 }
 
 
