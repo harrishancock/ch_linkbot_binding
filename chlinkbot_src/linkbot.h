@@ -259,6 +259,7 @@ public:
 	void driveTimeNB(double time);
 	void holdJoint(robotJointId_t id);
     void holdJoints();
+	int isMoving();
 	void move(double j1, double j2, double j3);
 	void moveForeverNB();
 	void moveJoint(robotJointId_t id, double angle);

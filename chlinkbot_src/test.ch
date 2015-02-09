@@ -14,15 +14,20 @@ string_t color;
 int moving=0;
 
 
-/*CLinkbotIGroup group;
+CLinkbotIGroup group;
 printf("addRobot\n");
 group.addRobot("SRS8");
 group.addRobot("TP51");
 group.connect();
-group.move(180, 0, -180);
+group.moveNB(360, 0, -360);
+sleep(2);
+moving=group.isMoving();
+printf("moving %d\n", moving);
 group.resetToZero();
-group.moveWait();*/
-CLinkbotL robot;
+sleep(2);
+moving=group.isMoving();
+printf("moving %d\n", moving);
+/*CLinkbotL robot;
 robot.connect("JBPC");
 robot.moveNB(360, -360, 0);
 sleep(2);
@@ -32,7 +37,7 @@ robot.stopOneJoint(JOINT2);
 robot.moveWait();
 robot.resetToZero();
 moving=robot.isMoving();
-printf("moving %d\n", moving);
+printf("moving %d\n", moving);*/
 
 
 

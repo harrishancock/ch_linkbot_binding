@@ -360,6 +360,17 @@ void LinkbotGroup::resetToZero()
 	moveWait();
 }
 
+int LinkbotGroup::isMoving(int mask)
+{
+	for (Linkbot* robot : m->robots) {
+		if(robot->isMoving(mask)){
+			return 1;
+		}
+	}
+	return 0;
+}
+
+
 /* set functions */
 void LinkbotGroup::setJointSpeed(robotJointId_t id, double speed)
 {

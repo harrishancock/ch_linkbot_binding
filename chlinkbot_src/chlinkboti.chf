@@ -1804,3 +1804,18 @@ void CLinkbotIGroup::resetToZero() {
     dlrunfun(fptr, NULL, NULL, this);
     return;
 }
+
+/*isMoving*/
+int CLinkbotIGroup::isMoving() {
+    void *fptr;
+    int mask = 0x05; // only motors 1 and 3
+    int retval;
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_isMoving_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return -1;
+    }
+     
+    dlrunfun(fptr, &retval, NULL, this, mask);
+    return retval;
+}

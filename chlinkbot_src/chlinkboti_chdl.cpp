@@ -2237,4 +2237,21 @@ EXPORTCH void CLinkbotIGroup_resetToZeroNB_chdl(void *varg) {
     return;
 }
 
+/*linkbotGroup resetToZeroNB*/
+EXPORTCH int CLinkbotIGroup_isMoving_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	int mask;
+	int retval;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	mask=Ch_VaArg(interp, ap, int);
+    retval=g->isMoving(mask);
+    Ch_VaEnd(interp, ap);
+    return retval;
+}
+
 
