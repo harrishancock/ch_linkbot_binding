@@ -802,3 +802,30 @@ void CLinkbotL::systemTime(double &time) {
      
     dlrunfun(fptr, NULL, NULL, this, &time);
 }
+
+/*resetToZeroNB*/
+void CLinkbotL::resetToZeroNB() {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_resetToZeroNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+}
+
+/*resetToZero*/
+void CLinkbotL::resetToZero() {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_resetToZero_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+}
+

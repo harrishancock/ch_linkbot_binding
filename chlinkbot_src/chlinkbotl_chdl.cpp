@@ -1089,3 +1089,32 @@ EXPORTCH void CLinkbotL_systemTime_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return;
 }
+
+/*linkbot resetToZeroNB*/
+EXPORTCH void CLinkbotL_resetToZeroNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    l->resetToZeroNB();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot resetToZero*/
+EXPORTCH void CLinkbotL_resetToZero_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    l->resetToZero();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+

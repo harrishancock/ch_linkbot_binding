@@ -1380,6 +1380,33 @@ EXPORTCH void CLinkbotI_systemTime_chdl(void *varg) {
     return;
 }
 
+/*linkbot resetToZeroNB*/
+EXPORTCH void CLinkbotI_resetToZeroNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    l->resetToZeroNB();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot resetToZero*/
+EXPORTCH void CLinkbotI_resetToZero_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    l->resetToZero();
+    Ch_VaEnd(interp, ap);
+    return;
+}
 
 /* CLinkbotIGroup functions */
 
@@ -2164,4 +2191,33 @@ EXPORTCH void CLinkbotIGroup_setSpeed_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return;
 }
+
+/*linkbotGroup resetToZero*/
+EXPORTCH void CLinkbotIGroup_resetToZero_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    g->resetToZero();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup resetToZeroNB*/
+EXPORTCH void CLinkbotIGroup_resetToZeroNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    g->resetToZeroNB();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
 

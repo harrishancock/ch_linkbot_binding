@@ -345,6 +345,21 @@ void LinkbotGroup::moveJointToByTrackPos(robotJointId_t id, double angle)
 	moveWait();
 }
 
+void LinkbotGroup::resetToZeroNB()
+{
+	for (Linkbot* robot : m->robots) {
+		robot->resetToZeroNB();
+	}
+}
+
+void LinkbotGroup::resetToZero()
+{
+	for (Linkbot* robot : m->robots) {
+		robot->resetToZeroNB();
+	}
+	moveWait();
+}
+
 /* set functions */
 void LinkbotGroup::setJointSpeed(robotJointId_t id, double speed)
 {

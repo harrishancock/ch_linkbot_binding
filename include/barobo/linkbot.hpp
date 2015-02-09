@@ -109,6 +109,8 @@ class Linkbot {
 		void openGripperNB(double angle);
 		void relaxJoint(robotJointId_t id);
 	    void relaxJoints();
+		void resetToZero();
+        void resetToZeroNB();
         void stop();
         void stopOneJoint(robotJointId_t id);
 		void turnLeft(double angle, double radius, double tracklength);
@@ -173,6 +175,8 @@ public:
     void openGripperNB(double angle);
 	void relaxJoint(robotJointId_t id);
 	void relaxJoints();
+	void resetToZero();
+    void resetToZeroNB();
     void stop();
 	void turnLeft(double angle, double radius, double tracklength);
     void turnLeftNB(double angle, double radius, double tracklength);

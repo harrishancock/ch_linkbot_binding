@@ -12,19 +12,22 @@ double angle1, angle2, angle3;
 int r, g, b;
 string_t color;
 
-//CLinkbotI robot;
+
 CLinkbotIGroup group;
 printf("addRobot\n");
 group.addRobot("SRS8");
 group.addRobot("TP51");
 group.connect();
-group.moveToZero();
-group.openGripperNB(15);
-group.moveWait();
-/*robot.connect("SRS8");
-robot.moveToZero();
-robot.openGripper(15);
+group.move(180, 0, -180);
+group.resetToZero();
+//group.moveWait();
+/*CLinkbotL robot;
+robot.connect("JBPC");
+robot.moveNB(180, 80, 0);
+robot.moveWait();
+robot.resetToZero();
 robot.moveWait();*/
+
 
 
 

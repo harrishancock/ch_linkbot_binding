@@ -824,6 +824,18 @@ void Linkbot::moveToZeroNB()
 	
 	CALL_C_IMPL(linkbotMoveTo, mask, 0, 0, 0);
 }
+
+void Linkbot::resetToZeroNB()
+{
+	c_impl::linkbotResetEncoderRevs(m->linkbot);
+	moveToZeroNB();
+}
+
+void Linkbot::resetToZero()
+{
+    c_impl::linkbotResetEncoderRevs(m->linkbot);
+	moveToZero();
+}
 /* MISC */
 
 void LinkbotImpl::jointEventCB(int jointNo, c_impl::barobo::JointState::Type state)

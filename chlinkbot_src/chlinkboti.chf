@@ -1025,6 +1025,33 @@ void CLinkbotI::systemTime(double &time) {
     dlrunfun(fptr, NULL, NULL, this, &time);
 }
 
+/*resetToZeroNB*/
+void CLinkbotI::resetToZeroNB() {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_resetToZeroNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+}
+
+
+/*resetToZero*/
+void CLinkbotI::resetToZero() {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_resetToZero_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+}
+
 /*CLinkbotIGroup class */
 
 /* Constructor */
@@ -1730,5 +1757,35 @@ void CLinkbotIGroup::setSpeed(double speed, double radius) {
     }
      
     dlrunfun(fptr, NULL, NULL, this, speed, radius);
+    return;
+}
+
+/* resetToZeroNB*/
+void CLinkbotIGroup::resetToZeroNB() {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_resetToZeroNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+    return;
+}
+
+/* resetToZero*/
+void CLinkbotIGroup::resetToZero() {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_resetToZero_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
     return;
 }
