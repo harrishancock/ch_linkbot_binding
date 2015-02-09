@@ -212,6 +212,21 @@ void CLinkbotL::holdJoints() {
     dlrunfun(fptr, NULL, NULL, this);
 }
 
+/*isMoving*/
+int CLinkbotL::isMoving() {
+    void *fptr;
+    int mask = 0x03; // only motors 1 and 3
+    int retval;
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_isMoving_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return -1;
+    }
+     
+    dlrunfun(fptr, &retval, NULL, this, mask);
+    return retval;
+}
+
 /*relaxJoint*/
 void CLinkbotL::relaxJoint(robotJointId_t id) {
     void *fptr;

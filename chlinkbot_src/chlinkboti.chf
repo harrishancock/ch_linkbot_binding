@@ -267,6 +267,21 @@ void CLinkbotI::moveWait() {
     dlrunfun(fptr, NULL, NULL, this, mask);
 }
 
+/*isMoving*/
+int CLinkbotI::isMoving() {
+    void *fptr;
+    int mask = 0x05; // only motors 1 and 3
+    int retval;
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_isMoving_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return -1;
+    }
+     
+    dlrunfun(fptr, &retval, NULL, this, mask);
+    return retval;
+}
+
 /*stop*/
 void CLinkbotI::stop() {
     void *fptr;

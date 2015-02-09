@@ -11,6 +11,7 @@ double t;
 double angle1, angle2, angle3;
 int r, g, b;
 string_t color;
+int moving=0;
 
 
 /*CLinkbotIGroup group;
@@ -21,13 +22,17 @@ group.connect();
 group.move(180, 0, -180);
 group.resetToZero();
 group.moveWait();*/
-CLinkbotI robot;
-robot.connect("SRS8");
-robot.moveNB(360, 0, -360);
+CLinkbotL robot;
+robot.connect("JBPC");
+robot.moveNB(360, -360, 0);
 sleep(2);
-robot.stopOneJoint(JOINT3);
+moving=robot.isMoving();
+printf("moving %d\n", moving);
+robot.stopOneJoint(JOINT2);
 robot.moveWait();
 robot.resetToZero();
+moving=robot.isMoving();
+printf("moving %d\n", moving);
 
 
 

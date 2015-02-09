@@ -232,6 +232,23 @@ EXPORTCH void CLinkbotL_stopOneJoint_chdl(void *varg) {
     return;
 }
 
+/*linkbot isMoving*/
+EXPORTCH int CLinkbotL_isMoving_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    int mask;  
+	int retval;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    mask=Ch_VaArg(interp, ap, int);
+    retval=l->isMoving(mask);
+    Ch_VaEnd(interp, ap);
+    return retval;
+}
+
 /*linkbot holdJoint*/
 EXPORTCH void CLinkbotL_holdJoint_chdl(void *varg) {
     ChInterp_t interp;

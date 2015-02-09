@@ -94,6 +94,7 @@ class CLinkbotI {
 		void driveTime(double seconds);
 		void holdJoint(robotJointId_t id);
 		void holdJoints();
+		int isMoving();
 		void moveForeverNB();
 		void moveJoint(robotJointId_t id, double angle);
 	    void moveJointNB(robotJointId_t id, double angle);
@@ -194,6 +195,7 @@ class CLinkbotL {
 
 		void holdJoint(robotJointId_t id);
 		void holdJoints();
+		int isMoving();
 		void moveForeverNB();
 		void moveJoint(robotJointId_t id, double angle);
 	    void moveJointNB(robotJointId_t id, double angle);

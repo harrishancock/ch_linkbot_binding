@@ -695,6 +695,40 @@ void Linkbot::moveWait(int mask)
     }
 }
 
+int Linkbot::isMoving(int mask)
+{
+    /* Get the current joint states */
+    std::cout << "isMoving()" << std::endl;
+    int time;
+	int moving = 0;
+    boost::unique_lock<boost::mutex> lock(m->jointStateMutex);
+
+    c_impl::linkbotGetJointStates(
+        m->linkbot,
+        &time,
+        &m->jointStates[0],
+        &m->jointStates[1],
+        &m->jointStates[2]);
+
+    std::cout << "Jointstates in isMoving: " << m->jointStates[0] << " "
+                                 << m->jointStates[1] << " "
+                                 << m->jointStates[2] << std::endl;
+
+    for(int i = 0; i < 3; i++) {
+        if(!(mask&1<<i)) { continue; }
+        if(!((1<<i)&m->motorMask)) { continue; }
+        if (m->jointStates[i] == c_impl::barobo::JointState::MOVING) {
+            std::cout << "Joint " << i <<" is stopped"<< std::endl;
+			moving = 1;
+            break;
+        }
+		else {
+			continue;
+		}
+    }
+	return moving;
+}
+
 
 void Linkbot::relaxJoint(robotJointId_t id)
 {
