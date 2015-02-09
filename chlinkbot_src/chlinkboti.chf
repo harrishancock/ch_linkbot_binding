@@ -482,6 +482,19 @@ void CLinkbotI::openGripper(double angle) {
     dlrunfun(fptr, NULL, NULL, this, angle);
 }
 
+/*openGripperNB*/
+void CLinkbotI::openGripperNB(double angle) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_openGripperNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle);
+}
+
 /*closeGripper*/
 void CLinkbotI::closeGripper() {
     void *fptr;
@@ -1612,6 +1625,36 @@ void CLinkbotIGroup::moveJointToByTrackPos(robotJointId_t id, double angle) {
     }
      
     dlrunfun(fptr, NULL, NULL, this, id, angle);
+    return;
+}
+
+/* openGripperNB*/
+void CLinkbotIGroup::openGripperNB(double angle) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_openGripperNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle);
+    return;
+}
+
+/* openGripper*/
+void CLinkbotIGroup::openGripper(double angle) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_openGripper_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle);
     return;
 }
 

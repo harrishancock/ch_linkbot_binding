@@ -114,6 +114,7 @@ class CLinkbotI {
 		void moveToZero();
 		void moveToZeroNB();
 		void openGripper(double angle);
+		void openGripperNB(double angle);
 		void relaxJoint(robotJointId_t id);
 	    void relaxJoints();
         void stop();
@@ -269,6 +270,8 @@ public:
     void moveToZero();
     void moveToZeroNB();
 	void moveWait();
+	void openGripper(double angle);
+    void openGripperNB(double angle);
 	void relaxJoint(robotJointId_t id);
 	void relaxJoints();
     void stop();

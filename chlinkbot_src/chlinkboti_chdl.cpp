@@ -615,6 +615,22 @@ EXPORTCH void CLinkbotI_openGripper_chdl(void *varg) {
     return;
 }
 
+/*linkbot openGripperNB*/
+EXPORTCH void CLinkbotI_openGripperNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+	double angle;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+	angle=Ch_VaArg(interp, ap, double);
+    l->openGripperNB(angle);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
 /*linkbot moveJointTo*/
 EXPORTCH void CLinkbotI_moveJointTo_chdl(void *varg) {
     ChInterp_t interp;
@@ -2019,6 +2035,38 @@ EXPORTCH void CLinkbotIGroup_moveJointToByTrackPos_chdl(void *varg) {
 	id=Ch_VaArg(interp, ap, robotJointId_t);
 	angle=Ch_VaArg(interp, ap, double);
     g->moveJointToByTrackPos(id, angle);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup openGripperNB*/
+EXPORTCH void CLinkbotIGroup_openGripperNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double angle;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	angle=Ch_VaArg(interp, ap, double);
+    g->openGripperNB(angle);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup openGripper*/
+EXPORTCH void CLinkbotIGroup_openGripper_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double angle;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	angle=Ch_VaArg(interp, ap, double);
+    g->openGripper(angle);
     Ch_VaEnd(interp, ap);
     return;
 }

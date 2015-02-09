@@ -745,7 +745,12 @@ void Linkbot::turnRightNB(double angle, double radius, double tracklength)
 
 void Linkbot::openGripper(double angle)
 {
-	CALL_C_IMPL(linkbotMoveTo, 0x07, -angle/2.0, 0, -angle/2.0);
+	moveTo(-angle/2.0, 0, -angle/2.0);
+}
+
+void Linkbot::openGripperNB(double angle)
+{
+	moveToNB(-angle/2.0, 0, -angle/2.0);
 }
 
 void Linkbot::closeGripper()

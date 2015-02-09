@@ -322,6 +322,21 @@ void LinkbotGroup::moveJointToByTrackPosNB(robotJointId_t id, double angle)
 	}
 }
 
+void LinkbotGroup::openGripperNB(double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->openGripperNB(angle);
+	}
+}
+
+void LinkbotGroup::openGripper(double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->openGripperNB(angle);
+	}
+	moveWait();
+}
+
 void LinkbotGroup::moveJointToByTrackPos(robotJointId_t id, double angle)
 {
 	for (Linkbot* robot : m->robots) {
