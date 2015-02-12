@@ -370,6 +370,21 @@ int LinkbotGroup::isMoving(int mask)
 	return 0;
 }
 
+void LinkbotGroup::closeGripper()
+{
+	for (Linkbot* robot : m->robots) {
+		robot->closeGripperNB();
+	}
+	moveWait();
+	holdJoints();
+}
+
+void LinkbotGroup::closeGripperNB()
+{
+	for (Linkbot* robot : m->robots) {
+		robot->closeGripperNB();
+	}
+}
 
 /* set functions */
 void LinkbotGroup::setJointSpeed(robotJointId_t id, double speed)

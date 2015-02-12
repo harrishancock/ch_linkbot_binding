@@ -22,6 +22,7 @@ typedef enum robotJointState_e
 } robotJointState_t;
 
 struct LinkbotImpl;
+
 class Linkbot {
     public:
         Linkbot();
@@ -75,6 +76,7 @@ class Linkbot {
         /* MOVEMENT */
 
 		void closeGripper();
+		void closeGripperNB();
 		void driveBackward(double angle);
         void driveBackwardNB(double angle);
 	    void driveDistance(double distance, double radius);
@@ -144,6 +146,8 @@ public:
 	void connect();
 
 	/* MOVEMENT FUNCTIONS */
+	void closeGripper();
+	void closeGripperNB();
 	void driveBackward(double angle);
     void driveBackwardNB(double angle);
 	void driveDistance(double distance, double radius);

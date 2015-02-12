@@ -764,6 +764,20 @@ EXPORTCH void CLinkbotI_closeGripper_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return;
 }
+
+/*linkbot closeGripperNB*/
+EXPORTCH void CLinkbotI_closeGripperNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    l->closeGripperNB();
+    Ch_VaEnd(interp, ap);
+    return;
+}
 /*END MOVEMENT FUNCTIONS*/
 /*GET FUNCTIONS*/
 
@@ -2254,4 +2268,31 @@ EXPORTCH int CLinkbotIGroup_isMoving_chdl(void *varg) {
     return retval;
 }
 
+/*linkbotGroup closeGripperNB*/
+EXPORTCH void CLinkbotIGroup_closeGripperNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    g->closeGripperNB();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup closeGripper*/
+EXPORTCH void CLinkbotIGroup_closeGripper_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+    g->closeGripper();
+    Ch_VaEnd(interp, ap);
+    return;
+}
 

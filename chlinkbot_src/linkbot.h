@@ -84,6 +84,7 @@ class CLinkbotI {
         /* MOVEMENT */
 
 		void closeGripper();
+		void closeGripperNB();
 		void driveBackward(double angle);
         void driveBackwardNB(double angle);
 	    void driveDistance(double distance, double radius);
@@ -248,6 +249,8 @@ public:
 	void connect();
 	
 	/* MOVEMENT FUNCTIONS */
+	void closeGripper();
+	void closeGripperNB();
 	void driveBackward(double angle);
     void driveBackwardNB(double angle);
 	void driveDistance(double distance, double radius);

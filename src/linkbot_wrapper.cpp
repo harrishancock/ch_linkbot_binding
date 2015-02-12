@@ -5,6 +5,7 @@ namespace c_impl {
 #include "barobo/linkbot.hpp"
 #include "boost/thread/mutex.hpp"
 #include "boost/thread/condition_variable.hpp"
+#include "boost/thread.hpp"
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -780,26 +781,38 @@ void Linkbot::turnRightNB(double angle, double radius, double tracklength)
 
 void Linkbot::openGripper(double angle)
 {
-	moveTo(-angle/2.0, 0, -angle/2.0);
+	double angle1, angle3;
+	double delta1, delta3;
+	getJointAngle(ROBOT_JOINT1, angle1);
+	getJointAngle(ROBOT_JOINT3, angle3);
+	delta1 = (angle1-angle/2.0);
+	delta3 = (angle3-angle/2.0);
+	moveTo(delta1, 0, delta3);
 }
 
 void Linkbot::openGripperNB(double angle)
 {
-	moveToNB(-angle/2.0, 0, -angle/2.0);
+	double angle1, angle3;
+	double delta1, delta3;
+	getJointAngle(ROBOT_JOINT1, angle1);
+	getJointAngle(ROBOT_JOINT3, angle3);
+	delta1 = (angle1-angle/2.0);
+	delta3 = (angle3-angle/2.0);
+	moveToNB(delta1, 0, delta3);
 }
 
 void Linkbot::closeGripper()
 {
-   double gripperAngleOld= 0;
+   /*double gripperAngleOld= 0;
    double gripperAngleNew;
    
    getJointAngle(ROBOT_JOINT1, gripperAngleNew); // get the new position
-   
+   std::cout<<"angle "<<gripperAngleNew<<std::endl;*/
     /* Close the gripper to grab an object */
-    while(fabs(gripperAngleNew - gripperAngleOld) > 0.1) {
+    /*while(fabs(gripperAngleNew - gripperAngleOld) > 0.1) { //0.1
         gripperAngleOld = gripperAngleNew;    // update the old position
         getJointAngle(ROBOT_JOINT1, gripperAngleNew); // get the new position
-		
+		std::cout<<"angle "<<gripperAngleNew<<std::endl;
 		moveNB( 8, 0, 8); // move 8 degrees
         #ifndef _WIN32
         usleep(1000000);
@@ -809,19 +822,73 @@ void Linkbot::closeGripper()
         getJointAngle(ROBOT_JOINT1, gripperAngleNew); // get the new position
 		
     }
-	moveNB(8, 0, 8);            // try to move another 8 degrees 
+	//moveNB(8, 0, 8);            // try to move another 8 degrees 
     #ifndef _WIN32
         usleep(1000000);
     #else
         Sleep(1000);
     #endif            // closing for 1 second
 	setMovementStateNB(ROBOT_HOLD, ROBOT_HOLD, ROBOT_HOLD); // hold the object
+	stop();
+	return;*/
+	
+	/* New version */
+	/*double angle1, angle3;
+	double delta;
+	double angle;
+	getJointAngle(ROBOT_JOINT1, angle1);
+	getJointAngle(ROBOT_JOINT3, angle3);
+	delta=360-(angle3+angle1);
+	angle=(delta-310)/2.0; 
+	if (angle <= 2){
+		angle = 0;
+	}
+	std::cout<<"angle1 "<<angle1<<" angle3 "<<angle3<<std::endl;
+	std::cout<<"delta "<<delta<<" angle "<<angle<<std::endl;
+	move(angle, 0, angle);
+	holdJoints();*/
 
+}
+
+void Linkbot::closeGripperNB()
+{
+	//boost::thread gripperThread(&Linkbot::closeGripper, this);
+	//gripperThread.detach();
+	/*double angle1, angle3;
+	double delta;
+	double angle;
+	getJointAngle(ROBOT_JOINT1, angle1);
+	getJointAngle(ROBOT_JOINT3, angle3);
+	delta=360-(angle3+angle1);
+	angle=(delta-310)/2.0; 
+	if (angle <= 2){
+		angle = 0;
+	}
+	std::cout<<"angle1 "<<angle1<<" angle3 "<<angle3<<std::endl;
+	std::cout<<"delta "<<delta<<" angle "<<angle<<std::endl;
+	moveNB(angle, 0, angle);*/ 
+	//holdJoints();
 }
 
 void Linkbot::moveToNB(double angle1, double angle2, double angle3)
 {
-	CALL_C_IMPL(linkbotMoveTo, 0x07, angle1, angle2, angle3);
+	int type;
+	getFormFactor(type);
+	switch(type){
+		case 0:
+			CALL_C_IMPL(linkbotMoveTo, 0x05, angle1, angle2, angle3);
+			break;
+		case 1:
+			CALL_C_IMPL(linkbotMoveTo, 0x03, angle1, angle2, angle3);
+			break;
+		case 2:
+			CALL_C_IMPL(linkbotMoveTo, 0x07, angle1, angle2, angle3);
+			break;
+		default:
+			CALL_C_IMPL(linkbotMoveTo, 0x07, angle1, angle2, angle3);
+			break;
+	}
+	
 }
 
 void Linkbot::moveTo(double angle1, double angle2, double angle3)
