@@ -781,24 +781,12 @@ void Linkbot::turnRightNB(double angle, double radius, double tracklength)
 
 void Linkbot::openGripper(double angle)
 {
-	double angle1, angle3;
-	double delta1, delta3;
-	getJointAngle(ROBOT_JOINT1, angle1);
-	getJointAngle(ROBOT_JOINT3, angle3);
-	delta1 = (angle1-angle/2.0);
-	delta3 = (angle3-angle/2.0);
-	moveTo(delta1, 0, delta3);
+	move(-angle/2.0, 0, -angle/2.0);
 }
 
 void Linkbot::openGripperNB(double angle)
 {
-	double angle1, angle3;
-	double delta1, delta3;
-	getJointAngle(ROBOT_JOINT1, angle1);
-	getJointAngle(ROBOT_JOINT3, angle3);
-	delta1 = (angle1-angle/2.0);
-	delta3 = (angle3-angle/2.0);
-	moveToNB(delta1, 0, delta3);
+    moveNB(-angle/2.0, 0, -angle/2.0);	
 }
 
 void Linkbot::closeGripper()
