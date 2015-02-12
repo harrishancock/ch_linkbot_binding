@@ -803,6 +803,10 @@ void Linkbot::openGripperNB(double angle)
 
 void Linkbot::closeGripper()
 {
+	/* This is the old code. It doesn't work because when the two motors 
+	start pushing on each oter there is no safety angle that stops the motion and
+	the gripper pops out*/
+
    /*double gripperAngleOld= 0;
    double gripperAngleNew;
    
@@ -832,7 +836,7 @@ void Linkbot::closeGripper()
 	stop();
 	return;*/
 	
-	/* New version */
+	/* New version. The value of angle needs tuning */
 	/*double angle1, angle3;
 	double delta;
 	double angle;
@@ -852,8 +856,11 @@ void Linkbot::closeGripper()
 
 void Linkbot::closeGripperNB()
 {
+	/* The part with threads is for the old code*/
 	//boost::thread gripperThread(&Linkbot::closeGripper, this);
 	//gripperThread.detach();
+
+    /* New code*/
 	/*double angle1, angle3;
 	double delta;
 	double angle;
