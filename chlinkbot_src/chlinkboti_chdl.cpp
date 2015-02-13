@@ -1903,7 +1903,7 @@ EXPORTCH void CLinkbotIGroup_moveTo_chdl(void *varg) {
     return;
 }
 
-/*linkbotGroup moveToNB*/
+/*linkbotGroup moveToZeroNB*/
 EXPORTCH void CLinkbotIGroup_moveToZeroNB_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
@@ -1917,7 +1917,7 @@ EXPORTCH void CLinkbotIGroup_moveToZeroNB_chdl(void *varg) {
     return;
 }
 
-/*linkbotGroup moveToNB*/
+/*linkbotGroup moveToZero*/
 EXPORTCH void CLinkbotIGroup_moveToZero_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
@@ -2251,7 +2251,7 @@ EXPORTCH void CLinkbotIGroup_resetToZeroNB_chdl(void *varg) {
     return;
 }
 
-/*linkbotGroup resetToZeroNB*/
+/*linkbotGroup isMoving*/
 EXPORTCH int CLinkbotIGroup_isMoving_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;

@@ -312,6 +312,62 @@ private:
 };
 
 
+/*GroupL*/
+class CLinkbotLGroup {
+
+public:
+	CLinkbotLGroup();
+	~CLinkbotLGroup();
+	void addRobot(char* serialID);
+	void connect();
+	
+	/* MOVEMENT FUNCTIONS */
+	void holdJoint(robotJointId_t id);
+    void holdJoints();
+	int isMoving();
+	void move(double j1, double j2, double j3);
+	void moveForeverNB();
+	void moveJoint(robotJointId_t id, double angle);
+	void moveJointNB(robotJointId_t id, double angle);
+	void moveJointForeverNB(robotJointId_t id);
+	void moveJointTo(robotJointId_t id, double angle);
+	void moveJointToNB(robotJointId_t id, double angle);
+	void moveJointToByTrackPos(robotJointId_t id, double angle);
+    void moveJointToByTrackPosNB(robotJointId_t id, double angle);
+    void moveNB(double j1, double j2, double j3);
+	void moveTo(double angle1, double angle2, double angle3);
+	void moveToNB(double angle1, double angle2, double angle3);
+	void moveToByTrackPos(double angle1, double angle2, double angle3);
+    void moveToByTrackPosNB(double angle1, double angle2, double angle3);
+    void moveToZero();
+    void moveToZeroNB();
+	void moveWait();
+	void relaxJoint(robotJointId_t id);
+	void relaxJoints();
+	void resetToZero();
+    void resetToZeroNB();
+    void stop();
+
+	/* SET FUNCTIONS */
+
+	void setJointSpeed(robotJointId_t id, double speed);
+    void setJointSpeeds(double speed1, double speed2, double speed3);
+    void setJointSpeedRatio(robotJointId_t id, double ratio);
+    void setJointSpeedRatios(double ratios1, double ratios2, double ratios3);
+
+private:
+	CLinkbotL **_robots;
+	int _numRobots;
+    int argInt;
+    double argDouble;
+    int _numAllocated;
+	int _motionInProgress;
+	void *_thread;
+	char **_ID; //Array that stores the Id of the robots to add to the group
+};
+
+
+
 void *CLinkbotI::g_chlinkbot_dlhandle=NULL;
 int CLinkbotI::g_chlinkbot_dlcount=0;
 void *CLinkbotL::g_chlinkbot_dlhandle=NULL;

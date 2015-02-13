@@ -15,19 +15,17 @@ int moving=0;
 double a1, a3, da, da_2;
 
 
-CLinkbotIGroup group;
+CLinkbotLGroup group;
 printf("addRobot\n");
+group.addRobot("JBPC");
 group.addRobot("SRS8");
-group.addRobot("TP51");
 group.connect();
-group.openGripper(20);
-//group.closeGripper();
-//group.holdJoints();
-sleep(5);
-/*CLinkbotI robot;
-robot.connect("SRS8");
+//group.setJointSpeeds(45, 20, 0);
+group.move(90, 180, 0);
+/*CLinkbotL robot;
+robot.connect("JBPC");
 robot.connect("TP51");
-robot.openGripper(20);
-robot.closeGripper();*/
+robot.setJointSpeeds(45, NaN ,120);
+robot.move(180, 0, 90);*/
 
 
