@@ -144,6 +144,7 @@ public:
 	~LinkbotGroup();
 	void addRobot(char* serialID);
 	void connect();
+	int checkFormFactor(int type);
 
 	/* MOVEMENT FUNCTIONS */
 	void closeGripper();

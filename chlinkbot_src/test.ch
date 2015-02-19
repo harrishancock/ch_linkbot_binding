@@ -17,14 +17,13 @@ double a1, a3, da, da_2;
 
 CLinkbotLGroup group;
 printf("addRobot\n");
+group.addRobot("TP51");
 group.addRobot("JBPC");
-group.addRobot("SRS8");
 group.connect();
-//group.setJointSpeeds(45, 20, 0);
-group.move(90, 180, 0);
-/*CLinkbotL robot;
+group.setJointSpeeds(45, NaN, 20);
+group.move(180, NaN, 90);
+/*CLinkbotI robot;
 robot.connect("JBPC");
-robot.connect("TP51");
 robot.setJointSpeeds(45, NaN ,120);
 robot.move(180, 0, 90);*/
 

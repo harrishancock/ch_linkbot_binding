@@ -73,6 +73,21 @@ void LinkbotGroup::connect()
     }
 }
 
+int LinkbotGroup::checkFormFactor(int type)
+{
+	int linkbotType;
+	int check = 0;
+
+	for (Linkbot* robot : m->robots) {
+		robot->getFormFactor(linkbotType);
+		if (linkbotType != type){
+			check = -1;
+			return check;
+		}
+	}
+	return check;
+}
+
 /* movement functions */
 void LinkbotGroup::driveBackwardNB(double angle)
 {

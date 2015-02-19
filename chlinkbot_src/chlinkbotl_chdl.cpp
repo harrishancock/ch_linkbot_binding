@@ -48,8 +48,8 @@ EXPORTCH int CLinkbotL_connect_chdl(void *varg) {
     l->getFormFactor(type);
 	if (type == 0)
 	{
-		printf("WARNING: A LinkbotI is connected, not a LinkbotL.\nPlease connect a LinbotL.\n");
-		//exit(-1);
+		printf("WARNING: A Linkbot-I is connected, not a Linkbot-L.\nPlease connect a Linbot-L.\nExiting...\n");
+		exit(-1);
 	}
     return rc;
 }
@@ -1188,12 +1188,20 @@ EXPORTCH void CLinkbotLGroup_connect_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
     class LinkbotGroup *g;
+	int checkType;
+	int type = 1;
 
     Ch_VaStart(interp, ap, varg);
 
     g=Ch_VaArg(interp, ap, class LinkbotGroup *);
     g->connect();
     Ch_VaEnd(interp, ap);
+
+	checkType=g->checkFormFactor(type);
+	if (checkType == -1){
+		printf("WARNING: Not all the Linkbots in the group are Linkbot-Ls.\nPlease check the Linkbots.\nExiting...\n");
+	    exit(-1);
+	}
 }
 
 /*linkbotGroup moveWait*/

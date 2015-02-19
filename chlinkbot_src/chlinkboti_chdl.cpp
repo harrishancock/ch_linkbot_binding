@@ -50,7 +50,7 @@ EXPORTCH int CLinkbotI_connect_chdl(void *varg) {
     l->getFormFactor(type);
 	if (type == 1)
 	{
-		printf("A LinkbotL is connected, not a LinkbotI.\nPlease connect a LinbotI. Exit..\n");
+		printf("A Linkbot-L is connected, not a Linkbot-I.\nPlease connect a Linbot-I.\nExiting..\n");
 		exit(-1);
 	}
 
@@ -1492,12 +1492,20 @@ EXPORTCH void CLinkbotIGroup_connect_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
     class LinkbotGroup *g;
+	int checkType;
+	int type = 0;
 
     Ch_VaStart(interp, ap, varg);
 
     g=Ch_VaArg(interp, ap, class LinkbotGroup *);
     g->connect();
     Ch_VaEnd(interp, ap);
+
+	checkType=g->checkFormFactor(type);
+	if (checkType == -1){
+		printf("WARNING: Not all the Linkbots in the group are Linkbot-Is.\nPlease check the Linkbots.\nExiting...\n");
+	    exit(-1);
+	}
 }
 
 /*linkbotGroup driveDistanceNB*/
