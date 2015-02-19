@@ -331,6 +331,22 @@ EXPORTCH void CLinkbotI_moveWait_chdl(void *varg) {
     return;
 }
 
+/*linkbot moveJointWait*/
+EXPORTCH void CLinkbotI_moveJointWait_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    robotJointId_t id;    
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    id=Ch_VaArg(interp, ap, robotJointId_t);
+    l->moveJointWait(id);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
 /*linkbot isMoving*/
 EXPORTCH int CLinkbotI_isMoving_chdl(void *varg) {
     ChInterp_t interp;
@@ -1554,6 +1570,22 @@ EXPORTCH void CLinkbotIGroup_moveWait_chdl(void *varg) {
     
     g=Ch_VaArg(interp, ap, class LinkbotGroup *);
     g->moveWait();
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveJointWait*/
+EXPORTCH void CLinkbotIGroup_moveJointWait_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+    g->moveJointWait(id);
     Ch_VaEnd(interp, ap);
     return;
 }

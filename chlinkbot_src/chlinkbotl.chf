@@ -163,6 +163,18 @@ void CLinkbotL::moveWait() {
     dlrunfun(fptr, NULL, NULL, this, mask);
 }
 
+/*moveJointWait*/
+void CLinkbotL::moveJointWait(robotJointId_t id) {
+    void *fptr;
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_moveJointWait_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id);
+}
+
 /*stop*/
 void CLinkbotL::stop() {
     void *fptr;
@@ -933,6 +945,21 @@ void CLinkbotLGroup::moveWait() {
     }
      
     dlrunfun(fptr, NULL, NULL, this);
+    return;
+}
+
+/* moveJointWait*/
+void CLinkbotLGroup::moveJointWait(robotJointId_t id) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotL::g_chlinkbot_dlhandle, "CLinkbotLGroup_moveWait_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id);
     return;
 }
 

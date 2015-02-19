@@ -696,6 +696,31 @@ void Linkbot::moveWait(int mask)
     }
 }
 
+void Linkbot::moveJointWait(robotJointId_t id)
+{
+    /* Get the current joint states */
+    std::cout << "moveWait()" << std::endl;
+    int time;
+	int i = id-1;
+    boost::unique_lock<boost::mutex> lock(m->jointStateMutex);
+
+    c_impl::linkbotGetJointStates(
+        m->linkbot,
+        &time,
+        &m->jointStates[0],
+        &m->jointStates[1],
+        &m->jointStates[2]);
+
+    std::cout << "Jointstates: " << m->jointStates[0] << " "
+                                 << m->jointStates[1] << " "
+                                 << m->jointStates[2] << std::endl;
+
+	while(m->jointStates[i] == c_impl::barobo::JointState::MOVING){
+		std::cout << "Waiting on Joint " << i << std::endl;
+		m->jointStateCond.wait(lock);
+	}
+}
+
 int Linkbot::isMoving(int mask)
 {
     /* Get the current joint states */

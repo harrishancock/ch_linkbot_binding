@@ -163,6 +163,12 @@ void LinkbotGroup::moveWait()
 	m->robots.back()->moveWait();
 }
 
+void LinkbotGroup::moveJointWait(robotJointId_t id)
+{
+	/*Wait for the last robot to stop*/
+	m->robots.back()->moveJointWait(id);
+}
+
 void LinkbotGroup::holdJoint(robotJointId_t id)
 {
 	for (Linkbot* robot : m->robots) {
