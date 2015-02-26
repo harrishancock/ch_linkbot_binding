@@ -43,11 +43,26 @@ CLinkbotI::~CLinkbotI() {
 }
 
 /*connect*/
-int CLinkbotI::connect(const char* id) {
+int CLinkbotI::connect() {
     void *fptr;
     int rc;
   
     fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_connect_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return -1;
+    }
+     
+    dlrunfun(fptr, &rc, NULL, this);
+    return rc;
+}
+
+/*connect*/
+int CLinkbotI::connectWithSerialID(const char* id) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_connectWithSerialID_chdl");
     if (fptr == NULL) {
        printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
        return -1;

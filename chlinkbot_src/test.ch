@@ -15,16 +15,16 @@ int moving=0;
 double a1, a3, da, da_2;
 
 
-CLinkbotIGroup group;
+/*CLinkbotIGroup group;
 printf("addRobot\n");
 group.addRobot("SRS8");
 group.addRobot("TP51");
 group.connect();
 group.moveJointNB(JOINT1, 180);
-group.moveJointWait(JOINT1);
-/*CLinkbotL robot;
-robot.connect("JBPC");
+group.moveJointWait(JOINT1);*/
+CLinkbotL robot;
+robot.connect();
 robot.moveJointNB(JOINT1, 180);
-robot.moveJointWait(JOINT1);*/
+robot.moveJointWait(JOINT1);
 
 

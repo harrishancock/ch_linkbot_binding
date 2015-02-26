@@ -54,23 +54,23 @@ Linkbot::Linkbot()
 {
 }
 
-int Linkbot::connect(const char* serialId)
+int Linkbot::connect()
 {
     std::cout << "In cons..." << std::endl;
     m = new LinkbotImpl();
     std::cout << "Creating impl..." << std::endl;
 	
-    try {
-        m->linkbot = c_impl::linkbotNew(serialId);
-		//std::cout<<"m->linkbot "<<m->linkbot<<std::endl;
-    }
-    catch (std::exception& e){
-        fprintf(stderr, "Could not connect to robot: %s\n", e.what());
-        return -1;
-    }
+    if(m->linkbot = c_impl::linkbotFromTcpEndpoint("127.0.0.1", "42010")){
+		std::cout << "Successful connection "<<std::endl;
+	}
+	else{
+		fprintf(stderr, "Could not connect to robot. Exiting..\n");
+		exit (-1);
+	}
+	
     std::cout << "setting joint states..." << std::endl;
     for(int i = 0; i < 3; i++) {
-        m->jointStates[i] = c_impl::barobo::JointState::STOP;
+        m->jointStates[i] = c_impl::barobo::JointState::HOLD;
     }
     mMaxSpeed = 200;
 
@@ -92,6 +92,45 @@ int Linkbot::connect(const char* serialId)
     }
     return 0;
 }
+
+int Linkbot::connectWithSerialID(const char* serialId)
+{
+    std::cout << "In serialID cons..." << std::endl;
+    m = new LinkbotImpl();
+    std::cout << "Creating impl..." << std::endl;
+	    
+	if(m->linkbot = c_impl::linkbotFromSerialId(serialId)){
+		std::cout << "Successful connection "<<std::endl;
+	}
+	else{
+		fprintf(stderr, "Could not connect to robot. Exiting..\n");
+		return -1;
+	}
+    std::cout << "setting joint states..." << std::endl;
+    for(int i = 0; i < 3; i++) {
+        m->jointStates[i] = c_impl::barobo::JointState::HOLD;
+    }
+    mMaxSpeed = 200;
+
+    /* Enable joint callbacks */
+    c_impl::linkbotSetJointEventCallback(m->linkbot, _jointEventCB, m);
+    /* Get the form factor */
+    c_impl::barobo::FormFactor::Type formFactor;
+    c_impl::linkbotGetFormFactor(m->linkbot, &formFactor);
+    switch (formFactor) {
+        case c_impl::barobo::FormFactor::I:
+            m->motorMask = 0x05;
+            break;
+        case c_impl::barobo::FormFactor::L:
+            m->motorMask = 0x03;
+            break;
+        case c_impl::barobo::FormFactor::T:
+            m->motorMask = 0x07;
+            break;
+    }
+    return 0;
+}
+
 
 int Linkbot::disconnect()
 {
@@ -249,7 +288,7 @@ void Linkbot::setJointMovementStateNB(robotJointId_t id, robotJointState_t dir)
     bool speedNegative = false;
     switch(dir) {
         case ROBOT_NEUTRAL:
-            state = c_impl::barobo::JointState::STOP;
+            state = c_impl::barobo::JointState::COAST;
             break;
         case ROBOT_FORWARD:
             state = c_impl::barobo::JointState::MOVING;
@@ -360,7 +399,7 @@ void Linkbot::setMovementStateNB( robotJointState_t dir1,
     for(int i = 0; i < 3; i++) {
         switch(states[i]) {
             case ROBOT_NEUTRAL:
-                _states[i] = c_impl::barobo::JointState::STOP;
+                _states[i] = c_impl::barobo::JointState::COAST;
                 break;
             case ROBOT_FORWARD:
                 _states[i] = c_impl::barobo::JointState::MOVING;

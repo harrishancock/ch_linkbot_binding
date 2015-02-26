@@ -32,8 +32,8 @@ EXPORTCH void CLinkbotI_dCLinkbotI_chdl(void *varg) {
     return;
 }
 
-/*linkbot connect*/
-EXPORTCH int CLinkbotI_connect_chdl(void *varg) {
+/*linkbot connectWithSerialID*/
+EXPORTCH int CLinkbotI_connectWithSerialID_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
     class Linkbot *l;
@@ -45,7 +45,30 @@ EXPORTCH int CLinkbotI_connect_chdl(void *varg) {
     l=Ch_VaArg(interp, ap, class Linkbot *);
     id = Ch_VaArg(interp, ap, const char*);
     printf("Connecting to %s\n", id);
-    rc = l->connect(id);
+    rc = l->connectWithSerialID(id);
+    Ch_VaEnd(interp, ap);
+    l->getFormFactor(type);
+	if (type == 1)
+	{
+		printf("A Linkbot-L is connected, not a Linkbot-I.\nPlease connect a Linbot-I.\nExiting..\n");
+		exit(-1);
+	}
+
+    return rc;
+}
+
+/*linkbot connect*/
+EXPORTCH int CLinkbotI_connect_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+	int type;
+    int rc;
+    Ch_VaStart(interp, ap, varg);
+   
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    printf("Connecting...\n");
+    rc = l->connect();
     Ch_VaEnd(interp, ap);
     l->getFormFactor(type);
 	if (type == 1)

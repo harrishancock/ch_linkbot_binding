@@ -43,7 +43,7 @@ CLinkbotL::~CLinkbotL() {
 }
 
 /*connect*/
-int CLinkbotL::connect(const char* id) {
+int CLinkbotL::connect() {
     void *fptr;
     int rc;
   
@@ -53,9 +53,25 @@ int CLinkbotL::connect(const char* id) {
        return -1;
     }
      
+    dlrunfun(fptr, &rc, NULL, this);
+    return rc;
+}
+
+/*connectWithSerialID*/
+int CLinkbotL::connectWithSerialID(const char* id) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_connectWithSerialID_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return -1;
+    }
+     
     dlrunfun(fptr, &rc, NULL, this, id);
     return rc;
 }
+
 
 /*disconnect*/
 void CLinkbotL::disconnect() {

@@ -27,7 +27,8 @@ class Linkbot {
     public:
         Linkbot();
         ~Linkbot();
-        int connect(const char* serialID);
+        int connectWithSerialID(const char* serialID);
+		int connect();
 		int disconnect();
 
         /* GETTERS */

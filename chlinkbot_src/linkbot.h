@@ -37,6 +37,7 @@ class CLinkbotI {
         CLinkbotI();
         ~CLinkbotI();
         int connect();
+		int connectWithSerialID(const char* id);
 		void disconnect();
 
         /* GETTERS */
@@ -151,6 +152,7 @@ class CLinkbotL {
         CLinkbotL();
         ~CLinkbotL();
         int connect();
+		int connectWithSerialID(const char* id);
 		void disconnect();
 
         /* GETTERS */

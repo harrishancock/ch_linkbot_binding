@@ -69,7 +69,7 @@ void LinkbotGroup::connect()
         m->robots.push_back(new Linkbot());  
 		/*access the last element and call a member function
 		  id.c_str() gets the C equivalent of the string*/
-        m->robots.back()->connect(id.c_str());
+        //m->robots.back()->connect(id.c_str());
     }
 }
 
