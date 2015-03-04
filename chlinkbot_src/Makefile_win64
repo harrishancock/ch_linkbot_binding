@@ -1,0 +1,49 @@
+# Makefile to build liblinkbot.dl in Windows
+
+BUILD_DIR=../build-windows64
+
+CFLAGS= -std=c++11
+BOOST_LIBS=$(BOOST_ROOT)/stage/lib
+
+target: liblinkbot.dl
+
+LFLAG= -L$(BOOST_LIBS)
+
+LINKLIBS=$(BUILD_DIR)/liblinkbot.a \
+$(BUILD_DIR)/baromesh/library/libbaromesh.a  \
+-lboost_thread-mgw49-mt-1_57 \
+-lboost_filesystem-mgw49-mt-1_57 \
+-lboost_system-mgw49-mt-1_57 \
+-lboost_log-mgw49-mt-1_57 \
+$(BUILD_DIR)/baromesh/library/libsfp/libsfp.a \
+$(BUILD_DIR)/baromesh/library/ribbon-bridge/librpc.a \
+$(BUILD_DIR)/baromesh/library/ribbon-bridge/librpc-proto.a \
+$(BUILD_DIR)/baromesh/library/baromesh/interfaces/librobot-interface.a \
+$(BUILD_DIR)/baromesh/library/baromesh/interfaces/libdaemon-interface.a \
+$(BUILD_DIR)/baromesh/library/baromesh/interfaces/libdongle-interface.a \
+$(BUILD_DIR)/baromesh/library/baromesh/interfaces/libcommontypes-proto.a \
+$(BUILD_DIR)/baromesh/library/baromesh/common/libbaromesh-common.a \
+$(BUILD_DIR)/baromesh/library/cxx-util/libcxx-util.a \
+-lws2_32 \
+-lpthread \
+C:/ch/extern/lib/chsdk.lib \
+C:/ch/extern/lib/ch.lib \
+C:/ch/bin/ch.dll
+
+liblinkbot.dl: chlinkboti_chdl.o chlinkbotl_chdl.o
+	g++ -shared -o liblinkbot.dl chlinkboti_chdl.o chlinkbotl_chdl.o $(LINKLIBS) $(LFLAG) 
+
+chlinkboti_chdl.o: chlinkboti_chdl.cpp
+	g++ -c chlinkboti_chdl.cpp -I../include/barobo -IC:/Ch/extern/include
+
+chlinkbotl_chdl.o: chlinkbotl_chdl.cpp
+	g++ -c chlinkbotl_chdl.cpp -I../include/barobo -IC:/Ch/extern/include
+
+
+clean:
+	del *.o
+	del *.dl 
+
+install:
+	sh ./createpkg.sh
+	ch pkginstall.ch chbarobo-0.2

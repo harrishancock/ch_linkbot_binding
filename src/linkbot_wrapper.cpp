@@ -40,12 +40,27 @@ struct LinkbotImpl
     c_impl::barobo::JointState::Type jointStates[3];
     c_impl::baromesh::Linkbot *linkbot;
     uint8_t motorMask;
+
+    /* For recording angles */
+    /* tuple format is <timestamp, jointNo, angle> */
+    std::vector<std::tuple<int, int, double>> recordedJointAngles;
+    uint8_t jointsRecordingMask;
+    void encoderEventCB(int jointNo, double angle, int timestamp);
+    boost::mutex recordAnglesMutex;
+    double userInitTime;
+    double userInitAngles[3];
+    double** userRecordedTimes;
+    double** userRecordedAngles[3];
 };
 
+void _encoderEventCB(int joint, double angle, int timestamp, void* data)
+{
+    LinkbotImpl *l = static_cast<LinkbotImpl*>(data);
+    l->encoderEventCB(joint, angle, timestamp);
+}
 
 void _jointEventCB(int joint, c_impl::barobo::JointState::Type state, int timestamp, void *data)
 {
-    std::cout << "Received joint event." << std::endl;
     LinkbotImpl *l = static_cast<LinkbotImpl*>(data);
     l->jointEventCB(joint, state);
 }
@@ -853,6 +868,57 @@ void Linkbot::openGripperNB(double angle)
     moveNB(-angle/2.0, 0, -angle/2.0);	
 }
 
+void Linkbot::recordAnglesBegin(
+            robotRecordData_t &time,
+            robotRecordData_t &angle1,
+            robotRecordData_t &angle2,
+            robotRecordData_t &angle3,
+            int shiftData)
+{
+    boost::lock_guard<boost::mutex> lock(m->recordAnglesMutex);
+    /* Get the joint angles right now */
+    double anglesNow[3];
+    int timestamp;
+    auto rc = c_impl::linkbotGetJointAngles(
+        m->linkbot,
+        &timestamp,
+        &m->userInitAngles[0],
+        &m->userInitAngles[1],
+        &m->userInitAngles[2]);
+    if(rc) return;
+    m->userInitTime = timestamp/1000.0;
+
+    /* Set up encoder events */
+    if(!m->jointsRecordingMask) {
+        c_impl::linkbotSetEncoderEventCallback(m->linkbot, _encoderEventCB, 1.0, m);
+    }
+    m->jointsRecordingMask = 0x07;
+}
+
+void Linkbot::recordAnglesEnd( int &num )
+{
+    boost::lock_guard<boost::mutex> lock(m->recordAnglesMutex);
+    c_impl::linkbotSetEncoderEventCallback(m->linkbot, nullptr, 0, nullptr);
+    m->jointsRecordingMask = 0x0;
+    num = m->recordedJointAngles.size();
+    num+=1; // Account for initial entry
+    *(m->userRecordedTimes) = new double[num];
+    for(int i = 0; i < 3; i++) {
+        *(m->userRecordedAngles[i]) = new double[num];
+        (*(m->userRecordedAngles[i]))[0] = m->userInitAngles[i];
+    }
+    (*m->userRecordedTimes)[0] = m->userInitTime;
+    int i = 1;
+    for( auto &elem : m->recordedJointAngles ) {
+        (*m->userRecordedTimes)[i] = std::get<0>(elem) / 1000.0;
+        for(int j = 0; j < 3; j++) {
+            (*(m->userRecordedAngles[j]))[i] = (*(m->userRecordedAngles[j]))[i-1];
+        }
+        (*(m->userRecordedAngles[std::get<1>(elem)]))[i] = std::get<2>(elem);
+        i++;
+    }
+}
+
 void Linkbot::closeGripper()
 {
 	/* This is the old code. It doesn't work because when the two motors 
@@ -1005,6 +1071,16 @@ void LinkbotImpl::jointEventCB(int jointNo, c_impl::barobo::JointState::Type sta
     std::cout << "Setting joint " << jointNo << " To " << state << std::endl;
     jointStates[jointNo] = state;
     jointStateCond.notify_all();
+}
+
+void LinkbotImpl::encoderEventCB(int jointNo, double angle, int timestamp)
+{
+    boost::lock_guard<boost::mutex> lock(recordAnglesMutex);
+    if(jointsRecordingMask & (1<<jointNo)) {
+        recordedJointAngles.push_back(
+            std::tuple<int, int, double>(timestamp, jointNo, angle)
+        );
+    }
 }
 
 void Linkbot::delaySeconds(int seconds)

@@ -1,6 +1,8 @@
 #ifndef LINKBOT_WRAPPER_HPP_
 #define LINKBOT_WRAPPER_HPP_
 
+typedef double* robotRecordData_t;
+
 typedef enum robotJoints_e {
   ROBOT_ZERO,
   ROBOT_JOINT1,
@@ -112,6 +114,13 @@ class Linkbot {
 		void moveToZeroNB();
 		void openGripper(double angle);
 		void openGripperNB(double angle);
+        void recordAnglesBegin(
+            robotRecordData_t &time,
+            robotRecordData_t &angle1,
+            robotRecordData_t &angle2,
+            robotRecordData_t &angle3,
+            int shiftData = 1);
+        void recordAnglesEnd(int &num);
 		void relaxJoint(robotJointId_t id);
 	    void relaxJoints();
 		void resetToZero();
