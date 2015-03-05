@@ -45,6 +45,16 @@ int main(int argc, char *argv[]) {
     l->setJointMovementStateTime(ROBOT_JOINT1, ROBOT_NEGATIVE, 3);
     std::cout << "Done\n";
 
+    std::cout << "Forward\n";
+    l->setJointSpeed(ROBOT_JOINT1, 45);
+    l->moveJointTime(ROBOT_JOINT1, 3);
+    std::cout << "Backward\n";
+    l->setJointSpeed(ROBOT_JOINT1, -45);
+    l->moveJointTime(ROBOT_JOINT1, 3);
+
+    std::cout << "moveTime 3 seconds\n";
+    l->moveTime(3);
+
     #if 0
 	l->driveTime(seconds);
 	std::cout<<"movement 1 done"<<std::endl;

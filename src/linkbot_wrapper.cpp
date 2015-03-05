@@ -692,15 +692,28 @@ void Linkbot::moveJointForeverNB(robotJointId_t id)
 
 void Linkbot::moveJointTime(robotJointId_t id, double time)
 {
+    moveJointTimeNB(id, time);
+    moveWait(1<<(int(id)-1));
+}
+
+void Linkbot::moveJointTimeNB(robotJointId_t id, double time)
+{
 	if(id == ROBOT_JOINT3) {
-        setJointMovementStateTime(id, ROBOT_BACKWARD, time);
+        setJointMovementStateTimeNB(id, ROBOT_BACKWARD, time);
     } else {
-        setJointMovementStateTime(id, ROBOT_FORWARD, time);
+        setJointMovementStateTimeNB(id, ROBOT_FORWARD, time);
     }
 }
+
 void Linkbot::moveTime(double time)
 {
-	setMovementStateTime(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_BACKWARD, time);
+    moveTimeNB(time);
+    moveWait();
+}
+
+void Linkbot::moveTimeNB(double time)
+{
+	setMovementStateTimeNB(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_POSITIVE, time);
 }
 
 void Linkbot::moveJointToByTrackPos(robotJointId_t id, double angle)
