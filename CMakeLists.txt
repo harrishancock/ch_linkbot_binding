@@ -64,4 +64,4 @@ if(WIN32)
         )
 endif()
 
-#add_subdirectory(test)
+add_subdirectory(test)

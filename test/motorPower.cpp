@@ -15,7 +15,8 @@ int main(int argc, char *argv[]) {
     }
 
     std::cout << "Creating new linkbot..." << std::endl;
-    Linkbot *l = new Linkbot(argv[1]);
+    Linkbot *l = new Linkbot();
+    l->connectWithSerialID(argv[1]);
     std::cout << "sleeping..." << std::endl;
     sleep(2);
     std::cout << "Connecting..." << std::endl;

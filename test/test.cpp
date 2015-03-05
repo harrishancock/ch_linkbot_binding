@@ -14,10 +14,9 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    Linkbot *l = new Linkbot(argv[1]);
-    sleep(2);
+    Linkbot *l = new Linkbot();
+    l->connectWithSerialID(argv[1]);
 	double seconds=5;
-    l->connect();
     /*l->move(90, 90, 90);
     l->move(-90, -90, -90);
     l->setMovementStateTime(
@@ -28,9 +27,19 @@ int main(int argc, char *argv[]) {
             ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_POSITIVE, 3);
     l->setMovementStateTime(
             ROBOT_NEGATIVE, ROBOT_NEGATIVE, ROBOT_NEGATIVE, 3);*/
+
+    #if 0
 	l->driveTime(seconds);
 	std::cout<<"movement 1 done"<<std::endl;
 	l->driveTimeNB(seconds);
 	std::cout<<"movement 2 done"<<std::endl;
+    #endif
+    l->moveNB(90, 90, 90);
+    int rc;
+    while(1) {
+        rc = l->isMoving();
+        std::cout << rc << std::endl;
+        if(rc == 0) break;
+    }
     return 0;
 }

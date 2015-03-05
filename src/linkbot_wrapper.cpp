@@ -3,9 +3,10 @@ namespace c_impl {
 #include "baromesh/linkbot.h"
 }
 #include "barobo/linkbot.hpp"
-#include "boost/thread/mutex.hpp"
-#include "boost/thread/condition_variable.hpp"
-#include "boost/thread.hpp"
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <vector>
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -33,20 +34,41 @@ do { \
 
 struct LinkbotImpl
 {
+    LinkbotImpl() 
+    { 
+    }
+    ~LinkbotImpl() {
+    }
     friend void _jointEventCB(int, c_impl::barobo::JointState::Type, int, void*);
     void jointEventCB(int jointNo, c_impl::barobo::JointState::Type state);
-    boost::mutex jointStateMutex;
-    boost::condition_variable jointStateCond;
+    std::mutex jointStateMutex;
+    std::condition_variable jointStateCond;
     c_impl::barobo::JointState::Type jointStates[3];
     c_impl::baromesh::Linkbot *linkbot;
     uint8_t motorMask;
+
+    void setJointsMovingFlag(int mask) {
+        for(int i = 0; i < 3; i++) {
+            if(mask&(1<<i)) {
+                jointStates[i] = c_impl::barobo::JointState::MOVING;
+            }
+        }
+    }
+    #if 0
+    /* For the joint-state thread */
+    std::thread jointStateThread;
+    bool jointStateThreadActive;
+    std::mutex jointStateThreadActiveLock;
+    std::condition_variable jointStateThreadActiveCond;
+    void startJointStateThread();
+    #endif
 
     /* For recording angles */
     /* tuple format is <timestamp, jointNo, angle> */
     std::vector<std::tuple<int, int, double>> recordedJointAngles;
     uint8_t jointsRecordingMask;
     void encoderEventCB(int jointNo, double angle, int timestamp);
-    boost::mutex recordAnglesMutex;
+    std::mutex recordAnglesMutex;
     double userInitTime;
     double userInitAngles[3];
     double** userRecordedTimes;
@@ -727,7 +749,7 @@ void Linkbot::moveWait(int mask)
     /* Get the current joint states */
     std::cout << "moveWait()" << std::endl;
     int time;
-    boost::unique_lock<boost::mutex> lock(m->jointStateMutex);
+    std::unique_lock<std::mutex> lock(m->jointStateMutex);
 
     c_impl::linkbotGetJointStates(
         m->linkbot,
@@ -756,7 +778,7 @@ void Linkbot::moveJointWait(robotJointId_t id)
     std::cout << "moveWait()" << std::endl;
     int time;
 	int i = id-1;
-    boost::unique_lock<boost::mutex> lock(m->jointStateMutex);
+    std::unique_lock<std::mutex> lock(m->jointStateMutex);
 
     c_impl::linkbotGetJointStates(
         m->linkbot,
@@ -777,36 +799,30 @@ void Linkbot::moveJointWait(robotJointId_t id)
 
 int Linkbot::isMoving(int mask)
 {
-    /* Get the current joint states */
-    std::cout << "isMoving()" << std::endl;
-    int time;
-	int moving = 0;
-    boost::unique_lock<boost::mutex> lock(m->jointStateMutex);
-
-    c_impl::linkbotGetJointStates(
-        m->linkbot,
-        &time,
-        &m->jointStates[0],
-        &m->jointStates[1],
-        &m->jointStates[2]);
-
-    std::cout << "Jointstates in isMoving: " << m->jointStates[0] << " "
-                                 << m->jointStates[1] << " "
-                                 << m->jointStates[2] << std::endl;
-
+    static std::chrono::time_point<std::chrono::system_clock> lastChecked;
+    auto now = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsedTime = now-lastChecked;
+    std::unique_lock<std::mutex> lock(m->jointStateMutex);
+    if(elapsedTime.count() > 2.0) {
+        int time;
+        c_impl::linkbotGetJointStates(
+            m->linkbot,
+            &time,
+            &m->jointStates[0],
+            &m->jointStates[1],
+            &m->jointStates[2]);
+        lastChecked = now;
+        m->jointStateCond.notify_all();
+    }
+    int moving = 0;
     for(int i = 0; i < 3; i++) {
-        if(!(mask&1<<i)) { continue; }
-        if(!((1<<i)&m->motorMask)) { continue; }
-        if (m->jointStates[i] == c_impl::barobo::JointState::MOVING) {
-            std::cout << "Joint " << i <<" is stopped"<< std::endl;
-			moving = 1;
+        if(!((1<<i)&mask&m->motorMask)) continue;
+        if(m->jointStates[i] == c_impl::barobo::JointState::MOVING) {
+            moving = 1;
             break;
         }
-		else {
-			continue;
-		}
     }
-	return moving;
+    return moving;
 }
 
 
@@ -875,7 +891,7 @@ void Linkbot::recordAnglesBegin(
             robotRecordData_t &angle3,
             int shiftData)
 {
-    boost::lock_guard<boost::mutex> lock(m->recordAnglesMutex);
+    std::lock_guard<std::mutex> lock(m->recordAnglesMutex);
     /* Get the joint angles right now */
     double anglesNow[3];
     int timestamp;
@@ -897,7 +913,7 @@ void Linkbot::recordAnglesBegin(
 
 void Linkbot::recordAnglesEnd( int &num )
 {
-    boost::lock_guard<boost::mutex> lock(m->recordAnglesMutex);
+    std::lock_guard<std::mutex> lock(m->recordAnglesMutex);
     c_impl::linkbotSetEncoderEventCallback(m->linkbot, nullptr, 0, nullptr);
     m->jointsRecordingMask = 0x0;
     num = m->recordedJointAngles.size();
@@ -975,7 +991,7 @@ void Linkbot::closeGripper()
 void Linkbot::closeGripperNB()
 {
 	/* The part with threads is for the old code*/
-	//boost::thread gripperThread(&Linkbot::closeGripper, this);
+	//std::thread gripperThread(&Linkbot::closeGripper, this);
 	//gripperThread.detach();
 
     /* New code*/
@@ -1067,7 +1083,7 @@ void Linkbot::resetToZero()
 
 void LinkbotImpl::jointEventCB(int jointNo, c_impl::barobo::JointState::Type state)
 {
-    boost::lock_guard<boost::mutex> lock(jointStateMutex);
+    std::lock_guard<std::mutex> lock(jointStateMutex);
     std::cout << "Setting joint " << jointNo << " To " << state << std::endl;
     jointStates[jointNo] = state;
     jointStateCond.notify_all();
@@ -1075,13 +1091,48 @@ void LinkbotImpl::jointEventCB(int jointNo, c_impl::barobo::JointState::Type sta
 
 void LinkbotImpl::encoderEventCB(int jointNo, double angle, int timestamp)
 {
-    boost::lock_guard<boost::mutex> lock(recordAnglesMutex);
+    std::lock_guard<std::mutex> lock(recordAnglesMutex);
     if(jointsRecordingMask & (1<<jointNo)) {
         recordedJointAngles.push_back(
             std::tuple<int, int, double>(timestamp, jointNo, angle)
         );
     }
 }
+
+#if 0
+void LinkbotImpl::startJointStateThread()
+{
+    /* Start the joint state thread */
+    auto heartbeat = std::thread(
+    [this] 
+    {
+        std::unique_lock<std::mutex> heartbeat_lock(jointStateThreadActiveLock);
+        bool waitrc = false;
+        while(!waitrc) {
+            waitrc = jointStateThreadActiveCond.wait_for(
+                heartbeat_lock,
+                std::chrono::milliseconds(3000),
+                [this] 
+                { 
+                    if(!jointStateThreadActive) {
+                        return true;
+                    }
+                    int timestamp;
+                    c_impl::barobo::JointState::Type jointStates[3];
+                    c_impl::linkbotGetJointStates(
+                        linkbot, &timestamp, 
+                        &jointStates[0],
+                        &jointStates[1],
+                        &jointStates[2]);
+                    return !mHeartbeatEnable; 
+                }
+            );
+        }
+    });
+    std::swap(jointStateThread, heartbeat);
+}
+
+#endif
 
 void Linkbot::delaySeconds(int seconds)
 {

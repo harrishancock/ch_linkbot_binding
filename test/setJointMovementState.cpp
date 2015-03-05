@@ -14,7 +14,8 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    Linkbot *l = new Linkbot(argv[1]);
+    Linkbot *l = new Linkbot();
+    l->connectWithSerialID(argv[1]);
     sleep(2);
     l->connect();
     l->setJointMovementStateNB(ROBOT_JOINT1, ROBOT_FORWARD);
