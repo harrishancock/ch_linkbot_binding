@@ -859,17 +859,17 @@ void Linkbot::closeGripper()
 	start pushing on each oter there is no safety angle that stops the motion and
 	the gripper pops out*/
 
-   /*double gripperAngleOld= 0;
+   double gripperAngleOld= 0;
    double gripperAngleNew;
    
    getJointAngle(ROBOT_JOINT1, gripperAngleNew); // get the new position
-   std::cout<<"angle "<<gripperAngleNew<<std::endl;*/
+   std::cout<<"angle "<<gripperAngleNew<<std::endl;
     /* Close the gripper to grab an object */
-    /*while(fabs(gripperAngleNew - gripperAngleOld) > 0.1) { //0.1
+    while(fabs(gripperAngleNew - gripperAngleOld) > 1) { //0.1
         gripperAngleOld = gripperAngleNew;    // update the old position
         getJointAngle(ROBOT_JOINT1, gripperAngleNew); // get the new position
 		std::cout<<"angle "<<gripperAngleNew<<std::endl;
-		moveNB( 8, 0, 8); // move 8 degrees
+		moveNB( 3, 0, 3); // move 8 degrees
         #ifndef _WIN32
         usleep(1000000);
         #else
@@ -878,7 +878,7 @@ void Linkbot::closeGripper()
         getJointAngle(ROBOT_JOINT1, gripperAngleNew); // get the new position
 		
     }
-	//moveNB(8, 0, 8);            // try to move another 8 degrees 
+	moveNB(3, 0, 3);            // try to move another 8 degrees 
     #ifndef _WIN32
         usleep(1000000);
     #else
@@ -886,31 +886,16 @@ void Linkbot::closeGripper()
     #endif            // closing for 1 second
 	setMovementStateNB(ROBOT_HOLD, ROBOT_HOLD, ROBOT_HOLD); // hold the object
 	stop();
-	return;*/
-	
-	/* New version. The value of angle needs tuning */
-	/*double angle1, angle3;
-	double delta;
-	double angle;
-	getJointAngle(ROBOT_JOINT1, angle1);
-	getJointAngle(ROBOT_JOINT3, angle3);
-	delta=360-(angle3+angle1);
-	angle=(delta-310)/2.0; 
-	if (angle <= 2){
-		angle = 0;
-	}
-	std::cout<<"angle1 "<<angle1<<" angle3 "<<angle3<<std::endl;
-	std::cout<<"delta "<<delta<<" angle "<<angle<<std::endl;
-	move(angle, 0, angle);
-	holdJoints();*/
+	return;
 
 }
 
 void Linkbot::closeGripperNB()
 {
 	/* The part with threads is for the old code*/
-	//boost::thread gripperThread(&Linkbot::closeGripper, this);
-	//gripperThread.detach();
+	boost::thread gripperThread(&Linkbot::closeGripper, this);
+	gripperThread.join();
+	std::cout << "Thread joined" <<std::endl;
 
     /* New code*/
 	/*double angle1, angle3;

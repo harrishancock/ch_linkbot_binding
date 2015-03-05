@@ -22,9 +22,11 @@ group.addRobot("TP51");
 group.connect();
 group.moveJointNB(JOINT1, 180);
 group.moveJointWait(JOINT1);*/
-CLinkbotL robot;
+CLinkbotI robot;
 robot.connect();
-robot.moveJointNB(JOINT1, 180);
-robot.moveJointWait(JOINT1);
+robot.openGripperNB(20);
+robot.moveWait();
+robot.closeGripperNB();
+robot.moveWait();
 
 
