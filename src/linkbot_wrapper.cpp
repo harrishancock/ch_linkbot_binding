@@ -49,10 +49,32 @@ struct LinkbotImpl
 
     void setJointsMovingFlag(int mask) {
         for(int i = 0; i < 3; i++) {
-            if(mask&(1<<i)) {
+            if(motorMask&mask&(1<<i)) {
                 jointStates[i] = c_impl::barobo::JointState::MOVING;
             }
         }
+    }
+
+    void refreshJointStates() {
+        int time;
+        c_impl::linkbotGetJointStates(
+            linkbot,
+            &time,
+            &jointStates[0],
+            &jointStates[1],
+            &jointStates[2]);
+    }
+
+    bool isMoving(int mask) {
+        bool moving = false;
+        for(int i = 0; i < 3; i++) {
+            if(!((1<<i)&mask&motorMask)) continue;
+            if(jointStates[i] == c_impl::barobo::JointState::MOVING) {
+                moving = true;
+                break;
+            }
+        }
+        return moving;
     }
     #if 0
     /* For the joint-state thread */
@@ -552,78 +574,26 @@ void Linkbot::moveForeverNB()
 
 void Linkbot::moveJoint(robotJointId_t id, double angle)
 {
-	switch (id) {
-		case 1:
-			CALL_C_IMPL(linkbotMove, 0x01, angle, angle, angle);
-	        moveWait();
-			break;
-		case 2:
-			CALL_C_IMPL(linkbotMove, 0x02, angle, angle, angle);
-	        moveWait();
-			break;
-		case 3:
-			CALL_C_IMPL(linkbotMove, 0x04, angle, angle, angle);
-	        moveWait();
-			break;
-		default:
-			break;
-	}
-
+    moveJointNB(id, angle);
+    moveWait();
 }
 
 void Linkbot::moveJointNB(robotJointId_t id, double angle)
 {
-		switch (id) {
-		case 1:
-			CALL_C_IMPL(linkbotMove, 0x01, angle, angle, angle);
-			break;
-		case 2:
-			CALL_C_IMPL(linkbotMove, 0x02, angle, angle, angle);
-			break;
-		case 3:
-			CALL_C_IMPL(linkbotMove, 0x04, angle, angle, angle);
-			break;
-		default:
-			break;
-	}
+    m->setJointsMovingFlag(1<<(int(id)-1));
+    CALL_C_IMPL(linkbotMove, 1<<(int(id)-1), angle, angle, angle);
 }
 
 void Linkbot::moveJointTo(robotJointId_t id, double angle)
 {
-	switch (id) {
-		case 1:
-			CALL_C_IMPL(linkbotMoveTo, 0x01, angle, angle, angle);
-	        moveWait();
-			break;
-		case 2:
-			CALL_C_IMPL(linkbotMoveTo, 0x02, angle, angle, angle);
-	        moveWait();
-			break;
-		case 3:
-			CALL_C_IMPL(linkbotMoveTo, 0x04, angle, angle, angle);
-	        moveWait();
-			break;
-		default:
-			break;
-	}
-
+    moveJointToNB(id, angle);
+    moveWait();
 }
 
 void Linkbot::moveJointToNB(robotJointId_t id, double angle)
 {
-		switch (id) {
-		case 1:
-			CALL_C_IMPL(linkbotMoveTo, 0x01, angle, angle, angle);
-			break;
-		case 2:
-			CALL_C_IMPL(linkbotMoveTo, 0x02, angle, angle, angle);
-			break;
-		case 3:
-			CALL_C_IMPL(linkbotMoveTo, 0x04, angle, angle, angle);
-			break;
-		default:
-			break;
-	}
+    m->setJointsMovingFlag(1<<(int(id)-1));
+    CALL_C_IMPL(linkbotMoveTo, 1<<(int(id)-1), angle, angle, angle);
 }
 
 void Linkbot::moveJointForeverNB(robotJointId_t id)
@@ -656,6 +626,7 @@ void Linkbot::moveJointToByTrackPos(robotJointId_t id, double angle)
 
 void Linkbot::moveJointToByTrackPosNB(robotJointId_t id, double angle)
 {
+    m->setJointsMovingFlag(1<<(int(id)-1));
     CALL_C_IMPL(linkbotDriveTo, 1<<(int(id)-1), angle, angle, angle);
 }
 
@@ -667,17 +638,20 @@ void Linkbot::moveToByTrackPos(double angle1, double angle2, double angle3)
 
 void Linkbot::moveToByTrackPosNB(double angle1, double angle2, double angle3)
 {
+    m->setJointsMovingFlag(0x07);
     CALL_C_IMPL(linkbotDriveTo, 0x07, angle1, angle2, angle3);
 }
 
 void Linkbot::driveBackward(double angle)
 {
+    m->setJointsMovingFlag(0x07);
 	CALL_C_IMPL(linkbotMove, 0x07, -angle, 0, angle);
 	moveWait();
 }
 
 void Linkbot::driveBackwardNB(double angle)
 {
+    m->setJointsMovingFlag(0x07);
 	CALL_C_IMPL(linkbotMove, 0x07, -angle, 0, angle);
 }
 
@@ -687,6 +661,7 @@ void Linkbot::driveDistance(double distance, double radius)
     theta = distance/radius; // in radians
 	theta = (theta *180.0)/M_PI; // in degrees
 
+    m->setJointsMovingFlag(0x07);
 	CALL_C_IMPL(linkbotMove, 0x07, theta, 0, -theta);
 	moveWait();
 
@@ -697,6 +672,7 @@ void Linkbot::driveDistanceNB(double distance, double radius)
 	double theta;
     theta = distance/radius; // in radians
 	theta = (theta *180.0)/M_PI; // in degrees
+    m->setJointsMovingFlag(0x07);
 	CALL_C_IMPL(linkbotMove, 0x07, theta, 0, -theta);
 }
 
@@ -707,11 +683,13 @@ void Linkbot::driveForeverNB()
 
 void Linkbot::driveForward(double angle)
 {
+    m->setJointsMovingFlag(0x07);
 	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
 	moveWait();
 }
 void Linkbot::driveForwardNB(double angle)
 {
+    m->setJointsMovingFlag(0x07);
 	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
 }
 
@@ -741,6 +719,7 @@ void Linkbot::move(double j1, double j2, double j3)
 
 void Linkbot::moveNB(double j1, double j2, double j3)
 {
+    m->setJointsMovingFlag(0x07);
     CALL_C_IMPL(linkbotMove, 0x07, j1, j2, j3);
 }
 
@@ -751,50 +730,20 @@ void Linkbot::moveWait(int mask)
     int time;
     std::unique_lock<std::mutex> lock(m->jointStateMutex);
 
-    c_impl::linkbotGetJointStates(
-        m->linkbot,
-        &time,
-        &m->jointStates[0],
-        &m->jointStates[1],
-        &m->jointStates[2]);
-
-    std::cout << "Jointstates: " << m->jointStates[0] << " "
-                                 << m->jointStates[1] << " "
-                                 << m->jointStates[2] << std::endl;
-
-    for(int i = 0; i < 3; i++) {
-        if(!(mask&1<<i)) { continue; }
-        if(!((1<<i)&m->motorMask)) { continue; }
-        while (m->jointStates[i] == c_impl::barobo::JointState::MOVING) {
-            std::cout << "Waiting on " << i << std::endl;
-            m->jointStateCond.wait(lock);
+    while(1) {
+        auto rc = m->jointStateCond.wait_for(lock, std::chrono::milliseconds(3000));
+        if (rc == std::cv_status::timeout) {
+            m->refreshJointStates();
+        }
+        if(!m->isMoving(mask)) {
+            break;
         }
     }
 }
 
 void Linkbot::moveJointWait(robotJointId_t id)
 {
-    /* Get the current joint states */
-    std::cout << "moveWait()" << std::endl;
-    int time;
-	int i = id-1;
-    std::unique_lock<std::mutex> lock(m->jointStateMutex);
-
-    c_impl::linkbotGetJointStates(
-        m->linkbot,
-        &time,
-        &m->jointStates[0],
-        &m->jointStates[1],
-        &m->jointStates[2]);
-
-    std::cout << "Jointstates: " << m->jointStates[0] << " "
-                                 << m->jointStates[1] << " "
-                                 << m->jointStates[2] << std::endl;
-
-	while(m->jointStates[i] == c_impl::barobo::JointState::MOVING){
-		std::cout << "Waiting on Joint " << i << std::endl;
-		m->jointStateCond.wait(lock);
-	}
+    moveWait(1<<(int(id)-1));
 }
 
 int Linkbot::isMoving(int mask)
@@ -804,13 +753,7 @@ int Linkbot::isMoving(int mask)
     std::chrono::duration<double> elapsedTime = now-lastChecked;
     std::unique_lock<std::mutex> lock(m->jointStateMutex);
     if(elapsedTime.count() > 2.0) {
-        int time;
-        c_impl::linkbotGetJointStates(
-            m->linkbot,
-            &time,
-            &m->jointStates[0],
-            &m->jointStates[1],
-            &m->jointStates[2]);
+        m->refreshJointStates();
         lastChecked = now;
         m->jointStateCond.notify_all();
     }
@@ -824,7 +767,6 @@ int Linkbot::isMoving(int mask)
     }
     return moving;
 }
-
 
 void Linkbot::relaxJoint(robotJointId_t id)
 {
@@ -849,16 +791,16 @@ void Linkbot::stopOneJoint(robotJointId_t id)
 
 void Linkbot::turnLeft(double angle, double radius, double tracklength)
 {
-   turnLeftNB(angle, radius, tracklength);
-   moveWait();
+    turnLeftNB(angle, radius, tracklength);
+    moveWait();
 }
 
 void Linkbot::turnLeftNB(double angle, double radius, double tracklength)
 {
-   double theta;
-   theta = (angle*tracklength)/(2*radius);
-   CALL_C_IMPL(linkbotMove, 0x07, -theta, 0, -theta);
-
+    double theta;
+    theta = (angle*tracklength)/(2*radius);
+    m->setJointsMovingFlag(0x07);
+    CALL_C_IMPL(linkbotMove, 0x07, -theta, 0, -theta);
 }
 
 void Linkbot::turnRight(double angle, double radius, double tracklength)
@@ -869,9 +811,10 @@ void Linkbot::turnRight(double angle, double radius, double tracklength)
 
 void Linkbot::turnRightNB(double angle, double radius, double tracklength)
 {
-   double theta;
-   theta = (angle*tracklength)/(2*radius);
-   CALL_C_IMPL(linkbotMove, 0x07, theta, 0, theta);
+    double theta;
+    theta = (angle*tracklength)/(2*radius);
+    m->setJointsMovingFlag(0x07);
+    CALL_C_IMPL(linkbotMove, 0x07, theta, 0, theta);
 }
 
 void Linkbot::openGripper(double angle)
@@ -1013,23 +956,8 @@ void Linkbot::closeGripperNB()
 
 void Linkbot::moveToNB(double angle1, double angle2, double angle3)
 {
-	int type;
-	getFormFactor(type);
-	switch(type){
-		case 0:
-			CALL_C_IMPL(linkbotMoveTo, 0x05, angle1, angle2, angle3);
-			break;
-		case 1:
-			CALL_C_IMPL(linkbotMoveTo, 0x03, angle1, angle2, angle3);
-			break;
-		case 2:
-			CALL_C_IMPL(linkbotMoveTo, 0x07, angle1, angle2, angle3);
-			break;
-		default:
-			CALL_C_IMPL(linkbotMoveTo, 0x07, angle1, angle2, angle3);
-			break;
-	}
-	
+    m->setJointsMovingFlag(0x07);
+    CALL_C_IMPL(linkbotMoveTo, 0x07, angle1, angle2, angle3);
 }
 
 void Linkbot::moveTo(double angle1, double angle2, double angle3)
@@ -1046,26 +974,8 @@ void Linkbot::moveToZero()
 
 void Linkbot::moveToZeroNB()
 {
-	int type;
-	int mask;
-	getFormFactor(type);
-
-	switch (type) {
-		case 0:
-			mask = 0x05;
-			break;
-		case 1:
-			mask = 0x03;
-			break;
-		case 2:
-			mask = 0x07;
-			break;
-		default:
-			mask = 0x07;
-			break;
-	}
-	
-	CALL_C_IMPL(linkbotMoveTo, mask, 0, 0, 0);
+    m->setJointsMovingFlag(0x07);
+	CALL_C_IMPL(linkbotMoveTo, 0x07, 0, 0, 0);
 }
 
 void Linkbot::resetToZeroNB()

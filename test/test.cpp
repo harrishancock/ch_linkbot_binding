@@ -19,14 +19,21 @@ int main(int argc, char *argv[]) {
 	double seconds=5;
     /*l->move(90, 90, 90);
     l->move(-90, -90, -90);
-    l->setMovementStateTime(
+    */
+    /*
+    l->setMovementStateTimeNB(
             ROBOT_FORWARD, ROBOT_FORWARD, ROBOT_FORWARD, 3);
-    l->setMovementStateTime(
+    l->moveWait();
+    l->setMovementStateTimeNB(
             ROBOT_BACKWARD, ROBOT_BACKWARD, ROBOT_BACKWARD, 3);
-    l->setMovementStateTime(
+    l->moveWait();
+    */
+    l->setMovementStateTimeNB(
             ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_POSITIVE, 3);
-    l->setMovementStateTime(
-            ROBOT_NEGATIVE, ROBOT_NEGATIVE, ROBOT_NEGATIVE, 3);*/
+    l->moveWait();
+    l->setMovementStateTimeNB(
+            ROBOT_NEGATIVE, ROBOT_NEGATIVE, ROBOT_NEGATIVE, 3);
+    l->moveWait();
 
     #if 0
 	l->driveTime(seconds);
@@ -34,12 +41,22 @@ int main(int argc, char *argv[]) {
 	l->driveTimeNB(seconds);
 	std::cout<<"movement 2 done"<<std::endl;
     #endif
-    l->moveNB(90, 90, 90);
-    int rc;
-    while(1) {
-        rc = l->isMoving();
-        std::cout << rc << std::endl;
-        if(rc == 0) break;
+    double distance = 100;
+    for(int i = 0; i < 10; i++) {
+        std::cout << distance <<std::endl;
+        l->moveNB(distance, distance, distance);
+        l->moveWait();
+        l->moveNB(-distance, -distance, -distance);
+        l->moveWait();
+        distance /= 2.0;
+    }
+    for(int i = 0; i < 10; i++) {
+        distance *= 2.0;
+        std::cout << distance <<std::endl;
+        l->moveNB(distance, distance, distance);
+        l->moveWait();
+        l->moveNB(-distance, -distance, -distance);
+        l->moveWait();
     }
     return 0;
 }
