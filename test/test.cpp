@@ -35,6 +35,16 @@ int main(int argc, char *argv[]) {
             ROBOT_NEGATIVE, ROBOT_NEGATIVE, ROBOT_NEGATIVE, 3);
     l->moveWait();
 
+    std::cout << "Forward\n";
+    l->setJointMovementStateTime(ROBOT_JOINT1, ROBOT_FORWARD, 3);
+    std::cout << "Backward\n";
+    l->setJointMovementStateTime(ROBOT_JOINT1, ROBOT_BACKWARD, 3);
+    std::cout << "Forward\n";
+    l->setJointMovementStateTime(ROBOT_JOINT1, ROBOT_POSITIVE, 3);
+    std::cout << "Backward\n";
+    l->setJointMovementStateTime(ROBOT_JOINT1, ROBOT_NEGATIVE, 3);
+    std::cout << "Done\n";
+
     #if 0
 	l->driveTime(seconds);
 	std::cout<<"movement 1 done"<<std::endl;

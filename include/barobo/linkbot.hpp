@@ -55,6 +55,7 @@ class Linkbot {
 		void setBuzzerFrequencyOff();
 		void setJointMovementStateNB(robotJointId_t id, robotJointState_t dir);
         void setJointMovementStateTime(robotJointId_t id, robotJointState_t dir, double seconds);
+        void setJointMovementStateTimeNB(robotJointId_t id, robotJointState_t dir, double seconds);
         void setJointSpeed(robotJointId_t id, double speed);
         void setJointSpeeds(double speed1, double speed2, double speed3);
         void setJointSpeedRatio(robotJointId_t id, double ratio);

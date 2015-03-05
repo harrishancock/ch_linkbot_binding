@@ -370,6 +370,7 @@ void Linkbot::setJointMovementStateNB(robotJointId_t id, robotJointState_t dir)
         default:
             break;
     }
+    m->setJointsMovingFlag(1<<(int(id)-1));
     CALL_C_IMPL(linkbotSetJointStates, 1<<index,
             state, speedNegative?-1:1,
             state, speedNegative?-1:1,
@@ -378,13 +379,55 @@ void Linkbot::setJointMovementStateNB(robotJointId_t id, robotJointState_t dir)
 
 void Linkbot::setJointMovementStateTime(robotJointId_t id, robotJointState_t dir, double seconds)
 {
-    setJointMovementStateNB(id, dir);
-    #ifdef _WIN32
-    Sleep(seconds*1000);
-    #else
-    usleep(seconds*1000000);
-    #endif
-    stop();
+    setJointMovementStateTimeNB(id, dir, seconds);
+    moveWait(1<<(int(id)-1));
+}
+
+void Linkbot::setJointMovementStateTimeNB(robotJointId_t id, robotJointState_t dir, double seconds)
+{
+    c_impl::barobo::JointState::Type jointState;
+    double coef = 1;
+    if(id == 3) {
+        switch(dir) {
+            case ROBOT_NEGATIVE:
+            case ROBOT_FORWARD:
+                coef *= -1;
+            case ROBOT_POSITIVE:
+            case ROBOT_BACKWARD:
+                jointState = c_impl::barobo::JointState::MOVING;
+                break;
+            case ROBOT_HOLD:
+                jointState = c_impl::barobo::JointState::HOLD;
+                break;
+            case ROBOT_NEUTRAL:
+            default:
+                jointState = c_impl::barobo::JointState::COAST;
+                break;
+        }
+    } else {
+        switch(dir) {
+            case ROBOT_BACKWARD:
+            case ROBOT_NEGATIVE:
+                coef *= -1;
+            case ROBOT_FORWARD:
+            case ROBOT_POSITIVE:
+                jointState = c_impl::barobo::JointState::MOVING;
+                break;
+            case ROBOT_HOLD:
+                jointState = c_impl::barobo::JointState::HOLD;
+                break;
+            case ROBOT_NEUTRAL:
+            default:
+                jointState = c_impl::barobo::JointState::COAST;
+                break;
+        }
+    }
+    m->setJointsMovingFlag(1<<(int(id)-1));
+    c_impl::linkbotSetJointStatesTimed(
+        m->linkbot, 1<<(int(id)-1),
+        jointState, coef, seconds, c_impl::barobo::JointState::HOLD,
+        jointState, coef, seconds, c_impl::barobo::JointState::HOLD,
+        jointState, coef, seconds, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::setJointSpeed(robotJointId_t id, double speed)
@@ -487,6 +530,7 @@ void Linkbot::setMovementStateNB( robotJointState_t dir1,
         }
     }
     /* Get the joints doing their thing */
+    m->setJointsMovingFlag(0x07);
     CALL_C_IMPL(linkbotSetJointStates, 0x07,
         _states[0], 1<<0&motorNegativeMask?-1:1,
         _states[1], 1<<1&motorNegativeMask?-1:1,
@@ -498,13 +542,8 @@ void Linkbot::setMovementStateTime( robotJointState_t dir1,
                 robotJointState_t dir3,
                 double seconds)
 {
-    setMovementStateNB(dir1, dir2, dir3);
-    #ifdef _WIN32
-    Sleep(seconds*1000);
-    #else
-    usleep(seconds*1000000);
-    #endif
-    stop();
+    setMovementStateTimeNB(dir1, dir2, dir3, seconds);
+    moveWait();
 }
 
 void Linkbot::setMovementStateTimeNB( robotJointState_t dir1,
@@ -512,6 +551,52 @@ void Linkbot::setMovementStateTimeNB( robotJointState_t dir1,
                 robotJointState_t dir3,
                 double seconds)
 {
+    c_impl::barobo::JointState::Type jointStates[3];
+    double coefs[3] = {1,1,1};
+    int i = 0;
+    for(auto d : {dir1, dir2}) {
+        switch(d) {
+            case ROBOT_BACKWARD:
+            case ROBOT_NEGATIVE:
+                coefs[i] *= -1;
+            case ROBOT_FORWARD:
+            case ROBOT_POSITIVE:
+                jointStates[i] = c_impl::barobo::JointState::MOVING;
+                break;
+            case ROBOT_HOLD:
+                jointStates[i] = c_impl::barobo::JointState::HOLD;
+                break;
+            case ROBOT_NEUTRAL:
+            default:
+                jointStates[i] = c_impl::barobo::JointState::COAST;
+                break;
+        }
+        i++;
+    }
+    i = 2;
+    switch(dir3) {
+        case ROBOT_NEGATIVE:
+        case ROBOT_FORWARD:
+            coefs[i] *= -1;
+        case ROBOT_POSITIVE:
+        case ROBOT_BACKWARD:
+            jointStates[i] = c_impl::barobo::JointState::MOVING;
+            break;
+        case ROBOT_HOLD:
+            jointStates[i] = c_impl::barobo::JointState::HOLD;
+            break;
+        case ROBOT_NEUTRAL:
+        default:
+            jointStates[i] = c_impl::barobo::JointState::COAST;
+            break;
+    }
+
+    m->setJointsMovingFlag(0x07);
+    c_impl::linkbotSetJointStatesTimed(
+        m->linkbot, 0x07,
+        jointStates[0], coefs[0], seconds, c_impl::barobo::JointState::HOLD,
+        jointStates[1], coefs[1], seconds, c_impl::barobo::JointState::HOLD,
+        jointStates[2], coefs[2], seconds, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::setBuzzerFrequencyOn(int frequency)
@@ -733,6 +818,7 @@ void Linkbot::moveWait(int mask)
     while(1) {
         auto rc = m->jointStateCond.wait_for(lock, std::chrono::milliseconds(3000));
         if (rc == std::cv_status::timeout) {
+            std::cout << "moveWait timeout\n";
             m->refreshJointStates();
         }
         if(!m->isMoving(mask)) {
@@ -993,7 +1079,10 @@ void Linkbot::resetToZero()
 
 void LinkbotImpl::jointEventCB(int jointNo, c_impl::barobo::JointState::Type state)
 {
-    std::lock_guard<std::mutex> lock(jointStateMutex);
+    std::unique_lock<std::mutex> lock(jointStateMutex, std::try_to_lock);
+    if(!lock.owns_lock()) {
+        return;
+    }
     std::cout << "Setting joint " << jointNo << " To " << state << std::endl;
     jointStates[jointNo] = state;
     jointStateCond.notify_all();
@@ -1001,7 +1090,10 @@ void LinkbotImpl::jointEventCB(int jointNo, c_impl::barobo::JointState::Type sta
 
 void LinkbotImpl::encoderEventCB(int jointNo, double angle, int timestamp)
 {
-    std::lock_guard<std::mutex> lock(recordAnglesMutex);
+    std::unique_lock<std::mutex> lock(recordAnglesMutex, std::try_to_lock);
+    if(!lock.owns_lock()) {
+        return;
+    }
     if(jointsRecordingMask & (1<<jointNo)) {
         recordedJointAngles.push_back(
             std::tuple<int, int, double>(timestamp, jointNo, angle)
