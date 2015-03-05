@@ -946,6 +946,11 @@ void Linkbot::recordAnglesBegin(
     if(rc) return;
     m->userInitTime = timestamp/1000.0;
 
+    m->userRecordedTimes = &time;
+    m->userRecordedAngles[0] = &angle1;
+    m->userRecordedAngles[1] = &angle2;
+    m->userRecordedAngles[2] = &angle3;
+
     /* Set up encoder events */
     if(!m->jointsRecordingMask) {
         c_impl::linkbotSetEncoderEventCallback(m->linkbot, _encoderEventCB, 1.0, m);
@@ -965,10 +970,10 @@ void Linkbot::recordAnglesEnd( int &num )
         *(m->userRecordedAngles[i]) = new double[num];
         (*(m->userRecordedAngles[i]))[0] = m->userInitAngles[i];
     }
-    (*m->userRecordedTimes)[0] = m->userInitTime;
+    (*m->userRecordedTimes)[0] = 0; // m->userInitTime;
     int i = 1;
     for( auto &elem : m->recordedJointAngles ) {
-        (*m->userRecordedTimes)[i] = std::get<0>(elem) / 1000.0;
+        (*m->userRecordedTimes)[i] = (std::get<0>(elem) / 1000.0) - m->userInitTime;
         for(int j = 0; j < 3; j++) {
             (*(m->userRecordedAngles[j]))[i] = (*(m->userRecordedAngles[j]))[i-1];
         }
