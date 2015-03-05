@@ -920,7 +920,7 @@ CLinkbotLGroup::~CLinkbotLGroup() {
 }
 
 /* addRobot*/
-void CLinkbotLGroup::addRobot(char* id) {
+void CLinkbotLGroup::addRobot(CLinkbotL &robot) {
     void *fptr;
     int rc;
   
@@ -930,7 +930,7 @@ void CLinkbotLGroup::addRobot(char* id) {
        return;
     }
      
-    dlrunfun(fptr, NULL, NULL, this, id);
+    dlrunfun(fptr, NULL, NULL, this, &robot);
     return;
 }
 

@@ -33,7 +33,7 @@ CLinkbotI::~CLinkbotI() {
        printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
        return;
     }
-     
+    
     dlrunfun(fptr, NULL, NULL, this);
     g_chlinkbot_dlcount--;
     
@@ -1155,7 +1155,7 @@ CLinkbotIGroup::~CLinkbotIGroup() {
 }
 
 /* addRobot*/
-void CLinkbotIGroup::addRobot(char* id) {
+void CLinkbotIGroup::addRobot(CLinkbotI &robot) {
     void *fptr;
     int rc;
   
@@ -1165,7 +1165,32 @@ void CLinkbotIGroup::addRobot(char* id) {
        return;
     }
      
-    dlrunfun(fptr, NULL, NULL, this, id);
+    dlrunfun(fptr, NULL, NULL, this, &robot);
+    return;
+}
+
+/* addRobots*/
+void CLinkbotIGroup::addRobots(array CLinkbotI robots[], ...) {
+    void *fptr;
+    int rc;
+    int numRobots;
+    va_list ap;
+    va_start(ap,robots);
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_addRobots_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+    
+    if(va_count(ap) == 1) {
+      numRobots = va_arg(ap, int);
+    } else {
+      numRobots = (int)shape(robots);
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, robots, numRobots);
+    va_end(ap);
     return;
 }
 

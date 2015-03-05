@@ -14,19 +14,12 @@ string_t color;
 int moving=0;
 double a1, a3, da, da_2;
 
-
-/*CLinkbotIGroup group;
-printf("addRobot\n");
-group.addRobot("SRS8");
-group.addRobot("TP51");
+CLinkbotI robot1, robot2;
+CLinkbotIGroup group;
+group.addRobot(robot1);
+group.addRobot(robot2);
 group.connect();
-group.moveJointNB(JOINT1, 180);
-group.moveJointWait(JOINT1);*/
-CLinkbotI robot;
-robot.connect();
-robot.openGripperNB(20);
-robot.moveWait();
-robot.closeGripperNB();
-robot.moveWait();
+group.moveJoint(JOINT1, 180);
+
 
 

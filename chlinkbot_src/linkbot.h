@@ -9,6 +9,7 @@
 #include <windows.h>
 #define sleep(x) Sleep((x)*1000)
 #endif
+#include<array.h>
 
 typedef enum robotJoints_e {
   ROBOT_ZERO,
@@ -249,7 +250,8 @@ class CLinkbotIGroup {
 public:
 	CLinkbotIGroup();
 	~CLinkbotIGroup();
-	void addRobot(char* serialID);
+	void addRobot(CLinkbotI& robot);
+	void addRobots(array CLinkbotI robots[], ...);
 	void connect();
 	
 	/* MOVEMENT FUNCTIONS */
@@ -323,7 +325,7 @@ class CLinkbotLGroup {
 public:
 	CLinkbotLGroup();
 	~CLinkbotLGroup();
-	void addRobot(char* serialID);
+	void addRobot(CLinkbotL& robot);
 	void connect();
 	
 	/* MOVEMENT FUNCTIONS */

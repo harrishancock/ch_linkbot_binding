@@ -42,6 +42,7 @@ struct LinkbotGroupImpl
     double argDouble;
 	int motionInProgress;
 	void *thread;
+	int _numRobots = 0;
 };
 
 LinkbotGroup::LinkbotGroup()
@@ -53,24 +54,37 @@ LinkbotGroup::LinkbotGroup()
 
 LinkbotGroup::~LinkbotGroup()
 {
-	stop();
 }
 
-void LinkbotGroup::addRobot(char* serialID)
+void LinkbotGroup::addRobot(Linkbot& robot)
 {
-    m->ids.push_back(std::string(serialID)); /*add the serialID element at the end of the array */
+    m->robots.push_back(&robot);
+	m->_numRobots ++;
+}
+
+void LinkbotGroup::addRobots(Linkbot robot[], int numRobots) 
+{
+	int i;
+	for (i = 0; i < numRobots; i++) 
+	{
+		addRobot(robot[i]);
+	}
 }
 
 void LinkbotGroup::connect()
 {
-    for (std::string id : m->ids) {
+	for (Linkbot* robot : m->robots) {
+		robot->connect();
+	}
+	
+	/*for (std::string id : m->ids) {
 		/*declare a new element of class Linkbot and put it at the end of the array
 		  push_back = add at the end*/
-        m->robots.push_back(new Linkbot());  
+        //m->robots.push_back(new Linkbot());  
 		/*access the last element and call a member function
 		  id.c_str() gets the C equivalent of the string*/
         //m->robots.back()->connect(id.c_str());
-    }
+    //}
 }
 
 int LinkbotGroup::checkFormFactor(int type)

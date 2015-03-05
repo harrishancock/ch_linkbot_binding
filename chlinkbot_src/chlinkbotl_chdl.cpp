@@ -1210,14 +1210,13 @@ EXPORTCH void CLinkbotLGroup_addRobot_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
     class LinkbotGroup *g;
-    char *id;
+    class Linkbot *l;
 
     Ch_VaStart(interp, ap, varg);
    
     g=Ch_VaArg(interp, ap, class LinkbotGroup *);
-    id = Ch_VaArg(interp, ap, char*);
-    printf("Adding %s\n", id);
-    g->addRobot(id);
+	l=Ch_VaArg(interp, ap, class Linkbot *);
+    g->addRobot(*l);
     Ch_VaEnd(interp, ap);
 }
 

@@ -144,7 +144,8 @@ class LinkbotGroup {
 public:
 	LinkbotGroup();
 	~LinkbotGroup();
-	void addRobot(char* serialID);
+	void addRobot(Linkbot& robot);
+	void addRobots(Linkbot robot[], int numRobots);
 	void connect();
 	int checkFormFactor(int type);
 
