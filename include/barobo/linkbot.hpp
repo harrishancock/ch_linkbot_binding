@@ -1,6 +1,8 @@
 #ifndef LINKBOT_WRAPPER_HPP_
 #define LINKBOT_WRAPPER_HPP_
 
+typedef double* robotRecordData_t;
+
 typedef enum robotJoints_e {
   ROBOT_ZERO,
   ROBOT_JOINT1,
@@ -53,6 +55,7 @@ class Linkbot {
 		void setBuzzerFrequencyOff();
 		void setJointMovementStateNB(robotJointId_t id, robotJointState_t dir);
         void setJointMovementStateTime(robotJointId_t id, robotJointState_t dir, double seconds);
+        void setJointMovementStateTimeNB(robotJointId_t id, robotJointState_t dir, double seconds);
         void setJointSpeed(robotJointId_t id, double speed);
         void setJointSpeeds(double speed1, double speed2, double speed3);
         void setJointSpeedRatio(robotJointId_t id, double ratio);
@@ -98,12 +101,14 @@ class Linkbot {
 	    void moveJointNB(robotJointId_t id, double angle);
 	    void moveJointForeverNB(robotJointId_t id);
 		void moveJointTime(robotJointId_t id, double time);
+		void moveJointTimeNB(robotJointId_t id, double time);
 		void moveJointTo(robotJointId_t id, double angle);
 		void moveJointToNB(robotJointId_t id, double angle);
 		void moveJointToByTrackPos(robotJointId_t id, double angle);
         void moveJointToByTrackPosNB(robotJointId_t id, double angle);
 		void moveJointWait(robotJointId_t id);
 		void moveTime(double time);
+		void moveTimeNB(double time);
 		void moveTo(double angle1, double angle2, double angle3);
 		void moveToNB(double angle1, double angle2, double angle3);
 		void moveToByTrackPos(double angle1, double angle2, double angle3);
@@ -112,6 +117,13 @@ class Linkbot {
 		void moveToZeroNB();
 		void openGripper(double angle);
 		void openGripperNB(double angle);
+        void recordAnglesBegin(
+            robotRecordData_t &time,
+            robotRecordData_t &angle1,
+            robotRecordData_t &angle2,
+            robotRecordData_t &angle3,
+            int shiftData = 1);
+        void recordAnglesEnd(int &num);
 		void relaxJoint(robotJointId_t id);
 	    void relaxJoints();
 		void resetToZero();

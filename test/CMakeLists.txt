@@ -12,3 +12,6 @@ target_link_libraries(setJointMovementState linkbot)
 
 add_executable(motorPower motorPower.cpp)
 target_link_libraries(motorPower linkbot)
+
+add_executable(testRecord testRecord.cpp)
+target_link_libraries(testRecord linkbot)

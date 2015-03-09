@@ -14,14 +14,16 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    Linkbot *l = new Linkbot(argv[1]);
+    Linkbot *l = new Linkbot();
+    l->connectWithSerialID(argv[1]);
     sleep(2);
-    l->connect();
     l->setJointMovementStateNB(ROBOT_JOINT1, ROBOT_FORWARD);
     sleep(3);
     l->setJointMovementStateNB(ROBOT_JOINT1, ROBOT_BACKWARD);
     sleep(3);
-    l->setJointMovementStateNB(ROBOT_JOINT1, ROBOT_NEUTRAL);
+
+    l->setMovementStateTimeNB(ROBOT_FORWARD, ROBOT_FORWARD, ROBOT_FORWARD, 3);
+    l->moveWait();
 
     return 0;
 }

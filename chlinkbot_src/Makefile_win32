@@ -9,11 +9,6 @@ LFLAG= C:/ch/extern/lib/chsdk.lib C:/ch/bin/ch.dll
 
 LINKLIBS=../build-linux/liblinkbot.a \
 ../build-linux/baromesh/library/libbaromesh.a  \
-../../deps/boost_1_57_0/stage/lib/libboost_thread-mgw49-mt-1_57.a \
-../../deps/boost_1_57_0/stage/lib/libboost_filesystem-mgw49-mt-1_57.a \
-../../deps/boost_1_57_0/stage/lib/libboost_system-mgw49-mt-1_57.a \
-../../deps/boost_1_57_0/stage/lib/libboost_log-mgw49-mt-1_57.a \
-../../deps/boost_1_57_0/stage/lib/libboost_coroutine-mgw49-mt-1_57.a \
 ../build-linux/baromesh/library/libsfp/libsfp.a \
 ../build-linux/baromesh/library/ribbon-bridge/librpc.a \
 ../build-linux/baromesh/library/ribbon-bridge/librpc-proto.a \
@@ -23,6 +18,11 @@ LINKLIBS=../build-linux/liblinkbot.a \
 ../build-linux/baromesh/library/baromesh/interfaces/libcommontypes-proto.a \
 ../build-linux/baromesh/library/baromesh/common/libbaromesh-common.a \
 ../build-linux/baromesh/library/cxx-util/libcxx-util.a \
+../../deps/boost_1_57_0/stage/lib/libboost_thread-mgw49-mt-1_57.a \
+../../deps/boost_1_57_0/stage/lib/libboost_filesystem-mgw49-mt-1_57.a \
+../../deps/boost_1_57_0/stage/lib/libboost_system-mgw49-mt-1_57.a \
+../../deps/boost_1_57_0/stage/lib/libboost_log-mgw49-mt-1_57.a \
+../../deps/boost_1_57_0/stage/lib/libboost_coroutine-mgw49-mt-1_57.a \
 ./libws2_32.a \
 ./libwsock32.a \
 -lpthread 
