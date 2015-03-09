@@ -117,13 +117,6 @@ class Linkbot {
 		void moveToZeroNB();
 		void openGripper(double angle);
 		void openGripperNB(double angle);
-        void recordAnglesBegin(
-            robotRecordData_t &time,
-            robotRecordData_t &angle1,
-            robotRecordData_t &angle2,
-            robotRecordData_t &angle3,
-            int shiftData = 1);
-        void recordAnglesEnd(int &num);
 		void relaxJoint(robotJointId_t id);
 	    void relaxJoints();
 		void resetToZero();
@@ -140,6 +133,20 @@ class Linkbot {
         void enableButtonCallback(void* userdata, void (*buttonCallback)(void* data, int button, int buttonDown));
         void disableButtonCallback();
         */
+        void recordAnglesBegin(
+            robotRecordData_t &time,
+            robotRecordData_t &angle1,
+            robotRecordData_t &angle2,
+            robotRecordData_t &angle3,
+            int shiftData = 1);
+        void recordAnglesEnd(int &num);
+        void recordDistanceBegin(
+            robotJointId_t id,
+            robotRecordData_t &time,
+            robotRecordData_t &distance,
+            double radius,
+            int shiftData = 1);
+        void recordDistanceEnd(robotJointId_t id, int &num);
 		void delaySeconds(int seconds);
 		void systemTime(double &time);
 

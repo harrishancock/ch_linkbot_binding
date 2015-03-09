@@ -992,7 +992,41 @@ void Linkbot::recordAnglesEnd( int &num )
     }
 }
 
-void Linkbot::recordDistancsBegin(
+void Linkbot::recordDistanceBegin(
+            robotJointId_t id,
+            robotRecordData_t &time,
+            robotRecordData_t &distance,
+            double radius,
+            int shiftData)
+{
+    m->userRadius = radius;
+    std::lock_guard<std::mutex> lock(m->recordAnglesMutex);
+    /* Get the joint angles right now */
+    double anglesNow[3];
+    int timestamp;
+    auto rc = c_impl::linkbotGetJointAngles(
+        m->linkbot,
+        &timestamp,
+        &m->userInitAngles[0],
+        &m->userInitAngles[1],
+        &m->userInitAngles[2]);
+    if(rc) return;
+    m->userInitTime = timestamp/1000.0;
+
+    m->userShiftData = shiftData;
+    m->userRecordedTimes = &time;
+    m->userRecordedAngles[int(id)-1] = &distance;
+
+    /* Set up encoder events */
+    if(!m->jointsRecordingMask) {
+        c_impl::linkbotSetEncoderEventCallback(m->linkbot, _encoderEventCB, 1.0, m);
+    }
+    m->jointsRecordingMask = 1<<(int(id)-1);
+}
+
+void Linkbot::recordDistanceEnd(robotJointId_t id, int &num)
+{
+}
 
 void Linkbot::closeGripper()
 {
@@ -1122,6 +1156,9 @@ void LinkbotImpl::encoderEventCB(int jointNo, double angle, int timestamp)
 {
     std::unique_lock<std::mutex> lock(recordAnglesMutex, std::try_to_lock);
     if(!lock.owns_lock()) {
+        /* If we do not own this lock, we should return immediately. We cannot
+         * wait to lock here because the same thread may already be in an RPC
+         * method, thereby causing a deadlock */
         return;
     }
     if(jointsRecordingMask & (1<<jointNo)) {
