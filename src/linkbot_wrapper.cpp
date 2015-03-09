@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 namespace c_impl {
 #include "baromesh/linkbot.h"
 }
@@ -992,7 +993,7 @@ void Linkbot::recordAnglesEnd( int &num )
     }
 }
 
-void Linkbot::recordDistancsBegin(
+//void Linkbot::recordDistancsBegin(
 
 void Linkbot::closeGripper()
 {
