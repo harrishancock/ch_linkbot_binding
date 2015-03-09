@@ -91,7 +91,9 @@ struct LinkbotImpl
     uint8_t jointsRecordingMask;
     void encoderEventCB(int jointNo, double angle, int timestamp);
     std::mutex recordAnglesMutex;
+    bool userShiftData;
     double userInitTime;
+    double userRadius;
     double userInitAngles[3];
     double** userRecordedTimes;
     double** userRecordedAngles[3];
@@ -946,6 +948,7 @@ void Linkbot::recordAnglesBegin(
     if(rc) return;
     m->userInitTime = timestamp/1000.0;
 
+    m->userShiftData = shiftData;
     m->userRecordedTimes = &time;
     m->userRecordedAngles[0] = &angle1;
     m->userRecordedAngles[1] = &angle2;
@@ -964,14 +967,21 @@ void Linkbot::recordAnglesEnd( int &num )
     c_impl::linkbotSetEncoderEventCallback(m->linkbot, nullptr, 0, nullptr);
     m->jointsRecordingMask = 0x0;
     num = m->recordedJointAngles.size();
-    num+=1; // Account for initial entry
+    if(!m->userShiftData) {
+        num+=1; // Account for initial entry
+    }
     *(m->userRecordedTimes) = new double[num];
     for(int i = 0; i < 3; i++) {
         *(m->userRecordedAngles[i]) = new double[num];
         (*(m->userRecordedAngles[i]))[0] = m->userInitAngles[i];
     }
     (*m->userRecordedTimes)[0] = 0; // m->userInitTime;
-    int i = 1;
+    int i;
+    if(m->userShiftData) {
+        i = 0;
+    } else {
+        i = 1;
+    }
     for( auto &elem : m->recordedJointAngles ) {
         (*m->userRecordedTimes)[i] = (std::get<0>(elem) / 1000.0) - m->userInitTime;
         for(int j = 0; j < 3; j++) {
@@ -981,6 +991,8 @@ void Linkbot::recordAnglesEnd( int &num )
         i++;
     }
 }
+
+void Linkbot::recordDistancsBegin(
 
 void Linkbot::closeGripper()
 {
