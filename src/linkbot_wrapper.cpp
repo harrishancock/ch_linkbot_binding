@@ -796,11 +796,14 @@ void Linkbot::driveForwardNB(double angle)
 
 void Linkbot::driveTime(double seconds)
 {
-	setMovementStateTime(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_NEGATIVE, seconds);
+	//setMovementStateTime(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_NEGATIVE, seconds);
+	driveTimeNB(seconds);
+	moveWait();
 }
 
 void Linkbot::driveTimeNB(double seconds)
 {
+	setMovementStateTimeNB(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_NEGATIVE, seconds);
 }
 
 void Linkbot::holdJoint(robotJointId_t id)
@@ -1028,7 +1031,6 @@ void Linkbot::recordDistanceBegin(
 void Linkbot::recordDistanceEnd(robotJointId_t id, int &num)
 {
 }
->>>>>>> cd43ff730110745f9a0869e0ce61422cfec811fc
 
 void Linkbot::closeGripper()
 {

@@ -428,7 +428,23 @@ EXPORTCH void CLinkbotL_moveTime_chdl(void *varg) {
     return;
 }
 
-/*linkbot moveJointForeverNB*/
+/*linkbot moveTimeNB*/
+EXPORTCH void CLinkbotL_moveTimeNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+	double time;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+	time=Ch_VaArg(interp, ap, double);
+    l->moveTimeNB(time);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot moveJointTime*/
 EXPORTCH void CLinkbotL_moveJointTime_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
@@ -442,6 +458,24 @@ EXPORTCH void CLinkbotL_moveJointTime_chdl(void *varg) {
 	id=Ch_VaArg(interp, ap, robotJointId_t);
 	time=Ch_VaArg(interp, ap, double);
     l->moveJointTime(id, time);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot moveJointTimeNB*/
+EXPORTCH void CLinkbotL_moveJointTimeNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    robotJointId_t id;
+	double time;
+
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+	time=Ch_VaArg(interp, ap, double);
+    l->moveJointTimeNB(id, time);
     Ch_VaEnd(interp, ap);
     return;
 }
@@ -1754,4 +1788,71 @@ EXPORTCH int CLinkbotLGroup_isMoving_chdl(void *varg) {
     return retval;
 }
 
+/*linkbotGroup moveJointTime*/
+EXPORTCH void CLinkbotLGroup_moveJointTime_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+	double time;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+	time=Ch_VaArg(interp, ap, double);
+    g->moveJointTime(id, time);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveJointTimeNB*/
+EXPORTCH void CLinkbotLGroup_moveJointTimeNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	robotJointId_t id;
+	double time;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	id=Ch_VaArg(interp, ap, robotJointId_t);
+	time=Ch_VaArg(interp, ap, double);
+    g->moveJointTimeNB(id, time);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveTime*/
+EXPORTCH void CLinkbotLGroup_moveTime_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double time;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	time=Ch_VaArg(interp, ap, double);
+    g->moveTime(time);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbotGroup moveTimeNB*/
+EXPORTCH void CLinkbotLGroup_moveTimeNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class LinkbotGroup *g;
+	double time;
+	
+    Ch_VaStart(interp, ap, varg);
+    
+    g=Ch_VaArg(interp, ap, class LinkbotGroup *);
+	time=Ch_VaArg(interp, ap, double);
+    g->moveTimeNB(time);
+    Ch_VaEnd(interp, ap);
+    return;
+}
 

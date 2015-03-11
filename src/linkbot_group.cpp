@@ -328,6 +328,36 @@ void LinkbotGroup::moveJoint(robotJointId_t id, double angle)
 	moveWait();
 }
 
+void LinkbotGroup::moveJointTimeNB(robotJointId_t id, double time)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveJointTimeNB(id, time);
+	}
+}
+
+void LinkbotGroup::moveJointTime(robotJointId_t id, double time)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveJointTimeNB(id, time);
+	}
+	moveWait();
+}
+
+void LinkbotGroup::moveTimeNB(double time)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveTimeNB(time);
+	}
+}
+
+void LinkbotGroup::moveTime(double time)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->moveTimeNB(time);
+	}
+	moveWait();
+}
+
 void LinkbotGroup::moveJointForeverNB(robotJointId_t id)
 {
 	for (Linkbot* robot : m->robots) {

@@ -188,12 +188,16 @@ public:
 	void moveJoint(robotJointId_t id, double angle);
 	void moveJointNB(robotJointId_t id, double angle);
 	void moveJointForeverNB(robotJointId_t id);
+	void moveJointTime(robotJointId_t id, double time);
+	void moveJointTimeNB(robotJointId_t id, double time);
 	void moveJointTo(robotJointId_t id, double angle);
 	void moveJointToNB(robotJointId_t id, double angle);
 	void moveJointToByTrackPos(robotJointId_t id, double angle);
     void moveJointToByTrackPosNB(robotJointId_t id, double angle);
 	void moveJointWait(robotJointId_t id);
     void moveNB(double j1, double j2, double j3);
+	void moveTime(double time);
+	void moveTimeNB(double time);
 	void moveTo(double angle1, double angle2, double angle3);
 	void moveToNB(double angle1, double angle2, double angle3);
 	void moveToByTrackPos(double angle1, double angle2, double angle3);

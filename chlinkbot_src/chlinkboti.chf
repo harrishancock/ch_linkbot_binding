@@ -269,6 +269,19 @@ void CLinkbotI::driveTime(double seconds) {
     dlrunfun(fptr, NULL, NULL, this, seconds);
 }
 
+/*driveTimeNB*/
+void CLinkbotI::driveTimeNB(double seconds) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_driveTimeNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, seconds);
+}
+
 /*moveWait*/
 void CLinkbotI::moveWait() {
     void *fptr;
@@ -498,11 +511,37 @@ void CLinkbotI::moveJointTime(robotJointId_t id, double time) {
     dlrunfun(fptr, NULL, NULL, this, id, time);
 }
 
+/*moveJointTimeNB*/
+void CLinkbotI::moveJointTimeNB(robotJointId_t id, double time) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_moveJointTimeNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, time);
+}
+
 /*moveTime*/
 void CLinkbotI::moveTime(double time) {
     void *fptr;
   
     fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_moveTime_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, time);
+}
+
+/*moveTimeNB*/
+void CLinkbotI::moveTimeNB(double time) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_moveTimeNB_chdl");
     if (fptr == NULL) {
        printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
        return;
@@ -1925,5 +1964,65 @@ void CLinkbotIGroup::closeGripper() {
     }
      
     dlrunfun(fptr, NULL, NULL, this);
+    return;
+}
+
+/* moveJointTime*/
+void CLinkbotIGroup::moveJointTime(robotJointId_t id, double time) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_moveJointTime_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, time);
+    return;
+}
+
+/* moveJointTimeNB*/
+void CLinkbotIGroup::moveJointTimeNB(robotJointId_t id, double time) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_moveJointTimeNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, time);
+    return;
+}
+
+/* moveTime*/
+void CLinkbotIGroup::moveTime(double time) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_moveTime_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, time);
+    return;
+}
+
+/* moveTimeNB*/
+void CLinkbotIGroup::moveTimeNB(double time) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_moveTimeNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, time);
     return;
 }
