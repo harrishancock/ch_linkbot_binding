@@ -34,7 +34,7 @@ do { \
 
 struct LinkbotImpl
 {
-    LinkbotImpl() : jointsRecordingActive(false)
+    LinkbotImpl() : jointsRecordingActive(false), userShiftDataThreshold(1.0)
     { 
     }
     ~LinkbotImpl() {
@@ -88,6 +88,7 @@ struct LinkbotImpl
     std::condition_variable recordAnglesCond;
     std::thread recordAnglesThread;
     bool userShiftData;
+    double userShiftDataThreshold;
     double userInitTime;
     double userTimeInterval;
     double userRadius;
@@ -990,12 +991,33 @@ void Linkbot::recordAnglesBegin(
 void Linkbot::recordAnglesEnd(int &num)
 {
     std::unique_lock<std::mutex> lock (m->recordAnglesMutex);
+    if(!m->jointsRecordingActive) {
+        return;
+    }
     m->jointsRecordingActive = false;
     m->recordAnglesCond.notify_all();
     lock.unlock();
     m->recordAnglesThread.join();
     int startingIndex = 0;
     if(m->userShiftData) {
+        auto initelem = m->threadJointAngles[0];
+        double initangles[3];
+        initangles[0] = std::get<1>(initelem);
+        initangles[1] = std::get<2>(initelem);
+        initangles[2] = std::get<3>(initelem);
+        for(int i = 1; i < num; i++) {
+            auto elem = m->threadJointAngles[i];
+            double angles[3];
+            angles[0] = std::get<1>(elem);
+            angles[1] = std::get<2>(elem);
+            angles[2] = std::get<3>(elem);
+            for(int j = 0; j < 3; j++) {
+                if(ABS(angles[j]-initangles[j]) > m->userShiftDataThreshold) {
+                    startingIndex = i;
+                    i = num;
+                }
+            }
+        }
     }
     num = m->threadJointAngles.size() - startingIndex;
     *(m->userRecordedTimes) = new double[num];
