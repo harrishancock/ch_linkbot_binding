@@ -138,6 +138,7 @@ class Linkbot {
             robotRecordData_t &angle1,
             robotRecordData_t &angle2,
             robotRecordData_t &angle3,
+            double timeInterval = 0.1,
             int shiftData = 1);
         void recordAnglesEnd(int &num);
         void recordDistanceBegin(
@@ -147,6 +148,21 @@ class Linkbot {
             double radius,
             int shiftData = 1);
         void recordDistanceEnd(robotJointId_t id, int &num);
+
+        void recordAnglesBegin2(
+            robotRecordData_t &time,
+            robotRecordData_t &angle1,
+            robotRecordData_t &angle2,
+            robotRecordData_t &angle3,
+            int shiftData = 1);
+        void recordAnglesEnd2(int &num);
+        void recordDistanceBegin2(
+            robotJointId_t id,
+            robotRecordData_t &time,
+            robotRecordData_t &distance,
+            double radius,
+            int shiftData = 1);
+        void recordDistanceEnd2(robotJointId_t id, int &num);
 		void delaySeconds(int seconds);
 		void systemTime(double &time);
 
