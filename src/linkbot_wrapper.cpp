@@ -932,7 +932,8 @@ void Linkbot::recordAnglesBegin(
             robotRecordData_t &angle2,
             robotRecordData_t &angle3,
             double timeInterval,
-            int shiftData)
+            int shiftData,
+            int mask)
 {
     std::unique_lock<std::mutex> lock(m->recordAnglesMutex);
     if(m->jointsRecordingActive) {
@@ -947,7 +948,7 @@ void Linkbot::recordAnglesBegin(
 
     /* Initialize stuff for recording thread */
     m->jointsRecordingActive = true;
-    m->jointsRecordingMask = 0x07;
+    m->jointsRecordingMask = mask;
     std::thread recordThread
     (
         [this] () {
@@ -991,6 +992,7 @@ void Linkbot::recordAnglesBegin(
 void Linkbot::recordAnglesEnd(int &num)
 {
     std::unique_lock<std::mutex> lock (m->recordAnglesMutex);
+    uint8_t mask = m->jointsRecordingMask;
     if(!m->jointsRecordingActive) {
         return;
     }
@@ -1012,6 +1014,7 @@ void Linkbot::recordAnglesEnd(int &num)
             angles[1] = std::get<2>(elem);
             angles[2] = std::get<3>(elem);
             for(int j = 0; j < 3; j++) {
+                if(! ((1<<j)&m->jointsRecordingMask) ) continue;
                 if(ABS(angles[j]-initangles[j]) > m->userShiftDataThreshold) {
                     startingIndex = i;
                     i = num;
@@ -1021,16 +1024,50 @@ void Linkbot::recordAnglesEnd(int &num)
     }
     num = m->threadJointAngles.size() - startingIndex;
     *(m->userRecordedTimes) = new double[num];
-    *(m->userRecordedAngles[0]) = new double[num];
-    *(m->userRecordedAngles[1]) = new double[num];
-    *(m->userRecordedAngles[2]) = new double[num];
+    for(int i = 0; i < 3; i++) {
+        if((1<<i) & mask) {
+            *(m->userRecordedAngles[i]) = new double[num];
+        }
+    }
     double startTime = std::get<0>(m->threadJointAngles[startingIndex])/1000.0;
     for(int i = 0; i < num; i++, startingIndex++) {
         auto elem = m->threadJointAngles[startingIndex];
         (*(m->userRecordedTimes))[i] = std::get<0>(elem)/1000.0 - startTime;
-        (*(m->userRecordedAngles[0]))[i] = std::get<1>(elem);
-        (*(m->userRecordedAngles[1]))[i] = std::get<2>(elem);
-        (*(m->userRecordedAngles[2]))[i] = std::get<3>(elem);
+        if(0x01 & mask)
+            (*(m->userRecordedAngles[0]))[i] = std::get<1>(elem);
+        if(0x02 & mask)
+            (*(m->userRecordedAngles[1]))[i] = std::get<2>(elem);
+        if(0x04 & mask)
+            (*(m->userRecordedAngles[2]))[i] = std::get<3>(elem);
+    }
+}
+
+void Linkbot::recordDistanceBegin(
+            robotJointId_t id,
+            robotRecordData_t &time,
+            robotRecordData_t &distance,
+            double radius,
+            double timeInterval,
+            int shiftData)
+{
+    m->userRadius = radius;
+    recordAnglesBegin(
+        time,
+        distance,
+        distance,
+        distance,
+        timeInterval,
+        shiftData,
+        1<<(int(id)-1));
+}
+
+void Linkbot::recordDistanceEnd(robotJointId_t id, int& num)
+{
+    recordAnglesEnd(num);
+    /* Convert values to distance */
+    for(int i = 0; i < num; i++) {
+        (*(m->userRecordedAngles[0]))[i] = (*(m->userRecordedAngles[0]))[i] *
+            (M_PI/180.0)* m->userRadius;
     }
 }
 
