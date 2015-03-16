@@ -13,18 +13,21 @@ CPlot plot;                // plotting class
 robot.connect();
 robot.resetToZero();
 
+robot.enableRecordDataShift();
+robot.recordAngleBegin(JOINT1, timedata, distancedata, radius, timeInterval);
+
 /* set the joints 1 and 3 speed */
 robot.setJointSpeed(JOINT1, speed);
 robot.setJointSpeed(JOINT2, speed);
 
 /* begin recording time and angle */
-robot.recordAngleBegin(JOINT2, timedata, distancedata, radius, timeInterval);
+//robot.recordAngleBegin(JOINT1, timedata, distancedata, radius, timeInterval);
 
 /* move the Linkbot-I forward by 720 degrees */
-robot.move(180, -180, NaN);
+robot.move(180, 180, NaN);
 
 /* end recording time and angle */
-robot.recordAngleEnd(JOINT2, numDataPoints);
+robot.recordAngleEnd(JOINT1, numDataPoints);
 
 /* plot the data */
 plot.mathCoord();

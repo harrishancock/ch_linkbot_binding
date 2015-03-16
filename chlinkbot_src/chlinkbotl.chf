@@ -932,6 +932,31 @@ void CLinkbotL::recordAngleEnd(int id, int &num) {
     dlrunfun(fptr, NULL, NULL, this, id, &num);
 }
 
+/*enableRecordDataShift*/
+void CLinkbotL::enableRecordDataShift() {
+    void *fptr;
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_enableRecordDataShift_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    dlrunfun(fptr, NULL, NULL, this);
+}
+
+/*disableRecordDataShift*/
+void CLinkbotL::disableRecordDataShift() {
+    void *fptr;
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_disableRecordDataShift_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    dlrunfun(fptr, NULL, NULL, this);
+}
+
+
 /*CLinkbotLGroup class */
 
 /* Constructor */

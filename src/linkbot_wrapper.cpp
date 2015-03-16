@@ -930,6 +930,16 @@ void Linkbot::openGripperNB(double angle)
     moveNB(-angle/2.0, 0, -angle/2.0);	
 }
 
+void Linkbot::enableRecordDataShift()
+{
+	m->userShiftData = 1;
+}
+
+void Linkbot::disableRecordDataShift()
+{
+	m->userShiftData = 0;
+}
+
 void Linkbot::recordAnglesBegin(
             robotRecordData_t &time,
             robotRecordData_t &angle1,

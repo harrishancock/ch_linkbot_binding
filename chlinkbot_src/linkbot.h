@@ -157,6 +157,8 @@ class CLinkbotI {
 			double seconds,
 			...);
 		void recordDistanceEnd(robotJointId_t id, int &num);
+		void enableRecordDataShift();
+		void disableRecordDataShift();
 
         LinkbotImpl *m;
 
@@ -265,6 +267,8 @@ class CLinkbotL {
 			...
 			);
 		void recordAngleEnd(robotJointId_t id, int &num);
+		void enableRecordDataShift();
+		void disableRecordDataShift();
 
         LinkbotImpl *m;
 

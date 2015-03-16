@@ -1204,7 +1204,6 @@ void CLinkbotI::recordDistanceBegin(int id, double* &time, double* &distance, do
 /*recordDistanceEnd*/
 void CLinkbotI::recordDistanceEnd(int id, int &num) {
     void *fptr;
-    int retval;
 
     fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_recordDistanceEnd_chdl");
     if(fptr == NULL) {
@@ -1214,6 +1213,29 @@ void CLinkbotI::recordDistanceEnd(int id, int &num) {
     dlrunfun(fptr, NULL, NULL, this, id, &num);
 }
 
+/*enableRecordDataShift*/
+void CLinkbotI::enableRecordDataShift() {
+    void *fptr;
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_enableRecordDataShift_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    dlrunfun(fptr, NULL, NULL, this);
+}
+
+/*disableRecordDataShift*/
+void CLinkbotI::disableRecordDataShift() {
+    void *fptr;
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_disableRecordDataShift_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    dlrunfun(fptr, NULL, NULL, this);
+}
 
 /*CLinkbotIGroup class */
 

@@ -1624,6 +1624,34 @@ EXPORTCH void CLinkbotI_recordDistanceEnd_chdl(void *varg) {
 	return;
 }
 
+/*linkbot enableRecordDataShift*/
+EXPORTCH void CLinkbotI_enableRecordDataShift_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	l->enableRecordDataShift();
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
+/*linkbot disableRecordDataShift*/
+EXPORTCH void CLinkbotI_disableRecordDataShift_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	l->disableRecordDataShift();
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
 /* CLinkbotIGroup functions */
 
 /*Constructor*/
