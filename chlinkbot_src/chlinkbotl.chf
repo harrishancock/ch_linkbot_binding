@@ -898,6 +898,40 @@ void CLinkbotL::resetToZero() {
     dlrunfun(fptr, NULL, NULL, this);
 }
 
+/*recordAngleBegin*/
+void CLinkbotL::recordAngleBegin(int id, double* &time, double* &angle, double seconds, ...) {
+    void *fptr;
+    va_list ap;
+    int shiftData = 1;
+    int mask;
+    va_start(ap, seconds);
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_recordAngleBegin_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    if(va_count(ap) == 1) {
+      shiftData = va_arg(ap, int);
+      dlrunfun(fptr, NULL, NULL, this, id, &time, &angle, seconds, shiftData);
+    } else {
+      dlrunfun(fptr, NULL, NULL, this, id, &time, &angle, seconds);
+    }
+    va_end(ap);
+}
+/*recordAngleEnd*/
+void CLinkbotL::recordAngleEnd(int id, int &num) {
+    void *fptr;
+    int retval;
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_recordAngleEnd_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    dlrunfun(fptr, NULL, NULL, this, id, &num);
+}
+
 /*CLinkbotLGroup class */
 
 /* Constructor */

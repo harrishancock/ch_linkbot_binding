@@ -1528,6 +1528,102 @@ EXPORTCH void CLinkbotI_resetToZero_chdl(void *varg) {
     return;
 }
 
+/*linkbot recordAngleBegin*/
+EXPORTCH void CLinkbotI_recordAngleBegin_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	robotJointId_t id;
+	double** time;
+	double** angle;
+	double seconds;
+	int shiftData;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	id = Ch_VaArg(interp, ap, robotJointId_t);
+	time = Ch_VaArg(interp, ap, double**);
+	angle = Ch_VaArg(interp, ap, double**);
+	seconds = Ch_VaArg(interp, ap, double);
+	if (Ch_VaCount(interp, ap) == 1) {
+		shiftData = Ch_VaArg(interp, ap, int);
+		l->recordAnglesBegin(*time, *angle, *angle, *angle, seconds, 1 << (int(id) - 1), shiftData);
+	}
+	else {
+		l->recordAnglesBegin(*time, *angle, *angle, *angle, seconds, 1 << (int(id) - 1));
+	}
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
+/*linkbot recordAngleEnd*/
+EXPORTCH void CLinkbotI_recordAngleEnd_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	robotJointId_t id;
+	int *num;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	id = Ch_VaArg(interp, ap, robotJointId_t);
+	num = Ch_VaArg(interp, ap, int*);
+	l->recordAnglesEnd(*num);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
+/*linkbot recordDistanceBegin*/
+EXPORTCH void CLinkbotI_recordDistanceBegin_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	robotJointId_t id;
+	double** time;
+	double** distance;
+	double radius;
+	double seconds;
+	int shiftData;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	id = Ch_VaArg(interp, ap, robotJointId_t);
+	time = Ch_VaArg(interp, ap, double**);
+	distance = Ch_VaArg(interp, ap, double**);
+	radius = Ch_VaArg(interp, ap, double);
+	seconds = Ch_VaArg(interp, ap, double);
+	if (Ch_VaCount(interp, ap) == 1) {
+		shiftData = Ch_VaArg(interp, ap, int);
+		l->recordDistanceBegin(id, *time, *distance, radius, seconds, shiftData);
+	}
+	else {
+		l->recordDistanceBegin(id, *time, *distance, radius, seconds);
+	}
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
+/*linkbot recordDistanceEnd*/
+EXPORTCH void CLinkbotI_recordDistanceEnd_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	robotJointId_t id;
+	int *num;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	id = Ch_VaArg(interp, ap, robotJointId_t);
+	num = Ch_VaArg(interp, ap, int*);
+	l->recordDistanceEnd(id, *num);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
 /* CLinkbotIGroup functions */
 
 /*Constructor*/

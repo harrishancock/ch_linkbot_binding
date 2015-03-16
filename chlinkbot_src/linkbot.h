@@ -11,6 +11,8 @@
 #endif
 #include<array.h>
 
+typedef double* robotRecordData_t;
+
 typedef enum robotJoints_e {
   ROBOT_ZERO,
   JOINT1,
@@ -139,6 +141,22 @@ class CLinkbotI {
         void disableButtonCallback();
 		void delaySeconds(int seconds);
 		void systemTime(double &time);
+		void recordAngleBegin(
+			robotJointId_t id,
+			robotRecordData_t &time,
+			robotRecordData_t &angle,
+			double seconds,
+			...
+			);
+		void recordAngleEnd(robotJointId_t id, int &num);
+		void recordDistanceBegin(
+			robotJointId_t id,
+			robotRecordData_t &time,
+			robotRecordData_t &distance,
+			double radius,
+			double seconds,
+			...);
+		void recordDistanceEnd(robotJointId_t id, int &num);
 
         LinkbotImpl *m;
 
@@ -238,6 +256,15 @@ class CLinkbotL {
         void disableButtonCallback();
 		void delaySeconds(int seconds);
 		void systemTime(double &time);
+
+		void recordAngleBegin(
+			robotJointId_t id,
+			robotRecordData_t &time,
+			robotRecordData_t &angle,
+			double seconds,
+			...
+			);
+		void recordAngleEnd(robotJointId_t id, int &num);
 
         LinkbotImpl *m;
 

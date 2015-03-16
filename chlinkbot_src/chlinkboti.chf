@@ -1146,6 +1146,75 @@ void CLinkbotI::resetToZero() {
     dlrunfun(fptr, NULL, NULL, this);
 }
 
+/*recordAngleBegin*/
+void CLinkbotI::recordAngleBegin(int id, double* &time, double* &angle, double seconds, ...) {
+    void *fptr;
+    va_list ap;
+    int shiftData = 1;
+    int mask;
+    va_start(ap, seconds);
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_recordAngleBegin_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    if(va_count(ap) == 1) {
+      shiftData = va_arg(ap, int);
+      dlrunfun(fptr, NULL, NULL, this, id, &time, &angle, seconds, shiftData);
+    } else {
+      dlrunfun(fptr, NULL, NULL, this, id, &time, &angle, seconds);
+    }
+    va_end(ap);
+}
+/*recordAngleEnd*/
+void CLinkbotI::recordAngleEnd(int id, int &num) {
+    void *fptr;
+    int retval;
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_recordAngleEnd_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    dlrunfun(fptr, NULL, NULL, this, id, &num);
+}
+
+/*recordDistanceBegin*/
+void CLinkbotI::recordDistanceBegin(int id, double* &time, double* &distance, double radius, double seconds, ...) {
+    void *fptr;
+    va_list ap;
+    int shiftData = 1;
+    int mask;
+    va_start(ap, seconds);
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_recordDistanceBegin_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    if(va_count(ap) == 1) {
+      shiftData = va_arg(ap, int);
+      dlrunfun(fptr, NULL, NULL, this, id, &time, &distance, radius, seconds, shiftData);
+    } else {
+      dlrunfun(fptr, NULL, NULL, this, id, &time, &distance, radius, seconds);
+    }
+    va_end(ap);
+}
+/*recordDistanceEnd*/
+void CLinkbotI::recordDistanceEnd(int id, int &num) {
+    void *fptr;
+    int retval;
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_recordDistanceEnd_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    dlrunfun(fptr, NULL, NULL, this, id, &num);
+}
+
+
 /*CLinkbotIGroup class */
 
 /* Constructor */

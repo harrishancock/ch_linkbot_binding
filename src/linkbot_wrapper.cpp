@@ -936,8 +936,8 @@ void Linkbot::recordAnglesBegin(
             robotRecordData_t &angle2,
             robotRecordData_t &angle3,
             double timeInterval,
-            int shiftData,
-            int mask)
+            int mask,
+			int shiftData)
 {
     std::unique_lock<std::mutex> lock(m->recordAnglesMutex);
     if(m->jointsRecordingActive) {
@@ -1061,8 +1061,8 @@ void Linkbot::recordDistanceBegin(
         distance,
         distance,
         timeInterval,
-        shiftData,
-        1<<(int(id)-1));
+		1 << (int(id) - 1),
+        shiftData);
 }
 
 void Linkbot::recordDistanceEnd(robotJointId_t id, int& num)
