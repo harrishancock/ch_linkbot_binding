@@ -1,5 +1,5 @@
-add_executable(test test.cpp)
-target_link_libraries(test linkbot)
+add_executable(testWrapper test.cpp)
+target_link_libraries(testWrapper linkbot)
 
 add_executable(testGetters testGetters.cpp)
 target_link_libraries(testGetters linkbot)
