@@ -4,6 +4,7 @@ namespace c_impl {
 #include "baromesh/linkbot.h"
 }
 #include "barobo/linkbot.hpp"
+#include <string>
 #include <thread>
 #include <mutex>
 #include <condition_variable>
@@ -978,7 +979,7 @@ void Linkbot::recordAnglesBegin(
                 if((now - lastPolledTime) <
                     std::chrono::milliseconds(int(m->userTimeInterval*1000))) 
                 {
-                    std::chrono::duration<double> seconds =
+                    auto seconds =
                         std::chrono::milliseconds(int(m->userTimeInterval*1000))
                         - (now-lastPolledTime);
                     m->recordAnglesCond.wait_for(lock, seconds);
