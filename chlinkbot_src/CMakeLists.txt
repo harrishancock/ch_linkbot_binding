@@ -10,7 +10,7 @@ if(NOT DEFINED CH_ROOT)
 		set(CH_ROOT "C:/Ch")
 	endif()
 endif()
-message(STATUS "Using Ch at $ENV{CH_ROOT}")
+message(STATUS "Using Ch at ${CH_ROOT}")
 
 # This CMakeLists.txt is a little weird, because it depends on a superdirectory,
 # not a subdirectory. We should probably move ../CMakeLists.txt into ../src,
