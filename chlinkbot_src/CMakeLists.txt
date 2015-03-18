@@ -10,7 +10,7 @@ if(NOT DEFINED CH_ROOT)
 		set(CH_ROOT "C:/Ch")
 	endif()
 endif()
-message(STATUS "Using Ch at $ENV{CH_ROOT}")
+message(STATUS "Using Ch at ${CH_ROOT}")
 
 # This CMakeLists.txt is a little weird, because it depends on a superdirectory,
 # not a subdirectory. We should probably move ../CMakeLists.txt into ../src,
@@ -31,7 +31,6 @@ target_link_libraries(chlinkbot
 	PUBLIC linkbot
 		   ${CH_ROOT}/extern/lib/chsdk.lib		   
 		   ${CH_ROOT}/extern/lib/ch.lib)
-		   
 
 # TODO the install target of the old Makefile still needs to be converted into
 # CMake.
