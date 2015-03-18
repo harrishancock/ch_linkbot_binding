@@ -30,7 +30,8 @@ target_include_directories(chlinkbot PUBLIC ${CH_ROOT}/extern/include)
 target_link_libraries(chlinkbot
 	PUBLIC linkbot
 		   ${CH_ROOT}/extern/lib/chsdk.lib
-		   ${CH_ROOT}/extern/lib/ch.lib)
+		   ${CH_ROOT}/extern/lib/ch.lib
+		   )
 
 # TODO the install target of the old Makefile still needs to be converted into
 # CMake.
