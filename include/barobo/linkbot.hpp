@@ -193,6 +193,8 @@ public:
 	/* MOVEMENT FUNCTIONS */
 	void closeGripper();
 	void closeGripperNB();
+	void driveAngle(double angle);
+	void driveAngleNB(double angle);
 	void driveBackward(double angle);
     void driveBackwardNB(double angle);
 	void driveDistance(double distance, double radius);

@@ -140,6 +140,21 @@ void LinkbotGroup::driveForeverNB()
 	}
 }
 
+void LinkbotGroup::driveAngleNB(double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->driveAngleNB(angle);
+	}
+}
+
+void LinkbotGroup::driveAngle(double angle)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->driveAngleNB(angle);
+	}
+	moveWait();
+}
+
 void LinkbotGroup::driveForwardNB(double angle)
 {
 	for (Linkbot* robot : m->robots) {

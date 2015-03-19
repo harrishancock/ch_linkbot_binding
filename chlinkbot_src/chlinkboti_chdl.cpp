@@ -1868,6 +1868,39 @@ EXPORTCH void CLinkbotIGroup_driveBackward_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return;
 }
+
+/*linkbotGroup driveAngle*/
+EXPORTCH void CLinkbotIGroup_driveAngle_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class LinkbotGroup *g;
+	double angle;
+
+	Ch_VaStart(interp, ap, varg);
+
+	g = Ch_VaArg(interp, ap, class LinkbotGroup *);
+	angle = Ch_VaArg(interp, ap, double);
+	g->driveAngle(angle);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
+/*linkbotGroup driveAngleNB*/
+EXPORTCH void CLinkbotIGroup_driveAngleNB_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class LinkbotGroup *g;
+	double angle;
+
+	Ch_VaStart(interp, ap, varg);
+
+	g = Ch_VaArg(interp, ap, class LinkbotGroup *);
+	angle = Ch_VaArg(interp, ap, double);
+	g->driveAngleNB(angle);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
 /*linkbotGroup driveForeverNB*/
 EXPORTCH void CLinkbotIGroup_driveForeverNB_chdl(void *varg) {
     ChInterp_t interp;

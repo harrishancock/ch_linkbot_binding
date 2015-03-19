@@ -1451,6 +1451,36 @@ void CLinkbotIGroup::driveForward(double angle) {
     return;
 }
 
+/* driveAngle*/
+void CLinkbotIGroup::driveAngle(double angle) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_driveAngle_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle);
+    return;
+}
+
+/* driveAngleNB*/
+void CLinkbotIGroup::driveAngleNB(double angle) {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_driveAngleNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle);
+    return;
+}
+
 /* driveTimeNB*/
 void CLinkbotIGroup::driveTimeNB(double time) {
     void *fptr;
