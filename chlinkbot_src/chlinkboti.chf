@@ -200,7 +200,6 @@ void CLinkbotI::driveForward(double angle) {
        printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
        return;
     }
-     
     dlrunfun(fptr, NULL, NULL, this, angle);
 }
 
@@ -214,6 +213,30 @@ void CLinkbotI::driveForwardNB(double angle) {
        return;
     }
      
+    dlrunfun(fptr, NULL, NULL, this, angle);
+}
+
+/*driveAngle*/
+void CLinkbotI::driveAngle(double angle) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_driveAngle_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+    dlrunfun(fptr, NULL, NULL, this, angle);
+}
+
+/*driveAngleNB*/
+void CLinkbotI::driveAngleNB(double angle) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_driveAngleNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
     dlrunfun(fptr, NULL, NULL, this, angle);
 }
 

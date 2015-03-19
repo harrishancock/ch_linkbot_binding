@@ -34,6 +34,9 @@ do { \
 
 #define ABS(x) ( (x<0) ? (-(x)) : (x) )
 
+#define DEPRECATED(from, to) \
+  fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s()\"\n" , from, to)
+
 struct LinkbotImpl
 {
     LinkbotImpl() : jointsRecordingActive(false), userShiftDataThreshold(1.0)
@@ -694,12 +697,20 @@ void Linkbot::moveJointForeverNB(robotJointId_t id)
 
 void Linkbot::moveJointTime(robotJointId_t id, double time)
 {
-    moveJointTimeNB(id, time);
+	if (time < 0){
+		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", time);
+		exit(-1);
+	}
+	moveJointTimeNB(id, time);
     moveWait(1<<(int(id)-1));
 }
 
 void Linkbot::moveJointTimeNB(robotJointId_t id, double time)
 {
+	if (time < 0){
+		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", time);
+		exit(-1);
+	}
 	if(id == ROBOT_JOINT3) {
         setJointMovementStateTimeNB(id, ROBOT_BACKWARD, time);
     } else {
@@ -709,12 +720,20 @@ void Linkbot::moveJointTimeNB(robotJointId_t id, double time)
 
 void Linkbot::moveTime(double time)
 {
-    moveTimeNB(time);
+	if (time < 0){
+		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", time);
+		exit(-1);
+	}
+	moveTimeNB(time);
     moveWait();
 }
 
 void Linkbot::moveTimeNB(double time)
 {
+	if (time < 0){
+		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", time);
+		exit(-1);
+	}
 	setMovementStateTimeNB(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_POSITIVE, time);
 }
 
@@ -744,15 +763,22 @@ void Linkbot::moveToByTrackPosNB(double angle1, double angle2, double angle3)
 
 void Linkbot::driveBackward(double angle)
 {
-    m->setJointsMovingFlag(0x07);
+	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
+		"driveBackward", "driveAngle(-angle)");
+	m->setJointsMovingFlag(0x07);
 	CALL_C_IMPL(linkbotMove, 0x07, -angle, 0, angle);
 	moveWait();
+	
+	
 }
 
 void Linkbot::driveBackwardNB(double angle)
 {
-    m->setJointsMovingFlag(0x07);
+	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
+		"driveBackwardNB", "driveAngleNB(-angle)");
+	m->setJointsMovingFlag(0x07);
 	CALL_C_IMPL(linkbotMove, 0x07, -angle, 0, angle);
+	
 }
 
 void Linkbot::driveDistance(double distance, double radius)
@@ -783,18 +809,39 @@ void Linkbot::driveForeverNB()
 
 void Linkbot::driveForward(double angle)
 {
-    m->setJointsMovingFlag(0x07);
+	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
+		"driveForward", "driveAngle(angle)");
+	m->setJointsMovingFlag(0x07);
 	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
 	moveWait();
 }
 void Linkbot::driveForwardNB(double angle)
 {
-    m->setJointsMovingFlag(0x07);
+	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
+		"driveForwardNB", "driveAngle(angle)");
+	m->setJointsMovingFlag(0x07);
+	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+}
+
+void Linkbot::driveAngle(double angle)
+{
+	m->setJointsMovingFlag(0x07);
+	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+	moveWait();
+}
+
+void Linkbot::driveAngleNB(double angle)
+{
+	m->setJointsMovingFlag(0x07);
 	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
 }
 
 void Linkbot::driveTime(double seconds)
 {
+	if (seconds < 0){
+		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", seconds);
+		exit(-1);
+	}
 	//setMovementStateTime(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_NEGATIVE, seconds);
 	driveTimeNB(seconds);
 	moveWait();
@@ -802,6 +849,10 @@ void Linkbot::driveTime(double seconds)
 
 void Linkbot::driveTimeNB(double seconds)
 {
+	if (seconds < 0){
+		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", seconds);
+		exit(-1);
+	}
 	setMovementStateTimeNB(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_NEGATIVE, seconds);
 }
 
