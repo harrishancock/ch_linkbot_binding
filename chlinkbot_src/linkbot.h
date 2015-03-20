@@ -152,7 +152,6 @@ class CLinkbotI {
 			);
 		void recordAngleEnd(robotJointId_t id, int &num);
 		void recordDistanceBegin(
-			robotJointId_t id,
 			robotRecordData_t &time,
 			robotRecordData_t &distance,
 			double radius,

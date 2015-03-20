@@ -1129,7 +1129,8 @@ void Linkbot::recordDistanceBegin(
 
 void Linkbot::recordDistanceEnd(robotJointId_t id, int& num)
 {
-    recordAnglesEnd(num);
+	
+	recordAnglesEnd(num);
     /* Convert values to distance */
     for(int i = 0; i < num; i++) {
         (*(m->userRecordedAngles[0]))[i] = (*(m->userRecordedAngles[0]))[i] *

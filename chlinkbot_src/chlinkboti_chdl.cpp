@@ -1614,7 +1614,7 @@ EXPORTCH void CLinkbotI_recordDistanceBegin_chdl(void *varg) {
 	class Linkbot *l;
 	robotJointId_t id;
 	double** time;
-	double** distance;
+	double**distance;
 	double radius;
 	double seconds;
 	int shiftData;
