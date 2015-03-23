@@ -100,6 +100,7 @@ struct LinkbotImpl
     double userInitAngles[3];
     double** userRecordedTimes;
     double** userRecordedAngles[3];
+	double distanceOffset;
 };
 
 void _encoderEventCB(int joint, double angle, int timestamp, void* data)
@@ -992,6 +993,11 @@ void Linkbot::disableRecordDataShift()
 	m->userShiftData = 0;
 }
 
+void Linkbot::recordDistanceOffset(double distance)
+{
+	m->distanceOffset = distance;
+}
+
 void Linkbot::recordAnglesBegin(
             robotRecordData_t &time,
             robotRecordData_t &angle1,
@@ -1136,6 +1142,10 @@ void Linkbot::recordDistanceEnd(robotJointId_t id, int& num)
         (*(m->userRecordedAngles[0]))[i] = (*(m->userRecordedAngles[0]))[i] *
             (M_PI/180.0)* m->userRadius;
     }
+	/*add the offset*/
+	for (int i = 0; i < num; i++) {
+		(*(m->userRecordedAngles[0]))[i] += m->distanceOffset;
+	}
 }
 
 void Linkbot::recordAnglesBegin2(

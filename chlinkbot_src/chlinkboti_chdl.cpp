@@ -1684,6 +1684,22 @@ EXPORTCH void CLinkbotI_disableRecordDataShift_chdl(void *varg) {
 	return;
 }
 
+/*linkbot recordDistanceOffset*/
+EXPORTCH void CLinkbotI_recordDistanceOffset_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	double distance;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	distance = Ch_VaArg(interp, ap, double);
+	l->recordDistanceOffset(distance);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
 /* CLinkbotIGroup functions */
 
 /*Constructor*/

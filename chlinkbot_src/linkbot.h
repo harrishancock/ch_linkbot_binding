@@ -160,6 +160,7 @@ class CLinkbotI {
 		void recordDistanceEnd(robotJointId_t id, int &num);
 		void enableRecordDataShift();
 		void disableRecordDataShift();
+		void recordDistanceOffset(double distance);
 
         LinkbotImpl *m;
 

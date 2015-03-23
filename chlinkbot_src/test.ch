@@ -10,19 +10,20 @@ int numDataPoints;         // number of data points recorded
 robotRecordData_t timedata, angledata; // recorded time and angles for joint 1
 CPlot plot;                // plotting class
 double radius = 1.75;
+double offset = 3;
 
-/* connect to the paired robot and move to the zero position */
 robot.connect();
 robot.resetToZero();
 
-/*robot.setJointSpeed(JOINT1, speed);
-robot.setJointSpeed(JOINT3, speed);*/
+//robot.setJointSpeed(JOINT1, speed);
+//robot.setJointSpeed(JOINT3, speed);
 
 //robot.recordAngleBegin(JOINT1, timedata, angledata, timeInterval);
-robot.recordDistanceBegin(timedata, angledata, radius, timeInterval, 0);
+robot.recordDistanceOffset(offset);
+robot.recordDistanceBegin(timedata, angledata, radius, timeInterval);
 
-
-robot.move(180, NaN, -180);
+robot.driveDistance(5, radius);
+//robot.move(180, NaN, -180);
 
 
 //robot.recordAngleEnd(JOINT1, numDataPoints);
@@ -34,5 +35,6 @@ plot.label(PLOT_AXIS_X, "time (seconds)");
 plot.label(PLOT_AXIS_Y, "angle for joint1 (degrees)");
 plot.data2DCurve(timedata, angledata, numDataPoints);
 plot.plotting();
+
 
 

@@ -167,6 +167,7 @@ class Linkbot {
             double radius,
             int shiftData = 1);
         void recordDistanceEnd2(robotJointId_t id, int &num);
+		void recordDistanceOffset(double distance);
 		void enableRecordDataShift();
 		void disableRecordDataShift();
 		void delaySeconds(int seconds);
