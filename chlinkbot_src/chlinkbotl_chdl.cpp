@@ -287,6 +287,21 @@ EXPORTCH int CLinkbotL_isMoving_chdl(void *varg) {
     return retval;
 }
 
+/*linkbot isConnected*/
+EXPORTCH int CLinkbotL_isConnected_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	int retval;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	retval = l->isConnected();
+	Ch_VaEnd(interp, ap);
+	return retval;
+}
+
 /*linkbot holdJoint*/
 EXPORTCH void CLinkbotL_holdJoint_chdl(void *varg) {
     ChInterp_t interp;
@@ -316,6 +331,21 @@ EXPORTCH void CLinkbotL_holdJoints_chdl(void *varg) {
     l->holdJoints();
     Ch_VaEnd(interp, ap);
     return;
+}
+
+/*linkbot holdJointsAtExit*/
+EXPORTCH void CLinkbotL_holdJointsAtExit_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	robotJointId_t id;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	l->holdJointsAtExit();
+	Ch_VaEnd(interp, ap);
+	return;
 }
 
 /*linkbot relaxJoint*/
@@ -1411,6 +1441,20 @@ EXPORTCH void CLinkbotLGroup_holdJoints_chdl(void *varg) {
     return;
 }
 
+/*linkbotGroup holdJointsAtExit*/
+EXPORTCH void CLinkbotLGroup_holdJointsAtExit_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class LinkbotGroup *g;
+
+	Ch_VaStart(interp, ap, varg);
+
+	g = Ch_VaArg(interp, ap, class LinkbotGroup *);
+	g->holdJointsAtExit();
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
 /*linkbotGroup relaxJoint*/
 EXPORTCH void CLinkbotLGroup_relaxJoint_chdl(void *varg) {
     ChInterp_t interp;
@@ -1863,6 +1907,22 @@ EXPORTCH int CLinkbotLGroup_isMoving_chdl(void *varg) {
     Ch_VaEnd(interp, ap);
     return retval;
 }
+
+/*linkbotGroup isConnected*/
+EXPORTCH int CLinkbotLGroup_isConnected_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class LinkbotGroup *g;
+	int retval;
+
+	Ch_VaStart(interp, ap, varg);
+
+	g = Ch_VaArg(interp, ap, class LinkbotGroup *);
+	retval = g->isConnected();
+	Ch_VaEnd(interp, ap);
+	return retval;
+}
+
 
 /*linkbotGroup moveJointTime*/
 EXPORTCH void CLinkbotLGroup_moveJointTime_chdl(void *varg) {

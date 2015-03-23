@@ -51,6 +51,7 @@ struct LinkbotImpl
     c_impl::barobo::JointState::Type jointStates[3];
     c_impl::baromesh::Linkbot *linkbot;
     uint8_t motorMask;
+	robotJointState_t exitState;
 
     void setJointsMovingFlag(int mask) {
         for(int i = 0; i < 3; i++) {
@@ -101,6 +102,7 @@ struct LinkbotImpl
     double** userRecordedTimes;
     double** userRecordedAngles[3];
 	double distanceOffset;
+	bool connected;
 };
 
 void _encoderEventCB(int joint, double angle, int timestamp, void* data)
@@ -127,9 +129,11 @@ int Linkbot::connect()
 	
     if(m->linkbot = c_impl::linkbotFromTcpEndpoint("127.0.0.1", "42010")){
 		std::cout << "Successful connection "<<std::endl;
+		m->connected = true;
 	}
 	else{
 		fprintf(stderr, "Could not connect to robot. Exiting..\n");
+		m->connected = false;
 		exit (-1);
 	}
 	
@@ -209,8 +213,9 @@ int Linkbot::disconnect()
 Linkbot::~Linkbot()
 {
 	if(m && m->linkbot) { 
-	stop(); //stop motors
-	disconnect();
+		stop(); //stop motors
+	    setMovementStateNB(m->exitState, m->exitState, m->exitState);
+        disconnect();
 	}
 }
 
@@ -866,6 +871,12 @@ void Linkbot::holdJoints()
 {
 	setMovementStateNB(ROBOT_HOLD, ROBOT_HOLD, ROBOT_HOLD);
 }
+
+void Linkbot::holdJointsAtExit()
+{
+	m->exitState = ROBOT_HOLD;
+}
+
 void Linkbot::move(double j1, double j2, double j3)
 {
     moveNB(j1, j2, j3);
@@ -922,6 +933,16 @@ int Linkbot::isMoving(int mask)
         }
     }
     return moving;
+}
+
+int Linkbot::isConnected()
+{
+	if (m->connected){
+		return 1;
+	}
+	else {
+		return 0;
+	}
 }
 
 void Linkbot::relaxJoint(robotJointId_t id)

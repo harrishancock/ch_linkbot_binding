@@ -212,6 +212,13 @@ void LinkbotGroup::holdJoints()
 	}
 }
 
+void LinkbotGroup::holdJointsAtExit()
+{
+	for (Linkbot* robot : m->robots) {
+		robot->holdJointsAtExit();
+	}
+}
+
 void LinkbotGroup::turnLeftNB(double angle, double radius, double tracklength)
 {
 	for (Linkbot* robot : m->robots) {
@@ -444,6 +451,16 @@ int LinkbotGroup::isMoving(int mask)
 {
 	for (Linkbot* robot : m->robots) {
 		if(robot->isMoving(mask)){
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int LinkbotGroup::isConnected()
+{
+	for (Linkbot* robot : m->robots) {
+		if (robot->isConnected()){
 			return 1;
 		}
 	}

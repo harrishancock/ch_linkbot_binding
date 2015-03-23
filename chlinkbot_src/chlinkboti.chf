@@ -347,6 +347,20 @@ int CLinkbotI::isMoving() {
     return retval;
 }
 
+/*isConnected*/
+int CLinkbotI::isConnected() {
+    void *fptr;
+    int retval;
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_isConnected_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return -1;
+    }
+     
+    dlrunfun(fptr, &retval, NULL, this);
+    return retval;
+}
+
 /*stop*/
 void CLinkbotI::stop() {
     void *fptr;
@@ -440,6 +454,19 @@ void CLinkbotI::holdJoints() {
     void *fptr;
   
     fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_holdJoints_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+}
+
+/*holdJointsAtExit*/
+void CLinkbotI::holdJointsAtExit() {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_holdJointsAtExit_chdl");
     if (fptr == NULL) {
        printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
        return;
@@ -1602,6 +1629,20 @@ void CLinkbotIGroup::holdJoints() {
     dlrunfun(fptr, NULL, NULL, this);
     return;
 }
+/* holdJointsAtExit*/
+void CLinkbotIGroup::holdJointsAtExit() {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_holdJointsAtExit_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+    return;
+}
 
 /* turnLeftNB*/
 void CLinkbotIGroup::turnLeftNB(double angle, double radius, double tracklength) {
@@ -2097,6 +2138,20 @@ int CLinkbotIGroup::isMoving() {
     }
      
     dlrunfun(fptr, &retval, NULL, this, mask);
+    return retval;
+}
+
+/*isConnected*/
+int CLinkbotIGroup::isConnected() {
+    void *fptr;
+    int retval;
+    fptr = dlsym(CLinkbotI::g_chlinkbot_dlhandle, "CLinkbotIGroup_isConnected_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return -1;
+    }
+     
+    dlrunfun(fptr, &retval, NULL, this);
     return retval;
 }
 

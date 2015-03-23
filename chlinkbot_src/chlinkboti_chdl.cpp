@@ -435,6 +435,21 @@ EXPORTCH int CLinkbotI_isMoving_chdl(void *varg) {
     return retval;
 }
 
+/*linkbot isConnected*/
+EXPORTCH int CLinkbotI_isConnected_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	int retval;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	retval = l->isConnected();
+	Ch_VaEnd(interp, ap);
+	return retval;
+}
+
 /*linkbot stop*/
 EXPORTCH void CLinkbotI_stop_chdl(void *varg) {
     ChInterp_t interp;
@@ -573,6 +588,21 @@ EXPORTCH void CLinkbotI_holdJoints_chdl(void *varg) {
     l->holdJoints();
     Ch_VaEnd(interp, ap);
     return;
+}
+
+/*linkbot holdJointsAtExit*/
+EXPORTCH void CLinkbotI_holdJointsAtExit_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	robotJointId_t id;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	l->holdJointsAtExit();
+	Ch_VaEnd(interp, ap);
+	return;
 }
 
 /*linkbot relaxJoint*/
@@ -2024,6 +2054,20 @@ EXPORTCH void CLinkbotIGroup_holdJoints_chdl(void *varg) {
     return;
 }
 
+/*linkbotGroup holdJointsAtExit*/
+EXPORTCH void CLinkbotIGroup_holdJointsAtExit_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class LinkbotGroup *g;
+
+	Ch_VaStart(interp, ap, varg);
+
+	g = Ch_VaArg(interp, ap, class LinkbotGroup *);
+	g->holdJointsAtExit();
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
 /*linkbotGroup turnLeftNB*/
 EXPORTCH void CLinkbotIGroup_turnLeftNB_chdl(void *varg) {
     ChInterp_t interp;
@@ -2603,6 +2647,21 @@ EXPORTCH int CLinkbotIGroup_isMoving_chdl(void *varg) {
     retval=g->isMoving(mask);
     Ch_VaEnd(interp, ap);
     return retval;
+}
+
+/*linkbotGroup isConnected*/
+EXPORTCH int CLinkbotIGroup_isConnected_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class LinkbotGroup *g;
+	int retval;
+
+	Ch_VaStart(interp, ap, varg);
+
+	g = Ch_VaArg(interp, ap, class LinkbotGroup *);
+	retval = g->isConnected();
+	Ch_VaEnd(interp, ap);
+	return retval;
 }
 
 /*linkbotGroup closeGripperNB*/

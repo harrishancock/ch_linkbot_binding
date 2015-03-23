@@ -240,10 +240,23 @@ void CLinkbotL::holdJoints() {
     dlrunfun(fptr, NULL, NULL, this);
 }
 
+/*holdJointsAtExit*/
+void CLinkbotL::holdJointsAtExit() {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_holdJointsAtExit_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+}
+
 /*isMoving*/
 int CLinkbotL::isMoving() {
     void *fptr;
-    int mask = 0x03; // only motors 1 and 3
+    int mask = 0x03; // only motors 1 and 2
     int retval;
     fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_isMoving_chdl");
     if (fptr == NULL) {
@@ -252,6 +265,20 @@ int CLinkbotL::isMoving() {
     }
      
     dlrunfun(fptr, &retval, NULL, this, mask);
+    return retval;
+}
+
+/*isConnected*/
+int CLinkbotL::isConnected() {
+    void *fptr;
+    int retval;
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_isConnected_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return -1;
+    }
+     
+    dlrunfun(fptr, &retval, NULL, this);
     return retval;
 }
 
@@ -1094,6 +1121,22 @@ void CLinkbotLGroup::holdJoints() {
     return;
 }
 
+
+/* holdJointsAtExit*/
+void CLinkbotLGroup::holdJointsAtExit() {
+    void *fptr;
+    int rc;
+  
+    fptr = dlsym(CLinkbotL::g_chlinkbot_dlhandle, "CLinkbotLGroup_holdJointsAtExit_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this);
+    return;
+}
+
 /* relaxJoint*/
 void CLinkbotLGroup::relaxJoint(robotJointId_t id) {
     void *fptr;
@@ -1472,7 +1515,7 @@ void CLinkbotLGroup::resetToZero() {
 /*isMoving*/
 int CLinkbotLGroup::isMoving() {
     void *fptr;
-    int mask = 0x05; // only motors 1 and 3
+    int mask = 0x05; // only motors 1 and 2
     int retval;
     fptr = dlsym(CLinkbotL::g_chlinkbot_dlhandle, "CLinkbotLGroup_isMoving_chdl");
     if (fptr == NULL) {
@@ -1481,6 +1524,20 @@ int CLinkbotLGroup::isMoving() {
     }
      
     dlrunfun(fptr, &retval, NULL, this, mask);
+    return retval;
+}
+
+/*isConnected*/
+int CLinkbotLGroup::isConnected() {
+    void *fptr;
+    int retval;
+    fptr = dlsym(CLinkbotL::g_chlinkbot_dlhandle, "CLinkbotLGroup_isConnected_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return -1;
+    }
+     
+    dlrunfun(fptr, &retval, NULL, this);
     return retval;
 }
 
