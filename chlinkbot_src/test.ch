@@ -21,9 +21,9 @@ robot.getJointSafetyAngle(angle);
 
 robot.setJointSafetyAngle(5);
 
-robot.move(180, NaN, 180);
-
 robot.getJointSafetyAngle(angle);
+
+
 
 
 

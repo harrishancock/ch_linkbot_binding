@@ -915,7 +915,7 @@ void CLinkbotI::getJointSafetyAngle(double &angle) {
        return;
     }
      
-    dlrunfun(fptr, NULL, NULL, this, angle);
+    dlrunfun(fptr, NULL, NULL, this, &angle);
 }
 
 /*getJointSafetyAngleTimeout*/
@@ -928,7 +928,7 @@ void CLinkbotI::getJointSafetyAngleTimeout(double &timeout) {
        return;
     }
      
-    dlrunfun(fptr, NULL, NULL, this, timeout);
+    dlrunfun(fptr, NULL, NULL, this, &timeout);
 }
 
 /*END GET FUNCTIONS*/

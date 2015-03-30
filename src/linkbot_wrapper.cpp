@@ -216,7 +216,9 @@ Linkbot::~Linkbot()
 		stop(); //stop motors
 	    setMovementStateNB(m->exitState, m->exitState, m->exitState);
         disconnect();
+		
 	}
+	
 }
 
 /* GETTERS */
@@ -311,6 +313,7 @@ void Linkbot::getJointAngles(double &angle1, double &angle2, double &angle3)
 
 void Linkbot::getJointSafetyAngle(double &angle)
 {
+	std::cout << "angle " << angle << std::endl;
 	CALL_C_IMPL(linkbotGetJointSafetyAngles, &angle, &angle, &angle);
 	std::cout << "angle " << angle << std::endl;
 }
