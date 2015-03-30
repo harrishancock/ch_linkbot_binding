@@ -46,6 +46,7 @@ class CLinkbotI {
         /* GETTERS */
 
         void getAccelerometerData(double &x, double &y, double &z); 
+		void getBatteryVoltage(double &voltage);
 		void getDistance(double &distance, double radius);
         void getJointAngle(robotJointId_t id, double &angle);
         void getJointAngles(double &angle1, double &angle2, double &angle3);
@@ -184,8 +185,8 @@ class CLinkbotL {
 		void disconnect();
 
         /* GETTERS */
-
-        void getAccelerometerData(double &x, double &y, double &z); 
+		void getAccelerometerData(double &x, double &y, double &z); 
+		void getBatteryVoltage(double &voltage);
         void getJointAngle(robotJointId_t id, double &angle);
         void getJointAngles(double &angle1, double &angle2, double &angle3);
 		void getJointAngleInstant(robotJointId_t id, double &angle);

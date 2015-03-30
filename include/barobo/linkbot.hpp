@@ -36,6 +36,7 @@ class Linkbot {
         /* GETTERS */
 
         void getAccelerometerData(double &x, double &y, double &z);
+		void getBatteryVoltage(double &voltage);
 		void getDistance(double &distance, double radius);
         void getFormFactor(int &type);
         void getJointAngle(robotJointId_t id, double &angle);

@@ -502,6 +502,7 @@ void CLinkbotL::getJointAngle(robotJointId_t id, double &angle) {
     dlrunfun(fptr, NULL, NULL, this, id, &angle);
 }
 
+
 /*getJointAngles*/
 void CLinkbotL::getJointAngles(double &angle1, double &angle2, double &angle3) {
     void *fptr;
@@ -540,6 +541,20 @@ void CLinkbotL::getJointAnglesInstant(double &angle1, double &angle2, double &an
      
     dlrunfun(fptr, NULL, NULL, this, &angle1, &angle2, &angle3);
 }
+
+/*getBatteryVoltage*/
+void CLinkbotL::getBatteryVoltage(double &voltage) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_getBatteryVoltage_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, &voltage);
+}
+
 /*getJointSpeed*/
 void CLinkbotL::getJointSpeed(robotJointId_t id, double &speed) {
     void *fptr;

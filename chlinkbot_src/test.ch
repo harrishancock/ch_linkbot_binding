@@ -3,8 +3,7 @@
    with a negative slope */
 #include <linkbot.h>
 #include <chplot.h>
-CLinkbotI robot1, robot2;
-CLinkbotIGroup group;
+CLinkbotI robot;
 double speed = 45;         // speed in 45 degrees/seconds 
 double timeInterval = 0.1; // time interval in 0.1 second 
 int numDataPoints;         // number of data points recorded
@@ -13,24 +12,13 @@ CPlot plot;                // plotting class
 double radius = 1.75;
 double offset = 3;
 int connected;
+double voltage;
 
-group.addRobot(robot1);
-group.addRobot(robot2);
+robot.connect();
 
-group.connect();
+robot.getBatteryVoltage(voltage);
 
-connected=group.isConnected();
-if (connected == 1){
-    printf("Connected!\n");
-}
-
-group.resetToZero();
-//robot.holdJointsAtExit();
-
-
-group.driveDistance(5, radius);
-//group.move(180, 180, NaN);
-
+printf("Voltage %.3lf\n", voltage);
 
 
 

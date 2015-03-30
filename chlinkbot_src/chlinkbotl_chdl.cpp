@@ -638,6 +638,22 @@ EXPORTCH void CLinkbotL_getAccelerometerData_chdl(void *varg) {
     return;
 }
 
+/*linkbot getBatteryVoltage*/
+EXPORTCH void CLinkbotL_getBatteryVoltage_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	double *voltage;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	voltage = Ch_VaArg(interp, ap, double *);
+	l->getBatteryVoltage(*voltage);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
 /*linkbot getLEDColorRGB*/
 EXPORTCH void CLinkbotL_getLEDColorRGB_chdl(void *varg) {
     ChInterp_t interp;

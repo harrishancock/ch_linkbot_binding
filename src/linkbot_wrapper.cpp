@@ -227,6 +227,11 @@ void Linkbot::getAccelerometerData(double &x, double &y, double &z)
 	CALL_C_IMPL(linkbotGetAccelerometer, &timestamp, &x, &y, &z);
 }
 
+void Linkbot::getBatteryVoltage(double &voltage)
+{
+	CALL_C_IMPL(linkbotGetBatteryVoltage, &voltage);
+}
+
 void Linkbot::getDistance(double &distance, double radius)
 {
     double angle;
