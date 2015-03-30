@@ -308,6 +308,24 @@ void Linkbot::getJointAngles(double &angle1, double &angle2, double &angle3)
 	angle2 = angle2/numReadings;
 	angle3 = angle3/numReadings;
 }
+
+void Linkbot::getJointSafetyAngle(double &angle)
+{
+	CALL_C_IMPL(linkbotGetJointSafetyAngles, &angle, &angle, &angle);
+	std::cout << "angle " << angle << std::endl;
+}
+
+void Linkbot::getJointSafetyAngleTimeout(double &timeout)
+{
+	int t;
+	CALL_C_IMPL(linkbotGetJointSafetyThresholds, &t, &t, &t);
+	/*Convert from motor timer cicles to seconds
+	1 cycle is 10 ms*/
+	t = (t * 10) / 1000.0;
+	timeout = double(t);
+	std::cout << "timeout " << timeout << std::endl;
+}
+
 void Linkbot::getJointSpeed(robotJointId_t id, double &speed)
 {
     double speeds[3];
@@ -664,6 +682,22 @@ void Linkbot::setLEDColor(char *color)
 	HT_Destroy(rgbTable);
 
 	CALL_C_IMPL(linkbotSetLedColor, getRGB[0], getRGB[1], getRGB[2]);
+}
+
+void Linkbot::setJointSafetyAngle(double angle)
+{
+	int mask = 0x07;
+	std::cout << "Set angle " << angle << std::endl;
+	CALL_C_IMPL(linkbotSetJointSafetyAngles, mask, angle, angle, angle);
+}
+
+void Linkbot::setJointSafetyAngleTimeout(double timeout)
+{
+	int mask = 0x07;
+	/*Convert seconds to number of motor cycles*/
+	timeout = timeout * 100;
+	CALL_C_IMPL(linkbotSetJointSafetyAngles, mask, timeout, timeout, timeout);
+	std::cout << "set timeout " << timeout << std::endl;
 }
 
 /* MOVEMENT */

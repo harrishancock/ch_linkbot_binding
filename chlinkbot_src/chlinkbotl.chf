@@ -648,6 +648,33 @@ void CLinkbotL::getLEDColor(string_t &color) {
     dlrunfun(fptr, NULL, NULL, this, color1);
     color = color1;
 }
+
+/*getJointSafetyAngle*/
+void CLinkbotL::getJointSafetyAngle(double &angle) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_getJointSafetyAngle_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle);
+}
+
+/*getJointSafetyAngleTimeout*/
+void CLinkbotL::getJointSafetyAngleTimeout(double &timeout) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_getJointSafetyAngleTimeout_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, timeout);
+}
+
 /*END GET FUNCTIONS*/
 /*SET FUNCTIONS*/
 
@@ -857,6 +884,32 @@ void CLinkbotL::setLEDColor(char *color) {
     }
      
     dlrunfun(fptr, NULL, NULL, this, color);
+}
+
+/*setJointSafetyAngle*/
+void CLinkbotL::setJointSafetyAngle(double angle) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_setJointSafetyAngle_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, angle);
+}
+
+/*setJointSafetyAngleTimeout*/
+void CLinkbotL::setJointSafetyAngleTimeout(double timeout) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_setJointSafetyAngleTimeout_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, timeout);
 }
 
 /*END SET FUNCTIONS*/

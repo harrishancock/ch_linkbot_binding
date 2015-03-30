@@ -11,14 +11,21 @@ robotRecordData_t timedata, angledata; // recorded time and angles for joint 1
 CPlot plot;                // plotting class
 double radius = 1.75;
 double offset = 3;
-int connected;
-double voltage;
+double angle, angle1;
+angle1 = 5;
+angle =20;
 
 robot.connect();
 
-robot.getBatteryVoltage(voltage);
+robot.getJointSafetyAngle(angle);
 
-printf("Voltage %.3lf\n", voltage);
+robot.setJointSafetyAngle(5);
+
+robot.move(180, NaN, 180);
+
+robot.getJointSafetyAngle(angle);
+
+
 
 
 

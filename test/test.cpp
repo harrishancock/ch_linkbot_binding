@@ -17,6 +17,14 @@ int main(int argc, char *argv[]) {
     Linkbot *l = new Linkbot();
     l->connectWithSerialID(argv[1]);
 	double seconds=5;
+	double angle = 10;
+	double angle1;
+
+	l->getJointSafetyAngle(angle1);
+
+	l->setJointSafetyAngle(angle);
+
+	l->getJointSafetyAngle(angle1);
     /*l->move(90, 90, 90);
     l->move(-90, -90, -90);
     */
@@ -28,7 +36,7 @@ int main(int argc, char *argv[]) {
             ROBOT_BACKWARD, ROBOT_BACKWARD, ROBOT_BACKWARD, 3);
     l->moveWait();
     */
-    l->setMovementStateTimeNB(
+    /*l->setMovementStateTimeNB(
             ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_POSITIVE, 3);
     l->moveWait();
     l->setMovementStateTimeNB(
@@ -77,6 +85,6 @@ int main(int argc, char *argv[]) {
         l->moveWait();
         l->moveNB(-distance, -distance, -distance);
         l->moveWait();
-    }
+    }*/
     return 0;
 }

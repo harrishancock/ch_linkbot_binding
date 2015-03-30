@@ -1182,6 +1182,38 @@ EXPORTCH void CLinkbotI_getJointSpeedRatios_chdl(void *varg) {
     return;
 }
 
+/*linkbot getJointSafetyAngle*/
+EXPORTCH void CLinkbotI_getJointSafetyAngle_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	double *angle;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	angle = Ch_VaArg(interp, ap, double *);
+	l->getJointSafetyAngle(*angle);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
+/*linkbot getJointSafetyAngleTimeout*/
+EXPORTCH void CLinkbotI_getJointSafetyAngleTimeout_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	double *timeout;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	timeout = Ch_VaArg(interp, ap, double *);
+	l->getJointSafetyAngleTimeout(*timeout);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
 /*END GET FUNCTIONS*/
 /*SET FUNCTIONS*/
 
@@ -1466,6 +1498,38 @@ EXPORTCH void CLinkbotI_setSpeed_chdl(void *varg) {
     l->setSpeed(speed, radius);
     Ch_VaEnd(interp, ap);
     return;
+}
+
+/*linkbot setJointSafetyAngle*/
+EXPORTCH void CLinkbotI_setJointSafetyAngle_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	double angle;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	angle = Ch_VaArg(interp, ap, double);
+	l->setJointSafetyAngle(angle);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
+/*linkbot setJointSafetyAngleTimeout*/
+EXPORTCH void CLinkbotI_setJointSafetyAngleTimeout_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	double timeout;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	timeout = Ch_VaArg(interp, ap, double);
+	l->setJointSafetyAngleTimeout(timeout);
+	Ch_VaEnd(interp, ap);
+	return;
 }
 
 /*linkbot setLEDColorRGB*/

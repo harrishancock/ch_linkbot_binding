@@ -52,6 +52,8 @@ class CLinkbotI {
         void getJointAngles(double &angle1, double &angle2, double &angle3);
 		void getJointAngleInstant(robotJointId_t id, double &angle);
         void getJointAnglesInstant(double &angle1, double &angle2, double &angle3);
+		void getJointSafetyAngle(double &angle);
+		void getJointSafetyAngleTimeout(double &timeout);
         void getJointSpeed(robotJointId_t id, double &speed);
         void getJointSpeedRatio(robotJointId_t id, double &ratio);
         void getJointSpeeds(double &speed1, double &speed2, double &speed3);
@@ -65,6 +67,8 @@ class CLinkbotI {
 		void setBuzzerFrequencyOff();
 		void setJointMovementStateNB(robotJointId_t id, robotJointState_t dir);
         void setJointMovementStateTime(robotJointId_t id, robotJointState_t dir, double seconds);
+		void setJointSafetyAngle(double angle);
+		void setJointSafetyAngleTimeout(double timeout);
         void setJointSpeed(robotJointId_t id, double speed);
         void setJointSpeeds(double speed1, double speed2, double speed3);
         void setJointSpeedRatio(robotJointId_t id, double ratio);
@@ -191,6 +195,8 @@ class CLinkbotL {
         void getJointAngles(double &angle1, double &angle2, double &angle3);
 		void getJointAngleInstant(robotJointId_t id, double &angle);
         void getJointAnglesInstant(double &angle1, double &angle2, double &angle3);
+		void getJointSafetyAngle(double &angle);
+		void getJointSafetyAngleTimeout(double &timeout);
         void getJointSpeed(robotJointId_t id, double &speed);
         void getJointSpeedRatio(robotJointId_t id, double &ratio);
         void getJointSpeeds(double &speed1, double &speed2, double &speed3);
@@ -204,6 +210,8 @@ class CLinkbotL {
 		void setBuzzerFrequencyOff();
 		void setJointMovementStateNB(robotJointId_t id, robotJointState_t dir);
         void setJointMovementStateTime(robotJointId_t id, robotJointState_t dir, double seconds);
+		void setJointSafetyAngle(double angle);
+		void setJointSafetyAngleTimeout(double timeout);
         void setJointSpeed(robotJointId_t id, double speed);
         void setJointSpeeds(double speed1, double speed2, double speed3);
         void setJointSpeedRatio(robotJointId_t id, double ratio);
