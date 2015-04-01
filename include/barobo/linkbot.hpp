@@ -137,6 +137,7 @@ class Linkbot {
         void enableButtonCallback(void* userdata, void (*buttonCallback)(void* data, int button, int buttonDown));
         void disableButtonCallback();
         */
+        void blinkLED(double delay, int numBlinks);
         void recordAnglesBegin(
             robotRecordData_t &time,
             robotRecordData_t &angle1,

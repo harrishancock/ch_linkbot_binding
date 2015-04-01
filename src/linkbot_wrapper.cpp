@@ -1370,6 +1370,23 @@ void Linkbot::resetToZero()
 }
 /* MISC */
 
+void Linkbot::blinkLED(double delay, int numBlinks)
+{
+    std::thread blinkThread {
+        [this, numBlinks, delay] {
+            int r,g,b;
+            getLEDColorRGB(r,g,b);
+            for(int i = 0; i < numBlinks; i++) {
+                setLEDColorRGB(0,0,0);
+                std::this_thread::sleep_for(std::chrono::milliseconds(int(delay*1000)));
+                setLEDColorRGB(r,g,b);
+                std::this_thread::sleep_for(std::chrono::milliseconds(int(delay*1000)));
+            }
+        }
+    };
+    blinkThread.detach();
+}
+
 void LinkbotImpl::jointEventCB(int jointNo, c_impl::barobo::JointState::Type state)
 {
     std::unique_lock<std::mutex> lock(jointStateMutex, std::try_to_lock);
