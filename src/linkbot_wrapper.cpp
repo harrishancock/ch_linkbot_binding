@@ -94,6 +94,7 @@ struct LinkbotImpl
     std::condition_variable recordAnglesCond;
     std::thread recordAnglesThread;
     bool userShiftData;
+	bool setShiftData = 1;
     double userShiftDataThreshold;
     double userInitTime;
     double userTimeInterval;
@@ -1048,12 +1049,18 @@ void Linkbot::openGripperNB(double angle)
 
 void Linkbot::enableRecordDataShift()
 {
-	m->userShiftData = 1;
+	m->setShiftData = 1;
 }
 
 void Linkbot::disableRecordDataShift()
 {
-	m->userShiftData = 0;
+	DEPRECATED("disableRecordDataShift", "recordNoDataShift");
+	m->setShiftData = 0;
+}
+
+void Linkbot::recordNoDataShift()
+{
+	m->setShiftData = 0;
 }
 
 void Linkbot::recordDistanceOffset(double distance)
@@ -1081,8 +1088,18 @@ void Linkbot::recordAnglesBegin(
     m->userTimeInterval = timeInterval;
     m->threadJointAngles.clear();
 
+	std::cout << "setShiftData" << m->setShiftData << std::endl;
+	std::cout << "shiftData" << shiftData << std::endl;
+
     /* Initialize stuff for recording thread */
-    m->userShiftData = shiftData;
+	if (shiftData != m->setShiftData)
+	{
+		m->userShiftData = m->setShiftData;
+	}
+	else
+	{
+		m->userShiftData = shiftData;
+	}
     m->jointsRecordingActive = true;
     m->jointsRecordingMask = mask;
     std::thread recordThread

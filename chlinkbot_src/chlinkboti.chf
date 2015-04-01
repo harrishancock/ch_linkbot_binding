@@ -1264,7 +1264,7 @@ void CLinkbotI::resetToZero() {
 }
 
 /*recordAngleBegin*/
-void CLinkbotI::recordAngleBegin(int id, double* &time, double* &angle, double seconds, ...) {
+void CLinkbotI::recordAngleBegin(int id, double* &time, double* &angle, double seconds) {
     void *fptr;
     va_list ap;
     int shiftData = 1;
@@ -1276,12 +1276,9 @@ void CLinkbotI::recordAngleBegin(int id, double* &time, double* &angle, double s
         fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
         return;
     }
-    if(va_count(ap) == 1) {
-      shiftData = va_arg(ap, int);
-      dlrunfun(fptr, NULL, NULL, this, id, &time, &angle, seconds, shiftData);
-    } else {
-      dlrunfun(fptr, NULL, NULL, this, id, &time, &angle, seconds);
-    }
+    
+    dlrunfun(fptr, NULL, NULL, this, id, &time, &angle, seconds, shiftData);
+    
     va_end(ap);
 }
 /*recordAngleEnd*/
@@ -1298,10 +1295,10 @@ void CLinkbotI::recordAngleEnd(int id, int &num) {
 }
 
 /*recordDistanceBegin*/
-void CLinkbotI::recordDistanceBegin(double* &time, double* &distance, double radius, double seconds, ...) {
+void CLinkbotI::recordDistanceBegin(double* &time, double* &distance, double radius, double seconds) {
     void *fptr;
     va_list ap, ap1;
-    int shiftData;
+    int shiftData = 1;
     int id = 1;
     
     va_start(ap, seconds);
@@ -1311,15 +1308,10 @@ void CLinkbotI::recordDistanceBegin(double* &time, double* &distance, double rad
         fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
         return;
     }
-    if(va_count(ap) == 1) {
-      shiftData = va_arg(ap, int);
-      dlrunfun(fptr, NULL, NULL, this, id, &time, &distance, radius, seconds, shiftData);
-    } else {
-      dlrunfun(fptr, NULL, NULL, this, id, &time, &distance, radius, seconds);
-    }
+    
+    dlrunfun(fptr, NULL, NULL, this, id, &time, &distance, radius, seconds, shiftData);
+    
     va_end(ap);
-
-
 }
 /*recordDistanceEnd*/
 void CLinkbotI::recordDistanceEnd(int id, int &num) {
@@ -1350,6 +1342,18 @@ void CLinkbotI::disableRecordDataShift() {
     void *fptr;
 
     fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_disableRecordDataShift_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    dlrunfun(fptr, NULL, NULL, this);
+}
+
+/*recordNoDataShift*/
+void CLinkbotI::recordNoDataShift() {
+    void *fptr;
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_recordNoDataShift_chdl");
     if(fptr == NULL) {
         fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
         return;

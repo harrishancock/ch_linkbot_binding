@@ -7,7 +7,7 @@ CLinkbotI robot;
 double speed = 45;         // speed in 45 degrees/seconds 
 double timeInterval = 0.1; // time interval in 0.1 second 
 int numDataPoints;         // number of data points recorded
-robotRecordData_t timedata, angledata1, angledata2, angledata3; // recorded time and angles for joint 1
+robotRecordData_t timedata, angledata, angledata2, angledata3; // recorded time and angles for joint 1
 CPlot plot;                // plotting class
 double radius = 1.75;
 double offset = 3;
@@ -15,22 +15,27 @@ double angle, angle1;
 angle1 = 5;
 angle =20;
 
-robot1.connect();
-robot1.recordAngleBegin(
-    1,
+robot.connect();
+robot.resetToZero();
+
+robot.recordNoDataShift();
+robot.recordAngleBegin(
+    JOINT1,
     timedata,
-    angledata1,
-    0.1,
-    1);
+    angledata,
+    0.1);
 sleep(2);
-robot1.move(90, 90, 90);
-int num;
-robot1.recordAngleEnd(1, num);
-int i;
-for(i = 0; i < num; i++) {
-    printf("%f\t%f\n", timedata[i], 
-        angledata1[i]);
-}
+robot.move(90, 90, 90);
+
+robot.recordAngleEnd(JOINT1, numDataPoints);
+
+
+plot.mathCoord();
+plot.title("Angles for joint 1 versus time");
+plot.label(PLOT_AXIS_X, "time (seconds)");
+plot.label(PLOT_AXIS_Y, "angle for joint1 (degrees)");
+plot.data2DCurve(timedata, angledata, numDataPoints);
+plot.plotting();
     
 
 

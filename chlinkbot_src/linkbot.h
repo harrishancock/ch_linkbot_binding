@@ -154,19 +154,17 @@ class CLinkbotI {
 			robotJointId_t id,
 			robotRecordData_t &time,
 			robotRecordData_t &angle,
-			double seconds,
-			...
-			);
+			double seconds);
 		void recordAngleEnd(robotJointId_t id, int &num);
 		void recordDistanceBegin(
 			robotRecordData_t &time,
 			robotRecordData_t &distance,
 			double radius,
-			double seconds,
-			...);
+			double seconds);
 		void recordDistanceEnd(robotJointId_t id, int &num);
 		void enableRecordDataShift();
 		void disableRecordDataShift();
+		void recordNoDataShift();
 		void recordDistanceOffset(double distance);
 
         LinkbotImpl *m;
@@ -278,12 +276,11 @@ class CLinkbotL {
 			robotJointId_t id,
 			robotRecordData_t &time,
 			robotRecordData_t &angle,
-			double seconds,
-			...
-			);
+			double seconds);
 		void recordAngleEnd(robotJointId_t id, int &num);
 		void enableRecordDataShift();
 		void disableRecordDataShift();
+		void recordNoDataShift();
 
         LinkbotImpl *m;
 

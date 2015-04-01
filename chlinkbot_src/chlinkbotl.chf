@@ -994,7 +994,7 @@ void CLinkbotL::resetToZero() {
 }
 
 /*recordAngleBegin*/
-void CLinkbotL::recordAngleBegin(int id, double* &time, double* &angle, double seconds, ...) {
+void CLinkbotL::recordAngleBegin(int id, double* &time, double* &angle, double seconds) {
     void *fptr;
     va_list ap;
     int shiftData = 1;
@@ -1006,12 +1006,9 @@ void CLinkbotL::recordAngleBegin(int id, double* &time, double* &angle, double s
         fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
         return;
     }
-    if(va_count(ap) == 1) {
-      shiftData = va_arg(ap, int);
-      dlrunfun(fptr, NULL, NULL, this, id, &time, &angle, seconds, shiftData);
-    } else {
-      dlrunfun(fptr, NULL, NULL, this, id, &time, &angle, seconds);
-    }
+    
+    dlrunfun(fptr, NULL, NULL, this, id, &time, &angle, seconds, shiftData);
+    
     va_end(ap);
 }
 /*recordAngleEnd*/
@@ -1051,6 +1048,17 @@ void CLinkbotL::disableRecordDataShift() {
     dlrunfun(fptr, NULL, NULL, this);
 }
 
+/*recordNoDataShift*/
+void CLinkbotL::recordNoDataShift() {
+    void *fptr;
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_recordNoDataShift_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    dlrunfun(fptr, NULL, NULL, this);
+}
 
 /*CLinkbotLGroup class */
 

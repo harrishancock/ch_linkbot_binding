@@ -1335,13 +1335,10 @@ EXPORTCH void CLinkbotL_recordAngleBegin_chdl(void *varg) {
 	time = Ch_VaArg(interp, ap, double**);
 	angle = Ch_VaArg(interp, ap, double**);
 	seconds = Ch_VaArg(interp, ap, double);
-	if (Ch_VaCount(interp, ap) == 1) {
-		shiftData = Ch_VaArg(interp, ap, int);
-		l->recordAnglesBegin(*time, *angle, *angle, *angle, seconds, 1 << (int(id) - 1), shiftData);
-	}
-	else {
-		l->recordAnglesBegin(*time, *angle, *angle, *angle, seconds, 1 << (int(id) - 1));
-	}
+	shiftData = Ch_VaArg(interp, ap, int);
+	
+	l->recordAnglesBegin(*time, *angle, *angle, *angle, seconds, 1 << (int(id) - 1), shiftData);
+	
 	Ch_VaEnd(interp, ap);
 	return;
 }
@@ -1388,6 +1385,20 @@ EXPORTCH void CLinkbotL_disableRecordDataShift_chdl(void *varg) {
 
 	l = Ch_VaArg(interp, ap, class Linkbot *);
 	l->disableRecordDataShift();
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
+/*linkbot recordNoDataShift*/
+EXPORTCH void CLinkbotL_recordNoDataShift_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	l->recordNoDataShift();
 	Ch_VaEnd(interp, ap);
 	return;
 }
