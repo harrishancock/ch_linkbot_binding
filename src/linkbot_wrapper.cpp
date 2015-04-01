@@ -39,7 +39,7 @@ do { \
 
 struct LinkbotImpl
 {
-    LinkbotImpl() : jointsRecordingActive(false), userShiftDataThreshold(1.0)
+    LinkbotImpl() : jointsRecordingActive(false), userShiftDataThreshold(2.0)
     { 
     }
     ~LinkbotImpl() {
@@ -1082,6 +1082,7 @@ void Linkbot::recordAnglesBegin(
     m->threadJointAngles.clear();
 
     /* Initialize stuff for recording thread */
+    m->userShiftData = shiftData;
     m->jointsRecordingActive = true;
     m->jointsRecordingMask = mask;
     std::thread recordThread
@@ -1136,6 +1137,7 @@ void Linkbot::recordAnglesEnd(int &num)
     lock.unlock();
     m->recordAnglesThread.join();
     int startingIndex = 0;
+    num = m->threadJointAngles.size();
     if(m->userShiftData) {
         auto initelem = m->threadJointAngles[0];
         double initangles[3];
@@ -1149,7 +1151,7 @@ void Linkbot::recordAnglesEnd(int &num)
             angles[1] = std::get<2>(elem);
             angles[2] = std::get<3>(elem);
             for(int j = 0; j < 3; j++) {
-                if(! ((1<<j)&m->jointsRecordingMask) ) continue;
+                if(! ((1<<j)&mask) ) continue;
                 if(ABS(angles[j]-initangles[j]) > m->userShiftDataThreshold) {
                     startingIndex = i;
                     i = num;
