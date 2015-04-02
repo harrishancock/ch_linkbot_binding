@@ -124,12 +124,9 @@ Linkbot::Linkbot()
 
 int Linkbot::connect()
 {
-    std::cout << "In cons..." << std::endl;
     m = new LinkbotImpl();
-    std::cout << "Creating impl..." << std::endl;
 	
     if(m->linkbot = c_impl::linkbotFromTcpEndpoint("127.0.0.1", "42010")){
-		std::cout << "Successful connection "<<std::endl;
 		m->connected = true;
 	}
 	else{
@@ -138,7 +135,6 @@ int Linkbot::connect()
 		exit (-1);
 	}
 	
-    std::cout << "setting joint states..." << std::endl;
     for(int i = 0; i < 3; i++) {
         m->jointStates[i] = c_impl::barobo::JointState::HOLD;
     }
@@ -165,18 +161,14 @@ int Linkbot::connect()
 
 int Linkbot::connectWithSerialID(const char* serialId)
 {
-    std::cout << "In serialID cons..." << std::endl;
     m = new LinkbotImpl();
-    std::cout << "Creating impl..." << std::endl;
 	    
 	if(m->linkbot = c_impl::linkbotFromSerialId(serialId)){
-		std::cout << "Successful connection "<<std::endl;
 	}
 	else{
 		fprintf(stderr, "Could not connect to robot. Exiting..\n");
 		return -1;
 	}
-    std::cout << "setting joint states..." << std::endl;
     for(int i = 0; i < 3; i++) {
         m->jointStates[i] = c_impl::barobo::JointState::HOLD;
     }
@@ -314,9 +306,7 @@ void Linkbot::getJointAngles(double &angle1, double &angle2, double &angle3)
 
 void Linkbot::getJointSafetyAngle(double &angle)
 {
-	std::cout << "angle " << angle << std::endl;
 	CALL_C_IMPL(linkbotGetJointSafetyAngles, &angle, &angle, &angle);
-	std::cout << "angle " << angle << std::endl;
 }
 
 void Linkbot::getJointSafetyAngleTimeout(double &timeout)
@@ -327,7 +317,6 @@ void Linkbot::getJointSafetyAngleTimeout(double &timeout)
 	1 cycle is 10 ms*/
 	t = (t * 10) / 1000.0;
 	timeout = double(t);
-	std::cout << "timeout " << timeout << std::endl;
 }
 
 void Linkbot::getJointSpeed(robotJointId_t id, double &speed)
@@ -493,7 +482,6 @@ void Linkbot::setJointSpeeds(double speed1, double speed2, double speed3)
 			mask = 0x07;
 			break;
 	}
-	std::cout<<"mask "<<mask<<std::endl;
 	CALL_C_IMPL(linkbotSetJointSpeeds, mask, speed1, speed2, speed3);
 }
 
@@ -691,7 +679,6 @@ void Linkbot::setLEDColor(char *color)
 void Linkbot::setJointSafetyAngle(double angle)
 {
 	int mask = 0x07;
-	std::cout << "Set angle " << angle << std::endl;
 	CALL_C_IMPL(linkbotSetJointSafetyAngles, mask, angle, angle, angle);
 }
 
@@ -701,7 +688,6 @@ void Linkbot::setJointSafetyAngleTimeout(double timeout)
 	/*Convert seconds to number of motor cycles*/
 	timeout = timeout * 100;
 	CALL_C_IMPL(linkbotSetJointSafetyAngles, mask, timeout, timeout, timeout);
-	std::cout << "set timeout " << timeout << std::endl;
 }
 
 /* MOVEMENT */
@@ -935,14 +921,12 @@ void Linkbot::moveNB(double j1, double j2, double j3)
 void Linkbot::moveWait(int mask)
 {
     /* Get the current joint states */
-    std::cout << "moveWait()" << std::endl;
     int time;
     std::unique_lock<std::mutex> lock(m->jointStateMutex);
 
     while(1) {
         auto rc = m->jointStateCond.wait_for(lock, std::chrono::milliseconds(3000));
         if (rc == std::cv_status::timeout) {
-            std::cout << "moveWait timeout\n";
             m->refreshJointStates();
         }
         if(!m->isMoving(mask)) {
@@ -1087,9 +1071,6 @@ void Linkbot::recordAnglesBegin(
     m->userRecordedAngles[2] = &angle3;
     m->userTimeInterval = timeInterval;
     m->threadJointAngles.clear();
-
-	std::cout << "setShiftData" << m->setShiftData << std::endl;
-	std::cout << "shiftData" << shiftData << std::endl;
 
     /* Initialize stuff for recording thread */
 	if (shiftData != m->setShiftData)
@@ -1340,12 +1321,10 @@ void Linkbot::closeGripper()
    double gripperAngleNew;
    
    getJointAngle(ROBOT_JOINT1, gripperAngleNew); // get the new position
-   std::cout<<"angle "<<gripperAngleNew<<std::endl;
     /* Close the gripper to grab an object */
     while(fabs(gripperAngleNew - gripperAngleOld) > 1) { //0.1
         gripperAngleOld = gripperAngleNew;    // update the old position
         getJointAngle(ROBOT_JOINT1, gripperAngleNew); // get the new position
-		std::cout<<"angle "<<gripperAngleNew<<std::endl;
 		moveNB( 3, 0, 3); // move 8 degrees
         #ifndef _WIN32
         usleep(1000000);
@@ -1373,7 +1352,6 @@ void Linkbot::closeGripperNB()
 
 	std::thread gripperThread(&Linkbot::closeGripper, this);
 	gripperThread.join();
-	std::cout << "Thread joined" <<std::endl;
 
     /* New code*/
 	/*double angle1, angle3;
@@ -1452,7 +1430,6 @@ void LinkbotImpl::jointEventCB(int jointNo, c_impl::barobo::JointState::Type sta
     if(!lock.owns_lock()) {
         return;
     }
-    std::cout << "Setting joint " << jointNo << " To " << state << std::endl;
     jointStates[jointNo] = state;
     jointStateCond.notify_all();
 }

@@ -41,7 +41,6 @@ EXPORTCH int CLinkbotL_connect_chdl(void *varg) {
    
     l=Ch_VaArg(interp, ap, class Linkbot *);
     rc = l->connect();
-	printf("Connected\n");
     Ch_VaEnd(interp, ap);
     l->getFormFactor(type);
 	if (type == 0)
@@ -64,7 +63,6 @@ EXPORTCH int CLinkbotL_connectWithSerialID_chdl(void *varg) {
    
     l=Ch_VaArg(interp, ap, class Linkbot *);
     id = Ch_VaArg(interp, ap, const char*);
-    printf("Connecting to %s\n", id);
     rc = l->connectWithSerialID(id);
     Ch_VaEnd(interp, ap);
     l->getFormFactor(type);
@@ -1444,7 +1442,6 @@ EXPORTCH void CLinkbotLGroup_dCLinkbotLGroup_chdl(void *varg) {
   c = Ch_VaArg(interp, ap, class LinkbotGroup *);
   if(Ch_CppIsArrayElement(interp)){
     c->~LinkbotGroup();
-	printf("Calling group destructor\n");
   }
   else {
     delete c;

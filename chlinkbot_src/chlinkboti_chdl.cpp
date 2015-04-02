@@ -44,7 +44,6 @@ EXPORTCH int CLinkbotI_connectWithSerialID_chdl(void *varg) {
    
     l=Ch_VaArg(interp, ap, class Linkbot *);
     id = Ch_VaArg(interp, ap, const char*);
-    printf("Connecting to %s\n", id);
     rc = l->connectWithSerialID(id);
     Ch_VaEnd(interp, ap);
     l->getFormFactor(type);
@@ -67,7 +66,6 @@ EXPORTCH int CLinkbotI_connect_chdl(void *varg) {
     Ch_VaStart(interp, ap, varg);
    
     l=Ch_VaArg(interp, ap, class Linkbot *);
-    printf("Connecting...\n");
     rc = l->connect();
     Ch_VaEnd(interp, ap);
     l->getFormFactor(type);
