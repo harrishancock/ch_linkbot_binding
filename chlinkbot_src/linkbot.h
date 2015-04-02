@@ -445,6 +445,7 @@ int CLinkbotI::g_chlinkbot_dlcount=0;
 void *CLinkbotL::g_chlinkbot_dlhandle=NULL;
 int CLinkbotL::g_chlinkbot_dlcount=0;
 
+#pragma package <chbarobo>
 #pragma importf "chlinkboti.chf"
 #pragma importf "chlinkbotl.chf"
 #endif
