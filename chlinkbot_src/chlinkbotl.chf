@@ -1060,6 +1060,19 @@ void CLinkbotL::recordNoDataShift() {
     dlrunfun(fptr, NULL, NULL, this);
 }
 
+/*blinkLED*/
+void CLinkbotL::blinkLED(double delay, int numBlinks) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_blinkLED_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, delay, numBlinks);
+}
+
 /*CLinkbotLGroup class */
 
 /* Constructor */

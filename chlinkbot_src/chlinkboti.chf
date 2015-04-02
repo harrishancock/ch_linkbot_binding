@@ -1373,6 +1373,19 @@ void CLinkbotI::recordDistanceOffset(double distance) {
     dlrunfun(fptr, NULL, NULL, this, distance);
 }
 
+/*blinkLED*/
+void CLinkbotI::blinkLED(double delay, int numBlinks) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_blinkLED_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, delay, numBlinks);
+}
+
 /*CLinkbotIGroup class */
 
 /* Constructor */

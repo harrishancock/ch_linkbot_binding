@@ -1403,6 +1403,23 @@ EXPORTCH void CLinkbotL_recordNoDataShift_chdl(void *varg) {
 	return;
 }
 
+/*linkbot blinkLED*/
+EXPORTCH void CLinkbotL_blinkLED_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	double delay;
+	int numBlinks;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	delay = Ch_VaArg(interp, ap, double);
+	numBlinks = Ch_VaArg(interp, ap, int);
+	l->blinkLED(delay, numBlinks);
+	Ch_VaEnd(interp, ap);
+	return;
+}
 
 /* CLinkbotLGroup functions */
 

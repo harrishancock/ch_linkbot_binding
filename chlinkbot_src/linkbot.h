@@ -146,6 +146,7 @@ class CLinkbotI {
         void turnRightNB(double angle, double radius, double tracklength);
 
         /* MISC */
+		void blinkLED(double delay, int numBlinks);
         void enableButtonCallback(void* userdata, void (*buttonCallback)(void* data, int button, int buttonDown));
         void disableButtonCallback();
 		void delaySeconds(int seconds);
@@ -267,6 +268,7 @@ class CLinkbotL {
         void stopOneJoint(robotJointId_t id);
 
         /* MISC */
+		void blinkLED(double delay, int numBlinks);
         void enableButtonCallback(void* userdata, void (*buttonCallback)(void* data, int button, int buttonDown));
         void disableButtonCallback();
 		void delaySeconds(int seconds);
