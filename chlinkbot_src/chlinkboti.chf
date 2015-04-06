@@ -1314,8 +1314,9 @@ void CLinkbotI::recordDistanceBegin(double* &time, double* &distance, double rad
     va_end(ap);
 }
 /*recordDistanceEnd*/
-void CLinkbotI::recordDistanceEnd(int id, int &num) {
+void CLinkbotI::recordDistanceEnd(int &num) {
     void *fptr;
+    int id = 1;
 
     fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_recordDistanceEnd_chdl");
     if(fptr == NULL) {

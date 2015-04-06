@@ -20,15 +20,15 @@ robot.resetToZero();
 
 robot.blinkLED(0.1, 5);
 robot.recordNoDataShift();
-robot.recordAngleBegin(
-    JOINT1,
+robot.recordDistanceBegin(
     timedata,
     angledata,
+    radius,
     0.1);
 //sleep(2);
 robot.move(90, 90, 90);
 
-robot.recordAngleEnd(JOINT1, numDataPoints);
+robot.recordDistanceEnd(numDataPoints);
 
 
 plot.mathCoord();
