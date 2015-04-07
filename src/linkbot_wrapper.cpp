@@ -11,6 +11,10 @@ namespace c_impl {
 #include <vector>
 #ifdef _WIN32
 #include <windows.h>
+#elif defined __MACH__
+#include <mach/clock.h>
+#include <mach/mach.h>
+#include <unistd.h>
 #else
 #include <unistd.h>
 #endif
