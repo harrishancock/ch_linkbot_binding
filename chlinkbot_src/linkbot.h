@@ -162,7 +162,7 @@ class CLinkbotI {
 			robotRecordData_t &distance,
 			double radius,
 			double seconds);
-		void recordDistanceEnd(robotJointId_t id, int &num);
+		void recordDistanceEnd(int &num);
 		void enableRecordDataShift();
 		void disableRecordDataShift();
 		void recordNoDataShift();
