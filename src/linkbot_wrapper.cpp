@@ -124,11 +124,76 @@ void _jointEventCB(int joint, c_impl::barobo::JointState::Type state, int timest
 
 Linkbot::Linkbot()
 {
+	m = new LinkbotImpl();
+
+	if (m->linkbot = c_impl::linkbotFromTcpEndpoint("127.0.0.1", "42010")){
+		m->connected = true;
+	}
+	else{
+		fprintf(stderr, "Could not connect to robot. Exiting..\n");
+		m->connected = false;
+		exit(-1);
+	}
+
+	for (int i = 0; i < 3; i++) {
+		m->jointStates[i] = c_impl::barobo::JointState::HOLD;
+	}
+	mMaxSpeed = 200;
+
+	/* Enable joint callbacks */
+	c_impl::linkbotSetJointEventCallback(m->linkbot, _jointEventCB, m);
+	/* Get the form factor */
+	c_impl::barobo::FormFactor::Type formFactor;
+	c_impl::linkbotGetFormFactor(m->linkbot, &formFactor);
+	switch (formFactor) {
+	case c_impl::barobo::FormFactor::I:
+		m->motorMask = 0x05;
+		break;
+	case c_impl::barobo::FormFactor::L:
+		m->motorMask = 0x03;
+		break;
+	case c_impl::barobo::FormFactor::T:
+		m->motorMask = 0x07;
+		break;
+	}
+}
+
+Linkbot::Linkbot(const char* serialId)
+{
+	m = new LinkbotImpl();
+
+	if (m->linkbot = c_impl::linkbotFromSerialId(serialId)){
+	}
+	else{
+		fprintf(stderr, "Could not connect to robot. Exiting..\n");
+		exit(-1);
+	}
+	for (int i = 0; i < 3; i++) {
+		m->jointStates[i] = c_impl::barobo::JointState::HOLD;
+	}
+	mMaxSpeed = 200;
+
+	/* Enable joint callbacks */
+	c_impl::linkbotSetJointEventCallback(m->linkbot, _jointEventCB, m);
+	/* Get the form factor */
+	c_impl::barobo::FormFactor::Type formFactor;
+	c_impl::linkbotGetFormFactor(m->linkbot, &formFactor);
+	switch (formFactor) {
+	case c_impl::barobo::FormFactor::I:
+		m->motorMask = 0x05;
+		break;
+	case c_impl::barobo::FormFactor::L:
+		m->motorMask = 0x03;
+		break;
+	case c_impl::barobo::FormFactor::T:
+		m->motorMask = 0x07;
+		break;
+	}
 }
 
 int Linkbot::connect()
 {
-    m = new LinkbotImpl();
+    /*m = new LinkbotImpl();
 	
     if(m->linkbot = c_impl::linkbotFromTcpEndpoint("127.0.0.1", "42010")){
 		m->connected = true;
@@ -142,12 +207,12 @@ int Linkbot::connect()
     for(int i = 0; i < 3; i++) {
         m->jointStates[i] = c_impl::barobo::JointState::HOLD;
     }
-    mMaxSpeed = 200;
+    mMaxSpeed = 200;*/
 
     /* Enable joint callbacks */
-    c_impl::linkbotSetJointEventCallback(m->linkbot, _jointEventCB, m);
+    //c_impl::linkbotSetJointEventCallback(m->linkbot, _jointEventCB, m);
     /* Get the form factor */
-    c_impl::barobo::FormFactor::Type formFactor;
+    /*c_impl::barobo::FormFactor::Type formFactor;
     c_impl::linkbotGetFormFactor(m->linkbot, &formFactor);
     switch (formFactor) {
         case c_impl::barobo::FormFactor::I:
@@ -159,13 +224,13 @@ int Linkbot::connect()
         case c_impl::barobo::FormFactor::T:
             m->motorMask = 0x07;
             break;
-    }
+    }*/
     return 0;
 }
 
 int Linkbot::connectWithSerialID(const char* serialId)
 {
-    m = new LinkbotImpl();
+    /*m = new LinkbotImpl();
 	    
 	if(m->linkbot = c_impl::linkbotFromSerialId(serialId)){
 	}
@@ -176,12 +241,12 @@ int Linkbot::connectWithSerialID(const char* serialId)
     for(int i = 0; i < 3; i++) {
         m->jointStates[i] = c_impl::barobo::JointState::HOLD;
     }
-    mMaxSpeed = 200;
+    mMaxSpeed = 200;*/
 
     /* Enable joint callbacks */
-    c_impl::linkbotSetJointEventCallback(m->linkbot, _jointEventCB, m);
+    //c_impl::linkbotSetJointEventCallback(m->linkbot, _jointEventCB, m);
     /* Get the form factor */
-    c_impl::barobo::FormFactor::Type formFactor;
+    /*c_impl::barobo::FormFactor::Type formFactor;
     c_impl::linkbotGetFormFactor(m->linkbot, &formFactor);
     switch (formFactor) {
         case c_impl::barobo::FormFactor::I:
@@ -193,7 +258,7 @@ int Linkbot::connectWithSerialID(const char* serialId)
         case c_impl::barobo::FormFactor::T:
             m->motorMask = 0x07;
             break;
-    }
+    }*/
     return 0;
 }
 

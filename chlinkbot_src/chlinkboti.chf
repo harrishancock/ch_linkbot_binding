@@ -8,8 +8,11 @@
 #include<stdlib.h>
 
 /*class constructor*/
-CLinkbotI::CLinkbotI() {
+CLinkbotI::CLinkbotI(...) {
     void *fptr;
+    va_list ap;
+    const char* serialID;
+    
     if (g_chlinkbot_dlhandle == NULL || g_chlinkbot_dlcount == 0) {
         g_chlinkbot_dlhandle = dlopen("liblinkbot.dl", RTLD_LAZY);
         if (g_chlinkbot_dlhandle == NULL) {
@@ -17,14 +20,27 @@ CLinkbotI::CLinkbotI() {
           return;
        }
     }
+    
+    va_start(ap, VA_NOARG);
     fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_CLinkbotI_chdl");
     if (fptr == NULL) {
        printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
        return;
     }
-     
-    dlrunfun(fptr, NULL, NULL);
+    
+    if(va_count(ap) == 0) {
+        dlrunfun(fptr, NULL, NULL);
+    } else if (va_count(ap) == 1) {
+        serialID = va_arg(ap, const char*);
+        dlrunfun(fptr, NULL, NULL, serialID);
+    }
+    else {
+        printf("Error, wrong number of arguments passed %d.\nExit..\n", va_count(ap));
+        exit(-1);
+    }
+    //va_end(ap);
     g_chlinkbot_dlcount++;
+    return;
 }
 
 /*class destructor*/  

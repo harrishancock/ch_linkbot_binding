@@ -37,7 +37,7 @@ struct LinkbotImpl;
 /*Linkbot I*/
 class CLinkbotI {
     public:
-        CLinkbotI();
+        CLinkbotI(...);
         ~CLinkbotI();
         int connect();
 		int connectWithSerialID(const char* id);
@@ -181,7 +181,7 @@ class CLinkbotI {
 /*Linkbot L*/
 class CLinkbotL {
     public:
-        CLinkbotL();
+        CLinkbotL(...);
         ~CLinkbotL();
         int connect();
 		int connectWithSerialID(const char* id);
