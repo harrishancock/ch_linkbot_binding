@@ -28,6 +28,7 @@ struct LinkbotImpl;
 class Linkbot {
     public:
         Linkbot();
+		Linkbot(const char* serialID);
         ~Linkbot();
         int connectWithSerialID(const char* serialID);
 		int connect();

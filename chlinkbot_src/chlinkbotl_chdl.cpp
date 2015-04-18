@@ -6,12 +6,31 @@
 EXPORTCH void CLinkbotL_CLinkbotL_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
+	const char* serialId;
+	int type;
+	class Linkbot *l;
     
     Ch_VaStart(interp, ap, varg);
-    class Linkbot *l= new Linkbot();
-    Ch_CppChangeThisPointer(interp, l, sizeof(Linkbot));
-    Ch_VaEnd(interp, ap);
-    return;
+	if (Ch_VaCount(interp, ap) == 0){
+		l = new Linkbot();
+		Ch_CppChangeThisPointer(interp, l, sizeof(Linkbot));
+	}
+	else if (Ch_VaCount(interp, ap) == 1){
+		serialId = Ch_VaArg(interp, ap, const char *);
+		l = new Linkbot(serialId);
+		Ch_CppChangeThisPointer(interp, l, sizeof(Linkbot));
+	}
+	else {
+		printf("Wrong number of argument passed\n");
+	}
+	l->getFormFactor(type);
+	if (type == 0)
+	{
+		printf("A Linkbot-I is connected, not a Linkbot-L.\nPlease connect a Linbot-L.\nExiting..\n");
+		exit(-1);
+	}
+	Ch_VaEnd(interp, ap);
+	return;
 }
  
 /* class destructor*/   
