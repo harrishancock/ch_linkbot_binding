@@ -20,7 +20,7 @@
 #include "../include/rgbhashtable.h"
 
 //The hash function
-unsigned long _hash(rgbHashTable * rgbHT, char *key)
+unsigned long _hash(rgbHashTable * rgbHT, const char *key)
 {
 	unsigned long hash = 5381;
 
@@ -947,7 +947,7 @@ int HT_Get(rgbHashTable * rgbHT, char * key, int * rgbArray)
 
 
 //Store a set of RGB values with a specified key
-void HT_Add(rgbHashTable * rgbHT, char * key, int values[])
+void HT_Add(rgbHashTable * rgbHT, const char * key, int values[])
 {
 	unsigned long index;
 	struct rgbNode *n_new = NULL;
