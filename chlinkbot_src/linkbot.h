@@ -167,6 +167,7 @@ class CLinkbotI {
 		void disableRecordDataShift();
 		void recordNoDataShift();
 		void recordDistanceOffset(double distance);
+		void recordDataShift();
 
         LinkbotImpl *m;
 
@@ -283,6 +284,7 @@ class CLinkbotL {
 		void enableRecordDataShift();
 		void disableRecordDataShift();
 		void recordNoDataShift();
+		void recordDataShift();
 
         LinkbotImpl *m;
 
