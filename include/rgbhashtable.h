@@ -38,7 +38,7 @@ struct rgbHashTable{
 rgbHashTable * HT_Create(); //Allocate memory for the table
 void HT_Destroy(rgbHashTable * rgbHT); //Deallocate the memory
 int HT_Get(rgbHashTable * rgbHT, char * key, int * rgbArray);            // retrieve entry
-void HT_Add(rgbHashTable * rgbHT, char * key, int values[]);  // store entry 
+void HT_Add(rgbHashTable * rgbHT, const char * key, int values[]);  // store entry 
 void HT_Remove(rgbHashTable * rgbHT, char * key);          // remove entry
 int HT_GetKey(rgbHashTable * rgbHT, int values[], char color[]); //reverse look-up
 
