@@ -2,11 +2,11 @@
  
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Linkbot Labs C-STEM Edition"
-!define LINKBOT_LABS_VERSION "0.7.9"
+!define LINKBOT_LABS_VERSION "0.7.10"
 !define CHBAROBO_VERSION "1.0.3"
 !define PRODUCT_PUBLISHER "Barobo"
 
-!define LINKBOT_LABS_INSTALLER "LinkbotLabs-${LINKBOT_LABS_VERSION}-win32.exe"
+!define LINKBOT_LABS_INSTALLER "Linkbot Labs-${LINKBOT_LABS_VERSION}-win32.exe"
 !define CHBAROBO_DIR "chbarobo-${CHBAROBO_VERSION}-windows-multi"
 !define PRODUCT_VERSION "${LINKBOT_LABS_VERSION} - ${CHBAROBO_VERSION}"
 !define INSTALLER_NAME "${PRODUCT_NAME} ${PRODUCT_VERSION}.exe"
