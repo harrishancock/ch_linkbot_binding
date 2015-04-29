@@ -23,6 +23,7 @@ SetCompressor lzma
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"
 !include "NSISpcre.nsh"
+!include "x64.nsh"
  
 !insertmacro REReplace
 
@@ -59,10 +60,19 @@ Section -Main
     SetOutPath "$TEMP"
     SetOverwrite ifnewer
     File "${LINKBOT_LABS_INSTALLER}"
-    IfSilent 0 +3
+    ClearErrors
+    ${If} ${Silent}
         ExecWait "$TEMP\${LINKBOT_LABS_INSTALLER} /S"
-        Goto +2
+    ${Else}
         ExecWait "$TEMP\${LINKBOT_LABS_INSTALLER}"
+    ${EndIf}
+
+    ${If} ${Errors}
+        ${Unless} ${Silent}
+            MessageBox MB_OK|MB_ICONSTOP "Linkbot Labs installation failed, aborting."
+        ${EndUnless}
+        Abort
+    ${EndIf}
 
     # Install the Ch package
     # First, figure out if Ch in installed already.
@@ -82,10 +92,7 @@ Section -Main
     SetOutPath "$OUT\package"
     File /r "${CHBAROBO_DIR}\chbarobo"
 
-    GetVersion::WindowsPlatformArchitecture
-    Pop $R0
-    DetailPrint $R0
-    ${If} $R0 == "64"
+    ${If} ${RunningX64}
         Rename "$OUT\package\chbarobo\dl\win64\liblinkbot.dl" "$OUT\package\chbarobo\dl\liblinkbot.dl" 
         Rename "$OUT\package\chbarobo\bin\win64\msvcp120.dll" "$OUT\package\chbarobo\bin\msvcp120.dll" 
         Rename "$OUT\package\chbarobo\bin\win64\vccorlib120.dll" "$OUT\package\chbarobo\bin\vccorlib120.dll" 
