@@ -35,14 +35,14 @@ target_include_directories(chlinkbot PUBLIC ${CH_ROOT}/extern/include)
 # should use find_library or at least find_file/find_path to get the library
 # paths.
 if(WIN32)
-target_link_libraries(chlinkbot
-	PUBLIC linkbot
-		   ${CH_ROOT}/extern/lib/chsdk.lib		   
-		   ${CH_ROOT}/extern/lib/ch.lib)
+	target_link_libraries(chlinkbot
+		PUBLIC linkbot
+			   ${CH_ROOT}/extern/lib/chsdk.lib
+			   ${CH_ROOT}/extern/lib/ch.lib)
 else()
-target_link_libraries(chlinkbot
-	PUBLIC linkbot
-		   ${CH_ROOT}/extern/lib/libchsdk.a)
+	target_link_libraries(chlinkbot
+		PUBLIC linkbot
+			   ${CH_ROOT}/extern/lib/libchsdk.a)
 endif()
 
 # TODO the install target of the old Makefile still needs to be converted into
