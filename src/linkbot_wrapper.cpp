@@ -266,8 +266,9 @@ int Linkbot::connectWithSerialID(const char* serialId)
 int Linkbot::disconnect()
 {
     if(m && m->linkbot) {
-        //c_impl::linkbotDelete(m->linkbot);
+        c_impl::linkbotDelete(m->linkbot);
         delete m;
+        m = nullptr;
     }
     return 0;
 }
