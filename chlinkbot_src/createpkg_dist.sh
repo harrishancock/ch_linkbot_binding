@@ -1,6 +1,6 @@
 #!/bin/sh
 PACKAGE=chbarobo
-VERSION=1.0.3
+VERSION=1.0.4
 ARCH=windows-multi
 PKGDIR=$PACKAGE-$VERSION-$ARCH/$PACKAGE
 
