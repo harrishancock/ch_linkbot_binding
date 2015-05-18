@@ -11,8 +11,13 @@
 #endif
 #include<array.h>
 
+#ifndef ROBOT_RECORD_DATA_T
+#define ROBOT_RECORD_DATA_T
 typedef double* robotRecordData_t;
+#endif
 
+#ifndef ROBOT_JOINTS_E
+#define ROBOT_JOINTS_E
 typedef enum robotJoints_e {
   ROBOT_ZERO,
   JOINT1,
@@ -21,7 +26,10 @@ typedef enum robotJoints_e {
   JOINT4,
   ROBOT_NUM_JOINTS = 4
 } robotJointId_t;
+#endif
 
+#ifndef ROBOT_JOINT_STATE_E
+#define ROBOT_JOINT_STATE_E
 typedef enum robotJointState_e
 {
     ROBOT_NEUTRAL = 0,
@@ -32,6 +40,7 @@ typedef enum robotJointState_e
     ROBOT_NEGATIVE,
     ROBOT_ACCEL,
 } robotJointState_t;
+#endif
 
 struct LinkbotImpl;
 /*Linkbot I*/
@@ -167,6 +176,7 @@ class CLinkbotI {
 		void disableRecordDataShift();
 		void recordNoDataShift();
 		void recordDistanceOffset(double distance);
+		void recordDataShift();
 
         LinkbotImpl *m;
 
@@ -283,6 +293,7 @@ class CLinkbotL {
 		void enableRecordDataShift();
 		void disableRecordDataShift();
 		void recordNoDataShift();
+		void recordDataShift();
 
         LinkbotImpl *m;
 

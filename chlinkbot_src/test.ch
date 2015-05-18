@@ -3,6 +3,7 @@
    with a negative slope */
 #include <linkbot.h>
 #include <chplot.h>
+
 //CLinkbotI robot=CLinkbotI("9Q86");
 CLinkbotI robot;
 double speed = 45;         // speed in 45 degrees/seconds 
@@ -21,6 +22,7 @@ robot.resetToZero();
 
 robot.blinkLED(0.1, 5);
 robot.recordNoDataShift();
+robot.enableRecordDataShift();
 robot.recordDistanceBegin(
     timedata,
     angledata,

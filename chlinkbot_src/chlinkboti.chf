@@ -7,6 +7,11 @@
 #include<stdarg.h>
 #include<stdlib.h>
 
+/* For deprecating functions in Ch*/
+#define DEPRECATED(from, to) \
+  fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s()\"\n" , from, to)
+
+
 /*class constructor*/
 CLinkbotI::CLinkbotI(...) {
     void *fptr;
@@ -1344,8 +1349,14 @@ void CLinkbotI::recordDistanceEnd(int &num) {
 
 /*enableRecordDataShift*/
 void CLinkbotI::enableRecordDataShift() {
-    void *fptr;
+    
+    DEPRECATED("enableRecordDataShift", "recordDataShift");
+  
+}
 
+void CLinkbotI::recordDataShift() {
+    void *fptr;
+    
     fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotI_enableRecordDataShift_chdl");
     if(fptr == NULL) {
         fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
