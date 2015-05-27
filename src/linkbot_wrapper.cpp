@@ -994,6 +994,7 @@ void Linkbot::moveWait(int mask)
     int time;
     std::unique_lock<std::mutex> lock(m->jointStateMutex);
     /* Check to see if we've already stopped moving first */
+    m->refreshJointStates();
     if(!m->isMoving(mask)) {
         return;
     }
