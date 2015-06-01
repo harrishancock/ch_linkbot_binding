@@ -543,9 +543,9 @@ void Linkbot::setJointMovementStateTimeNB(robotJointId_t id, robotJointState_t d
     m->setJointsMovingFlag(1<<(int(id)-1));
     c_impl::linkbotSetJointStatesTimed(
         m->linkbot, 1<<(int(id)-1),
-        jointState, -1, seconds, c_impl::barobo::JointState::HOLD,
-        jointState, -1, seconds, c_impl::barobo::JointState::HOLD,
-        jointState, -1, seconds, c_impl::barobo::JointState::HOLD);
+        jointState, coef, seconds, c_impl::barobo::JointState::HOLD,
+        jointState, coef, seconds, c_impl::barobo::JointState::HOLD,
+        jointState, coef, seconds, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::setJointSpeed(robotJointId_t id, double speed)
