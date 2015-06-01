@@ -673,6 +673,7 @@ void Linkbot::setMovementStateTimeNB( robotJointState_t dir1,
                 double seconds)
 {
     c_impl::barobo::JointState::Type jointStates[3];
+    seconds = ABS(seconds);
     double coefs[3] = {1,1,1};
     int i = 0;
     for(auto d : {dir1, dir2}) {
