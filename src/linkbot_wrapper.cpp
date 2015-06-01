@@ -751,6 +751,11 @@ void Linkbot::setSpeed(double speed, double radius)
 		std::cout<<"It is beyond the limit of 240 degrees/second. Joints speeds will be set to 240 degrees/second."<<std::endl;
 		omega = 240.0;
 	}
+	else if (omega <= -240){
+		std::cout << "Warning: cannot set joint speeds to " << omega << " degrees/second." << std::endl;
+		std::cout << "It is beyond the limit of -240 degrees/second. Joints speeds will be set to -240 degrees/second." << std::endl;
+		omega = -240.0;
+	}
 	CALL_C_IMPL(linkbotSetJointSpeeds, 0x07, omega, 0, omega);
 }
 
