@@ -896,19 +896,14 @@ void Linkbot::driveBackward(double angle)
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveBackward", "driveAngle(-angle)");
 	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, -angle, 0, angle);
-	moveWait();
-	
-	
+	driveAngle(-angle);
 }
 
 void Linkbot::driveBackwardNB(double angle)
 {
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveBackwardNB", "driveAngleNB(-angle)");
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, -angle, 0, angle);
-	
+	driveAngleNB(-angle);	
 }
 
 void Linkbot::driveDistance(double distance, double radius)
@@ -919,15 +914,36 @@ void Linkbot::driveDistance(double distance, double radius)
 
 void Linkbot::driveDistanceNB(double distance, double radius)
 {
-	double theta;
+	double theta, speed1, speed2, speed3;
+	double theta1, theta3;
     theta = distance/radius; // in radians
 	theta = (theta *180.0)/M_PI; // in degrees
-    auto time = theta/m->jointSpeed[0];
+	getJointSpeeds(speed1, speed2, speed3);
+	if (speed1 < 0)
+	{
+		theta1 = -theta;
+	}
+	else
+	{
+		theta1 = theta;
+	}
+
+	if (speed3 < 0)
+	{
+		theta3 = -theta;
+	}
+	else
+	{
+		theta3 = theta;
+	}
+	m->setJointsMovingFlag(0x07);
+	CALL_C_IMPL(linkbotMove, 0x07, theta1, 0, -theta3);
+    /*auto time = theta/m->jointSpeed[0];
     setMovementStateTimeNB(
         ROBOT_FORWARD,
         ROBOT_FORWARD,
         ROBOT_FORWARD,
-        time);
+        time);*/
 }
 
 void Linkbot::driveForeverNB()
@@ -940,28 +956,46 @@ void Linkbot::driveForward(double angle)
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveForward", "driveAngle(angle)");
 	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
-	moveWait();
+	driveAngle(angle);
 }
 void Linkbot::driveForwardNB(double angle)
 {
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveForwardNB", "driveAngle(angle)");
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+	driveAngleNB(angle);
 }
 
 void Linkbot::driveAngle(double angle)
 {
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+	driveAngleNB(angle);
 	moveWait();
 }
 
 void Linkbot::driveAngleNB(double angle)
 {
+	
+	double speed1, speed2, speed3;
+	double theta1, theta3;
+	getJointSpeeds(speed1, speed2, speed3);
+	if (speed1 < 0)
+	{
+		theta1 = -angle;
+	}
+	else
+	{
+		theta1 = angle;
+	}
+
+	if (speed3 < 0)
+	{
+		theta3 = -angle;
+	}
+	else
+	{
+		theta3 = angle;
+	}
 	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+	CALL_C_IMPL(linkbotMove, 0x07, theta1, 0, -theta3);
 }
 
 void Linkbot::driveTime(double seconds)
