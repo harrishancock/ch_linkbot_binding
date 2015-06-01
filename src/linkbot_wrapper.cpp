@@ -896,8 +896,7 @@ void Linkbot::driveBackward(double angle)
 {
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveBackward", "driveAngle(-angle)");
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, -angle, 0, angle);
+    driveBackwardNB(angle);
 	moveWait();
 	
 	
@@ -907,8 +906,7 @@ void Linkbot::driveBackwardNB(double angle)
 {
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveBackwardNB", "driveAngleNB(-angle)");
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, -angle, 0, angle);
+    driveAngleNB(-angle);
 	
 }
 
@@ -940,28 +938,28 @@ void Linkbot::driveForward(double angle)
 {
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveForward", "driveAngle(angle)");
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+    driveForwardNB(angle);
 	moveWait();
 }
 void Linkbot::driveForwardNB(double angle)
 {
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveForwardNB", "driveAngle(angle)");
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+    driveAngleNB(angle);
 }
 
 void Linkbot::driveAngle(double angle)
 {
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+    driveAngleNB(angle);
 	moveWait();
 }
 
 void Linkbot::driveAngleNB(double angle)
 {
 	m->setJointsMovingFlag(0x07);
+    if(m->jointSpeed[0] < 0) {
+        angle *= -1;
+    }
 	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
 }
 
