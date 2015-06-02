@@ -550,24 +550,12 @@ void Linkbot::setJointMovementStateTimeNB(robotJointId_t id, robotJointState_t d
 
 void Linkbot::setJointSpeed(robotJointId_t id, double speed)
 {
-    if(ABS(speed) < 1) {
-        fprintf(stderr, 
-        "Warning: A robot's joint speed has been set to a low value. This may "
-        "cause robot motions to take a long time to finish.");
-    }
     CALL_C_IMPL(linkbotSetJointSpeeds, 1<<(int(id)-1), speed, speed, speed);
     m->jointSpeed[int(id)-1] = speed;
 }
 
 void Linkbot::setJointSpeeds(double speed1, double speed2, double speed3)
 {
-    for(auto speed : {speed1, speed2, speed3}) {
-        if(ABS(speed) < 1) {
-            fprintf(stderr, 
-                    "Warning: A robot's joint speed has been set to a low value. This may "
-                    "cause robot motions to take a long time to finish.");
-        }
-    }
     int type;
 	int mask;
 	getFormFactor(type);
