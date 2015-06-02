@@ -975,12 +975,16 @@ void Linkbot::driveAngle(double angle)
 
 void Linkbot::driveAngleNB(double angle)
 {
-	
 	m->setJointsMovingFlag(0x07);
+	double angle1, angle3;
+	angle1 = angle3 = angle;
 	if (m->jointSpeed[0] < 0) {
-		angle *= -1;
+		angle1 *= -1;
 	}
-	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+	if (m->jointSpeed[2] < 0) {
+		angle3 *= -1;
+	}
+	CALL_C_IMPL(linkbotMove, 0x07, angle1, 0, -angle3);
 }
 
 void Linkbot::driveTime(double seconds)
