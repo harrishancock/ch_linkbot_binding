@@ -901,10 +901,7 @@ void Linkbot::driveBackward(double angle)
 {
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveBackward", "driveAngle(-angle)");
-    driveBackwardNB(angle);
-	moveWait();
-	
-	
+    driveAngle(-angle);
 }
 
 void Linkbot::driveBackwardNB(double angle)
@@ -943,8 +940,7 @@ void Linkbot::driveForward(double angle)
 {
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveForward", "driveAngle(angle)");
-    driveForwardNB(angle);
-	moveWait();
+    driveAngle(angle);
 }
 void Linkbot::driveForwardNB(double angle)
 {
