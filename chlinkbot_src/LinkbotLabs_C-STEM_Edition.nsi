@@ -104,6 +104,11 @@ Section -Main
         Rename "$OUT\package\chbarobo\bin\win32\msvcr120.dll" "$OUT\package\chbarobo\bin\msvcr120.dll" 
     ${Endif}
 
+    # Required for Windows XP.
+    CreateDirectory "$OUT\package\chbarobo\dl\Microsoft.VC80.CRT"
+    CopyFiles "$OUT\bin\Microsoft.VC80.CRT\msvcr80.dll" "$OUT\package\chbarobo\dl\Microsoft.VC80.CRT\msvcr80.dll"
+    CopyFiles "$OUT\bin\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest" "$OUT\package\chbarobo\dl\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest"
+
 # Copy chbarobo header files to toolkit/include directory
 CopyFiles $OUT\package\chbarobo\include\linkbot.h $OUT\toolkit\include\linkbot.h
 
