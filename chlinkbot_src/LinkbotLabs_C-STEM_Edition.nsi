@@ -2,8 +2,8 @@
  
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Linkbot Labs C-STEM Edition"
-!define LINKBOT_LABS_VERSION "0.7.11"
-!define CHBAROBO_VERSION "1.0.4"
+!define LINKBOT_LABS_VERSION "0.9.0"
+!define CHBAROBO_VERSION "1.0.5"
 !define PRODUCT_PUBLISHER "Barobo"
 
 !define LINKBOT_LABS_INSTALLER "Linkbot Labs-${LINKBOT_LABS_VERSION}-win32.exe"
@@ -103,6 +103,11 @@ Section -Main
         Rename "$OUT\package\chbarobo\bin\win32\vccorlib120.dll" "$OUT\package\chbarobo\bin\vccorlib120.dll" 
         Rename "$OUT\package\chbarobo\bin\win32\msvcr120.dll" "$OUT\package\chbarobo\bin\msvcr120.dll" 
     ${Endif}
+
+    # Required for Windows XP.
+    CreateDirectory "$OUT\package\chbarobo\dl\Microsoft.VC80.CRT"
+    CopyFiles "$OUT\bin\Microsoft.VC80.CRT\msvcr80.dll" "$OUT\package\chbarobo\dl\Microsoft.VC80.CRT\msvcr80.dll"
+    CopyFiles "$OUT\bin\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest" "$OUT\package\chbarobo\dl\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest"
 
 # Copy chbarobo header files to toolkit/include directory
 CopyFiles $OUT\package\chbarobo\include\linkbot.h $OUT\toolkit\include\linkbot.h
