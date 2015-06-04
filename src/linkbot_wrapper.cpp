@@ -50,7 +50,8 @@ struct LinkbotImpl
 {
     LinkbotImpl() 
     : jointsRecordingActive(false), 
-      userShiftDataThreshold(2.0)
+      userShiftDataThreshold(2.0),
+      exitState(ROBOT_HOLD)
     { 
     }
     ~LinkbotImpl() {
