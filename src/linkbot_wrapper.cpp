@@ -41,9 +41,16 @@ do { \
 #define DEPRECATED(from, to) \
   fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s()\"\n" , from, to)
 
+/* sgn(num) returns -1, 0, +1 */
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 struct LinkbotImpl
 {
-    LinkbotImpl() : jointsRecordingActive(false), userShiftDataThreshold(2.0)
+    LinkbotImpl() 
+    : jointsRecordingActive(false), 
+      userShiftDataThreshold(2.0)
     { 
     }
     ~LinkbotImpl() {
@@ -108,6 +115,7 @@ struct LinkbotImpl
     double** userRecordedAngles[3];
 	double distanceOffset;
 	bool connected;
+    double jointSpeed[3];
 };
 
 void _encoderEventCB(int joint, double angle, int timestamp, void* data)
@@ -156,6 +164,10 @@ Linkbot::Linkbot()
 		m->motorMask = 0x07;
 		break;
 	}
+    getJointSpeeds( 
+        m->jointSpeed[0],
+        m->jointSpeed[1],
+        m->jointSpeed[2]);
 }
 
 Linkbot::Linkbot(const char* serialId)
@@ -189,6 +201,10 @@ Linkbot::Linkbot(const char* serialId)
 		m->motorMask = 0x07;
 		break;
 	}
+    getJointSpeeds( 
+        m->jointSpeed[0],
+        m->jointSpeed[1],
+        m->jointSpeed[2]);
 }
 
 int Linkbot::connect()
@@ -391,9 +407,11 @@ void Linkbot::getJointSafetyAngleTimeout(double &timeout)
 
 void Linkbot::getJointSpeed(robotJointId_t id, double &speed)
 {
-    double speeds[3];
-    getJointSpeeds(speeds[0], speeds[1], speeds[2]);
-    speed = speeds[int(id)-1];
+    getJointSpeeds(
+        m->jointSpeed[0], 
+        m->jointSpeed[1], 
+        m->jointSpeed[2]);
+    speed = m->jointSpeed[int(id)-1];
 }
 
 void Linkbot::getJointSpeedRatio(robotJointId_t id, double &ratio)
@@ -406,6 +424,9 @@ void Linkbot::getJointSpeedRatio(robotJointId_t id, double &ratio)
 void Linkbot::getJointSpeeds(double &speed1, double &speed2, double &speed3)
 {
     CALL_C_IMPL(linkbotGetJointSpeeds, &speed1, &speed2, &speed3);
+    m->jointSpeed[0] = speed1;
+    m->jointSpeed[1] = speed2;
+    m->jointSpeed[2] = speed3;
 }
 
 void Linkbot::getJointSpeedRatios(double &ratio1, double &ratio2, double &ratio3)
@@ -469,9 +490,9 @@ void Linkbot::setJointMovementStateNB(robotJointId_t id, robotJointState_t dir)
     }
     m->setJointsMovingFlag(1<<(int(id)-1));
     CALL_C_IMPL(linkbotSetJointStates, 1<<index,
-            state, speedNegative?-1:1,
-            state, speedNegative?-1:1,
-            state, speedNegative?-1:1);
+            state, (speedNegative?-1:1) ,
+            state, (speedNegative?-1:1) ,
+            state, (speedNegative?-1:1) );
 }
 
 void Linkbot::setJointMovementStateTime(robotJointId_t id, robotJointState_t dir, double seconds)
@@ -530,6 +551,7 @@ void Linkbot::setJointMovementStateTimeNB(robotJointId_t id, robotJointState_t d
 void Linkbot::setJointSpeed(robotJointId_t id, double speed)
 {
     CALL_C_IMPL(linkbotSetJointSpeeds, 1<<(int(id)-1), speed, speed, speed);
+    m->jointSpeed[int(id)-1] = speed;
 }
 
 void Linkbot::setJointSpeeds(double speed1, double speed2, double speed3)
@@ -553,6 +575,9 @@ void Linkbot::setJointSpeeds(double speed1, double speed2, double speed3)
 			break;
 	}
 	CALL_C_IMPL(linkbotSetJointSpeeds, mask, speed1, speed2, speed3);
+    m->jointSpeed[0] = speed1;
+    m->jointSpeed[1] = speed2;
+    m->jointSpeed[2] = speed3;
 }
 
 void Linkbot::setJointSpeedRatio(robotJointId_t id, double ratio)
@@ -648,6 +673,7 @@ void Linkbot::setMovementStateTimeNB( robotJointState_t dir1,
                 double seconds)
 {
     c_impl::barobo::JointState::Type jointStates[3];
+    seconds = ABS(seconds);
     double coefs[3] = {1,1,1};
     int i = 0;
     for(auto d : {dir1, dir2}) {
@@ -726,7 +752,12 @@ void Linkbot::setSpeed(double speed, double radius)
 		std::cout<<"It is beyond the limit of 240 degrees/second. Joints speeds will be set to 240 degrees/second."<<std::endl;
 		omega = 240.0;
 	}
-	CALL_C_IMPL(linkbotSetJointSpeeds, 0x07, omega, 0, omega);
+	else if (omega <= -240){
+		std::cout << "Warning: cannot set joint speeds to " << omega << " degrees/second." << std::endl;
+		std::cout << "It is beyond the limit of -240 degrees/second. Joints speeds will be set to -240 degrees/second." << std::endl;
+		omega = -240.0;
+	}
+    setJointSpeeds(omega, 0, omega);
 }
 
 void Linkbot::setLEDColorRGB(int r, int g, int b)
@@ -870,32 +901,21 @@ void Linkbot::driveBackward(double angle)
 {
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveBackward", "driveAngle(-angle)");
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, -angle, 0, angle);
-	moveWait();
-	
-	
+    driveAngle(-angle);
 }
 
 void Linkbot::driveBackwardNB(double angle)
 {
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveBackwardNB", "driveAngleNB(-angle)");
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, -angle, 0, angle);
+    driveAngleNB(-angle);
 	
 }
 
 void Linkbot::driveDistance(double distance, double radius)
 {
-	double theta;
-    theta = distance/radius; // in radians
-	theta = (theta *180.0)/M_PI; // in degrees
-
-    m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, theta, 0, -theta);
-	moveWait();
-
+    driveDistanceNB(distance, radius);
+    moveWait();
 }
 
 void Linkbot::driveDistanceNB(double distance, double radius)
@@ -903,8 +923,12 @@ void Linkbot::driveDistanceNB(double distance, double radius)
 	double theta;
     theta = distance/radius; // in radians
 	theta = (theta *180.0)/M_PI; // in degrees
-    m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, theta, 0, -theta);
+    auto time = theta/m->jointSpeed[0];
+    setMovementStateTimeNB(
+        ROBOT_FORWARD,
+        ROBOT_FORWARD,
+        ROBOT_FORWARD,
+        time);
 }
 
 void Linkbot::driveForeverNB()
@@ -916,29 +940,33 @@ void Linkbot::driveForward(double angle)
 {
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveForward", "driveAngle(angle)");
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
-	moveWait();
+    driveAngle(angle);
 }
 void Linkbot::driveForwardNB(double angle)
 {
 	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
 		"driveForwardNB", "driveAngle(angle)");
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+    driveAngleNB(angle);
 }
 
 void Linkbot::driveAngle(double angle)
 {
-	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+    driveAngleNB(angle);
 	moveWait();
 }
 
 void Linkbot::driveAngleNB(double angle)
 {
 	m->setJointsMovingFlag(0x07);
-	CALL_C_IMPL(linkbotMove, 0x07, angle, 0, -angle);
+    double angle1, angle3;
+    angle1 = angle3 = angle;
+    if(m->jointSpeed[0] < 0) {
+        angle1 *= -1;
+    }
+    if(m->jointSpeed[2] < 0) {
+        angle3 *= -1;
+    }
+	CALL_C_IMPL(linkbotMove, 0x07, angle1, 0, -angle3);
 }
 
 void Linkbot::driveTime(double seconds)
@@ -993,6 +1021,11 @@ void Linkbot::moveWait(int mask)
     /* Get the current joint states */
     int time;
     std::unique_lock<std::mutex> lock(m->jointStateMutex);
+    /* Check to see if we've already stopped moving first */
+    m->refreshJointStates();
+    if(!m->isMoving(mask)) {
+        return;
+    }
 
     while(1) {
         auto rc = m->jointStateCond.wait_for(lock, std::chrono::milliseconds(3000));
