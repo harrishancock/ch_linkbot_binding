@@ -23,18 +23,13 @@ namespace c_impl {
 
 #define M_PI            3.14159265358979323846
 
-#define RUNTIME_ERROR \
-    std::runtime_error(std::string("Exception in ") + std::string(__func__))
-
-#define CALL_C_IMPL(func, ...) \
-do { \
-    int rc = c_impl::func( m->linkbot, __VA_ARGS__ ); \
-    if(rc != 0) { \
-        throw std::runtime_error( \
-            std::string("Error encountered calling function: <" #func \
-                "> Error code: ") + std::to_string(rc)); \
+#define CALL_C_IMPL(func, ...) do { \
+    if (isConnected()) { \
+        if (auto rc = c_impl::func(m->linkbot, __VA_ARGS__)) { \
+            std::cerr << #func << " returned " << rc << std::endl; \
+        } \
     } \
-} while(0)
+} while (0);
 
 #define ABS(x) ( (x<0) ? (-(x)) : (x) )
 
@@ -114,7 +109,6 @@ struct LinkbotImpl
     double** userRecordedTimes;
     double** userRecordedAngles[3];
 	double distanceOffset;
-	bool connected;
     double jointSpeed[3];
 };
 
@@ -131,16 +125,13 @@ void _jointEventCB(int joint, c_impl::barobo::JointState::Type state, int timest
 }
 
 Linkbot::Linkbot()
+    : m(new LinkbotImpl)
 {
-	m = new LinkbotImpl();
-
 	if (m->linkbot = c_impl::linkbotFromTcpEndpoint("127.0.0.1", "42010")){
-		m->connected = true;
 	}
 	else{
-		fprintf(stderr, "Could not connect to robot. Exiting..\n");
-		m->connected = false;
-		exit(-1);
+		std::cerr << "Could not connect to robot.\n";
+		return;
 	}
 
 	for (int i = 0; i < 3; i++) {
@@ -171,14 +162,13 @@ Linkbot::Linkbot()
 }
 
 Linkbot::Linkbot(const char* serialId)
+    : m(new LinkbotImpl)
 {
-	m = new LinkbotImpl();
-
 	if (m->linkbot = c_impl::linkbotFromSerialId(serialId)){
 	}
 	else{
-		fprintf(stderr, "Could not connect to robot. Exiting..\n");
-		exit(-1);
+        std::cerr << "Could not connect to " << serialId << std::endl;
+		return;
 	}
 	for (int i = 0; i < 3; i++) {
 		m->jointStates[i] = c_impl::barobo::JointState::HOLD;
@@ -281,23 +271,18 @@ int Linkbot::connectWithSerialID(const char* serialId)
 
 int Linkbot::disconnect()
 {
-    if(m && m->linkbot) {
-        c_impl::linkbotDelete(m->linkbot);
-        delete m;
-        m = nullptr;
-    }
+    auto p = m->linkbot;
+    m->linkbot = nullptr;
+    c_impl::linkbotDelete(p);
     return 0;
 }
 
 Linkbot::~Linkbot()
 {
-	if(m && m->linkbot) { 
-		stop(); //stop motors
-	    setMovementStateNB(m->exitState, m->exitState, m->exitState);
-        disconnect();
-		
-	}
-	
+	stop(); //stop motors
+    setMovementStateNB(m->exitState, m->exitState, m->exitState);
+    disconnect();
+    delete m; m = nullptr;
 }
 
 /* GETTERS */
@@ -835,7 +820,7 @@ void Linkbot::moveJointTime(robotJointId_t id, double time)
 {
 	if (time < 0){
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", time);
-		exit(-1);
+		return;
 	}
 	moveJointTimeNB(id, time);
     moveWait(1<<(int(id)-1));
@@ -845,7 +830,7 @@ void Linkbot::moveJointTimeNB(robotJointId_t id, double time)
 {
 	if (time < 0){
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", time);
-		exit(-1);
+		return;
 	}
 	if(id == ROBOT_JOINT3) {
         setJointMovementStateTimeNB(id, ROBOT_BACKWARD, time);
@@ -858,7 +843,7 @@ void Linkbot::moveTime(double time)
 {
 	if (time < 0){
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", time);
-		exit(-1);
+		return;
 	}
 	moveTimeNB(time);
     moveWait();
@@ -868,7 +853,7 @@ void Linkbot::moveTimeNB(double time)
 {
 	if (time < 0){
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", time);
-		exit(-1);
+		return;
 	}
 	setMovementStateTimeNB(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_POSITIVE, time);
 }
@@ -906,10 +891,8 @@ void Linkbot::driveBackward(double angle)
 
 void Linkbot::driveBackwardNB(double angle)
 {
-	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
-		"driveBackwardNB", "driveAngleNB(-angle)");
+	DEPRECATED("driveBackwardNB", "driveAngleNB(-angle)");
     driveAngleNB(-angle);
-	
 }
 
 void Linkbot::driveDistance(double distance, double radius)
@@ -944,8 +927,7 @@ void Linkbot::driveForward(double angle)
 }
 void Linkbot::driveForwardNB(double angle)
 {
-	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
-		"driveForwardNB", "driveAngle(angle)");
+    DEPRECATED("driveForwardNB", "driveAngle(angle)");
     driveAngleNB(angle);
 }
 
@@ -973,7 +955,7 @@ void Linkbot::driveTime(double seconds)
 {
 	if (seconds < 0){
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", seconds);
-		exit(-1);
+		return;
 	}
 	//setMovementStateTime(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_NEGATIVE, seconds);
 	driveTimeNB(seconds);
@@ -984,7 +966,7 @@ void Linkbot::driveTimeNB(double seconds)
 {
 	if (seconds < 0){
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", seconds);
-		exit(-1);
+		return;
 	}
 	setMovementStateTimeNB(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_NEGATIVE, seconds);
 }
@@ -1067,12 +1049,7 @@ int Linkbot::isMoving(int mask)
 
 int Linkbot::isConnected()
 {
-	if (m->connected){
-		return 1;
-	}
-	else {
-		return 0;
-	}
+    return !!m->linkbot;
 }
 
 void Linkbot::relaxJoint(robotJointId_t id)
@@ -1228,6 +1205,10 @@ void Linkbot::recordAnglesBegin(
 
 void Linkbot::recordAnglesEnd(int &num)
 {
+    if (!isConnected()) {
+        num = 0;
+        return;
+    }
     std::unique_lock<std::mutex> lock (m->recordAnglesMutex);
     uint8_t mask = m->jointsRecordingMask;
     if(!m->jointsRecordingActive) {
@@ -1349,6 +1330,11 @@ void Linkbot::recordAnglesBegin2(
 
 void Linkbot::recordAnglesEnd2( int &num )
 {
+    if (!isConnected()) {
+        num = 0;
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(m->recordAnglesMutex);
     c_impl::linkbotSetEncoderEventCallback(m->linkbot, nullptr, 0, nullptr);
     m->jointsRecordingMask = 0x0;
@@ -1445,8 +1431,6 @@ void Linkbot::closeGripper()
     #endif            // closing for 1 second
 	setMovementStateNB(ROBOT_HOLD, ROBOT_HOLD, ROBOT_HOLD); // hold the object
 	stop();
-	return;
-
 }
 
 void Linkbot::closeGripperNB()
