@@ -52,10 +52,11 @@ struct LinkbotImpl
       userInitTime(0),
       userTimeInterval(0.1),
       userRadius(3.5),
-      distanceOffset(0),
-      connected(false),
-      jointSpeed{45, 45, 45}
-    { 
+      distanceOffset(0)
+    {
+        for (auto& x : jointSpeed) {
+            x = 45;
+        }
     }
     ~LinkbotImpl() {
     }
