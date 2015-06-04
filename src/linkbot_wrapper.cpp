@@ -271,9 +271,10 @@ int Linkbot::connectWithSerialID(const char* serialId)
 
 int Linkbot::disconnect()
 {
-    auto p = m->linkbot;
-    m->linkbot = nullptr;
-    c_impl::linkbotDelete(p);
+    if (m->linkbot) {
+        c_impl::linkbotDelete(m->linkbot);
+        m->linkbot = nullptr;
+    }
     return 0;
 }
 
@@ -401,7 +402,7 @@ void Linkbot::getJointSpeed(robotJointId_t id, double &speed)
 
 void Linkbot::getJointSpeedRatio(robotJointId_t id, double &ratio)
 {
-    double speed;
+    double speed = 0;
     getJointSpeed(id, speed);
     ratio = speed / mMaxSpeed;
 }
@@ -596,6 +597,9 @@ void Linkbot::setMovementStateNB( robotJointState_t dir1,
                 robotJointState_t dir2,
                 robotJointState_t dir3)
 {
+    if (!isConnected()) {
+        return;
+    }
     robotJointState_t states[3];
     states[0] = dir1;
     states[1] = dir2;
@@ -1000,6 +1004,9 @@ void Linkbot::moveNB(double j1, double j2, double j3)
 
 void Linkbot::moveWait(int mask)
 {
+    if (!isConnected()) {
+        return;
+    }
     /* Get the current joint states */
     int time;
     std::unique_lock<std::mutex> lock(m->jointStateMutex);
@@ -1027,6 +1034,9 @@ void Linkbot::moveJointWait(robotJointId_t id)
 
 int Linkbot::isMoving(int mask)
 {
+    if (!isConnected()) {
+        return 0;
+    }
     static std::chrono::time_point<std::chrono::system_clock> lastChecked;
     auto now = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsedTime = now-lastChecked;
@@ -1141,6 +1151,9 @@ void Linkbot::recordAnglesBegin(
             int mask,
 			int shiftData)
 {
+    if (!isConnected()) {
+        return;
+    }
     std::unique_lock<std::mutex> lock(m->recordAnglesMutex);
     if(m->jointsRecordingActive) {
         return;

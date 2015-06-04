@@ -42,7 +42,6 @@ struct LinkbotGroupImpl
     double argDouble;
 	int motionInProgress;
 	void *thread;
-	int _numRobots = 0;
 };
 
 LinkbotGroup::LinkbotGroup()
@@ -58,8 +57,9 @@ LinkbotGroup::~LinkbotGroup()
 
 void LinkbotGroup::addRobot(Linkbot& robot)
 {
-    m->robots.push_back(&robot);
-	m->_numRobots ++;
+	if (robot.isConnected()) {
+	    m->robots.push_back(&robot);
+	}
 }
 
 void LinkbotGroup::addRobots(Linkbot robot[], int numRobots) 
@@ -189,13 +189,17 @@ void LinkbotGroup::moveWait()
 {
 	int mask = 0x07;
 	/*Wait for the last robot to stop*/
-	m->robots.back()->moveWait();
+	if (m->robots.size()) {
+		m->robots.back()->moveWait();
+	}
 }
 
 void LinkbotGroup::moveJointWait(robotJointId_t id)
 {
 	/*Wait for the last robot to stop*/
-	m->robots.back()->moveJointWait(id);
+	if (m->robots.size()) {
+		m->robots.back()->moveJointWait(id);
+	}
 }
 
 void LinkbotGroup::holdJoint(robotJointId_t id)
