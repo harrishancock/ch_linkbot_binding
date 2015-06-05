@@ -26,6 +26,8 @@ robot.driveDistance(distance, radius);
 /* end recording time and distance */
 robot.recordDistanceEnd(numDataPoints);
 
+printf("%d data points \n", numDataPoints);
+
 /* plot the data */
 plot.mathCoord();
 plot.title("Distance versus time");
