@@ -505,6 +505,46 @@ void CLinkbotL::moveToZeroNB() {
      
     dlrunfun(fptr, NULL, NULL, this);
 }
+
+/*Gripper functions*/
+void CLinkbotL::openGripper(double angle)
+{
+    moveJoint(JOINT1, -angle);
+}
+
+void CLinkbotL::openGripperNB(double angle) {
+    
+    moveJointNB(JOINT1, -angle);
+}
+
+void CLinkbotL::closeGripper(void) {
+    double gripperAngleOld= 0;
+    double gripperAngleNew;
+
+    getJointAngle(JOINT1, gripperAngleNew); // get the new position
+    /* Close the gripper to grab an object */
+    while(fabs(gripperAngleNew - gripperAngleOld) > 5) {
+        gripperAngleOld = gripperAngleNew;    // update the old position
+        getJointAngle(JOINT1, gripperAngleNew); // get the new position
+		moveNB( 8, 0, 0); // move 8 degrees
+        #ifndef _WIN32
+        usleep(500000);
+        #else
+        Sleep(500);
+        #endif
+        getJointAngle(JOINT1, gripperAngleNew); // get the new position
+    }
+    moveNB(3, 0, 0);            // try to move another 8 degrees 
+    #ifndef _WIN32
+        usleep(2000000);
+    #else
+        Sleep(2000);
+    #endif            // closing for 1 second              // closing for 1 second
+    setMovementStateNB(ROBOT_HOLD, ROBOT_HOLD, ROBOT_HOLD); // hold the object
+	stop();
+	return;
+}
+
 /*END MOVEMENT FUNCTIONS*/
 /*GET FUNCTIONS*/
 
