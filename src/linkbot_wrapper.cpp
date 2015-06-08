@@ -912,21 +912,34 @@ void Linkbot::driveBackwardNB(double angle)
 
 void Linkbot::driveDistance(double distance, double radius)
 {
+    if (!m->jointSpeed[0]) {
+        fprintf(stdout, "Error: driveDistance called with zero joint one speed\n");
+        return;
+    }
+
     driveDistanceNB(distance, radius);
     moveWait();
 }
 
 void Linkbot::driveDistanceNB(double distance, double radius)
 {
+    if (!m->jointSpeed[0]) {
+        fprintf(stdout, "Error: driveDistanceNB called with zero joint one speed\n");
+        return;
+    }
+
 	double theta;
-	theta = distance / radius; // in radians
-	theta = (theta *180.0) / M_PI; // in degrees
-	auto time = theta / m->jointSpeed[0];
-	setMovementStateTimeNB(
-		ROBOT_FORWARD,
-		ROBOT_FORWARD,
-		ROBOT_FORWARD,
-		time);
+    theta = distance/radius; // in radians
+	theta = (theta *180.0)/M_PI; // in degrees
+    auto time = theta/m->jointSpeed[0];
+    auto dir = distance < 0
+               ? ROBOT_BACKWARD
+               : ROBOT_FORWARD;
+    setMovementStateTimeNB(
+        dir,
+        dir,
+        dir,
+        time);
 }
 
 void Linkbot::driveForeverNB()
