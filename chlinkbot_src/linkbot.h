@@ -243,6 +243,7 @@ class CLinkbotL {
 
         /* MOVEMENT */
 
+		void closeGripper();
 		void holdJoint(robotJointId_t id);
 		void holdJoints();
 		void holdJointsAtExit();
@@ -270,6 +271,8 @@ class CLinkbotL {
         void moveToByTrackPosNB(double angle1, double angle2, double angle3);
 		void moveToZero();
 		void moveToZeroNB();
+		void openGripper(double angle);
+		void openGripperNB(double angle);
 		void relaxJoint(robotJointId_t id);
 	    void relaxJoints();
 		void resetToZero();

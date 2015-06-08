@@ -757,6 +757,7 @@ void Linkbot::setSpeed(double speed, double radius)
 		omega = -240.0;
 	}
     setJointSpeeds(omega, 0, omega);
+
 }
 
 void Linkbot::setLEDColorRGB(int r, int g, int b)
@@ -918,14 +919,14 @@ void Linkbot::driveDistance(double distance, double radius)
 void Linkbot::driveDistanceNB(double distance, double radius)
 {
 	double theta;
-    theta = distance/radius; // in radians
-	theta = (theta *180.0)/M_PI; // in degrees
-    auto time = theta/m->jointSpeed[0];
-    setMovementStateTimeNB(
-        ROBOT_FORWARD,
-        ROBOT_FORWARD,
-        ROBOT_FORWARD,
-        time);
+	theta = distance / radius; // in radians
+	theta = (theta *180.0) / M_PI; // in degrees
+	auto time = theta / m->jointSpeed[0];
+	setMovementStateTimeNB(
+		ROBOT_FORWARD,
+		ROBOT_FORWARD,
+		ROBOT_FORWARD,
+		time);
 }
 
 void Linkbot::driveForeverNB()
@@ -943,6 +944,7 @@ void Linkbot::driveForwardNB(double angle)
 {
     DEPRECATED("driveForwardNB", "driveAngle(angle)");
     driveAngleNB(angle);
+
 }
 
 void Linkbot::driveAngle(double angle)
@@ -954,14 +956,14 @@ void Linkbot::driveAngle(double angle)
 void Linkbot::driveAngleNB(double angle)
 {
 	m->setJointsMovingFlag(0x07);
-    double angle1, angle3;
-    angle1 = angle3 = angle;
-    if(m->jointSpeed[0] < 0) {
-        angle1 *= -1;
-    }
-    if(m->jointSpeed[2] < 0) {
-        angle3 *= -1;
-    }
+	double angle1, angle3;
+	angle1 = angle3 = angle;
+	if (m->jointSpeed[0] < 0) {
+		angle1 *= -1;
+	}
+	if (m->jointSpeed[2] < 0) {
+		angle3 *= -1;
+	}
 	CALL_C_IMPL(linkbotMove, 0x07, angle1, 0, -angle3);
 }
 
