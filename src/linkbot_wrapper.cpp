@@ -165,10 +165,8 @@ Linkbot::Linkbot()
 		m->motorMask = 0x07;
 		break;
 	}
-    getJointSpeeds( 
-        m->jointSpeed[0],
-        m->jointSpeed[1],
-        m->jointSpeed[2]);
+    /* Set the joint speeds to a default value */
+    setJointSpeeds(45, 45, 45);
 }
 
 Linkbot::Linkbot(const char* serialId)
