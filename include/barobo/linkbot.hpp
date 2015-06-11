@@ -84,7 +84,17 @@ class Linkbot {
 		void setSpeed(double speed, double radius);
 
         /* MOVEMENT */
-
+        void accelJointAngleNB(robotJointId_t id, double acceleration, double angle);
+        void accelJointTimeNB(robotJointId_t id, double acceleration, double time);
+        void accelJointToVelocityNB(robotJointId_t id, double acceleration, double speed);
+        void accelJointToMaxSpeedNB(robotJointId_t id, double acceleration);
+        void driveAccelJointTimeNB(double radius, double acceleration,
+                double time);
+        void driveAccelToVelocityNB(double radius, double acceleration,
+                double velocity);
+        void driveAccelToMaxSpeedNB(double radius, double acceleration);
+        void driveAccelDistanceNB(double radius, double acceleration, 
+                double distance);
 		void closeGripper();
 		void closeGripperNB();
 		void driveAngle(double angle);

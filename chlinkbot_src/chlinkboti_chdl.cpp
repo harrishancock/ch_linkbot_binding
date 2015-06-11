@@ -112,6 +112,164 @@ EXPORTCH void CLinkbotI_disconnect_chdl(void *varg) {
 
 /*MOVEMENT FUNCTIONS*/
 
+/*linkbot accelJointAngleNB*/
+EXPORTCH void CLinkbotI_accelJointAngleNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    robotJointId_t id;
+    double acceleration;
+    double angle;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    id=Ch_VaArg(interp, ap, robotJointId_t);
+    acceleration=Ch_VaArg(interp, ap, double);
+    angle=Ch_VaArg(interp, ap, double);
+    l->accelJointAngleNB(id, acceleration, angle);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot accelJointTimeNB*/
+EXPORTCH void CLinkbotI_accelJointTimeNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    robotJointId_t id;
+    double acceleration;
+    double time;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    id=Ch_VaArg(interp, ap, robotJointId_t);
+    acceleration=Ch_VaArg(interp, ap, double);
+    time=Ch_VaArg(interp, ap, double);
+    l->accelJointTimeNB(id, acceleration, time);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot accelJointToVelocityNB*/
+EXPORTCH void CLinkbotI_accelJointToVelocityNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    robotJointId_t id;
+    double acceleration;
+    double time;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    id=Ch_VaArg(interp, ap, robotJointId_t);
+    acceleration=Ch_VaArg(interp, ap, double);
+    time=Ch_VaArg(interp, ap, double);
+    l->accelJointToVelocityNB(id, acceleration, time);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot accelJointToMaxSpeedNB*/
+EXPORTCH void CLinkbotI_accelJointToMaxSpeedNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    robotJointId_t id;
+    double acceleration;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    id=Ch_VaArg(interp, ap, robotJointId_t);
+    acceleration=Ch_VaArg(interp, ap, double);
+    l->accelJointToMaxSpeedNB(id, acceleration);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot driveAccelJointTimeNB*/
+EXPORTCH void CLinkbotI_driveAccelJointTimeNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    double radius;
+    double acceleration;
+    double time;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    radius=Ch_VaArg(interp, ap, double);
+    acceleration=Ch_VaArg(interp, ap, double);
+    time=Ch_VaArg(interp, ap, double);
+    l->driveAccelJointTimeNB(radius, acceleration, time);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot driveAccelToVelocityNB*/
+EXPORTCH void CLinkbotI_driveAccelToVelocityNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    double radius;
+    double acceleration;
+    double time;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    radius=Ch_VaArg(interp, ap, double);
+    acceleration=Ch_VaArg(interp, ap, double);
+    time=Ch_VaArg(interp, ap, double);
+    l->driveAccelToVelocityNB(radius, acceleration, time);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot driveAccelToMaxSpeedNB*/
+EXPORTCH void CLinkbotI_driveAccelToMaxSpeedNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    double radius;
+    double acceleration;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    radius=Ch_VaArg(interp, ap, double);
+    acceleration=Ch_VaArg(interp, ap, double);
+    l->driveAccelToMaxSpeedNB(radius, acceleration);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot driveAccelDistanceNB*/
+EXPORTCH void CLinkbotI_driveAccelDistanceNB_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    double radius;
+    double acceleration;
+    double distance;
+    
+    Ch_VaStart(interp, ap, varg);
+    
+    l=Ch_VaArg(interp, ap, class Linkbot *);
+    radius=Ch_VaArg(interp, ap, double);
+    acceleration=Ch_VaArg(interp, ap, double);
+    distance=Ch_VaArg(interp, ap, double);
+    l->driveAccelDistanceNB(radius, acceleration, distance);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+
+
 /*linkbot move*/
 EXPORTCH void CLinkbotI_move_chdl(void *varg) {
     ChInterp_t interp;

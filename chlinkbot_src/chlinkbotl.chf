@@ -106,7 +106,63 @@ void CLinkbotL::disconnect() {
     dlrunfun(fptr, NULL, NULL, this);
 }
 
-/*MOVEMENT FUNCTIONS/*
+/*MOVEMENT FUNCTIONS*/
+
+/*accelJointAngleNB*/
+void CLinkbotL::accelJointAngleNB(robotJointId_t id, double acceleration,
+    double angle) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_accelJointAngleNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, acceleration, angle);
+}
+
+/*accelJointTimeNB*/
+void CLinkbotL::accelJointTimeNB(robotJointId_t id, double acceleration,
+    double time) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_accelJointTimeNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, acceleration, time);
+}
+
+/*accelJointToVelocityNB*/
+void CLinkbotL::accelJointToVelocityNB(robotJointId_t id, double acceleration,
+    double speed) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_accelJointToVelocityNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, acceleration, speed);
+}
+
+/*accelJointToMaxSpeedNB*/
+void CLinkbotL::accelJointToMaxSpeedNB(robotJointId_t id, double acceleration) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_accelJointToMaxSpeedNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, acceleration);
+}
+
 /*move*/
 void CLinkbotL::move(double j1, double j2, double j3) {
     void *fptr;
