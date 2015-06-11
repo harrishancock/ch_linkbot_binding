@@ -254,14 +254,11 @@ class CLinkbotL {
 
         /* MOVEMENT */
 
-<<<<<<< HEAD
 		void closeGripper();
-=======
         void accelJointAngleNB(robotJointId_t id, double acceleration, double angle);
         void accelJointTimeNB(robotJointId_t id, double acceleration, double time);
         void accelJointToVelocityNB(robotJointId_t id, double acceleration, double speed);
         void accelJointToMaxSpeedNB(robotJointId_t id, double acceleration);
->>>>>>> 253f71ec16de8d5e8b343a60ed27b2e1b74b1e95
 		void holdJoint(robotJointId_t id);
 		void holdJoints();
 		void holdJointsAtExit();
