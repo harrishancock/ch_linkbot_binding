@@ -106,7 +106,63 @@ void CLinkbotL::disconnect() {
     dlrunfun(fptr, NULL, NULL, this);
 }
 
-/*MOVEMENT FUNCTIONS/*
+/*MOVEMENT FUNCTIONS*/
+
+/*accelJointAngleNB*/
+void CLinkbotL::accelJointAngleNB(robotJointId_t id, double acceleration,
+    double angle) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_accelJointAngleNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, acceleration, angle);
+}
+
+/*accelJointTimeNB*/
+void CLinkbotL::accelJointTimeNB(robotJointId_t id, double acceleration,
+    double time) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_accelJointTimeNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, acceleration, time);
+}
+
+/*accelJointToVelocityNB*/
+void CLinkbotL::accelJointToVelocityNB(robotJointId_t id, double acceleration,
+    double speed) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_accelJointToVelocityNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, id, acceleration, speed);
+}
+
+/*accelJointToMaxSpeedNB*/
+void CLinkbotL::accelJointToMaxSpeedNB(robotJointId_t id, double acceleration) {
+    void *fptr;
+  
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_accelJointToMaxSpeedNB_chdl");
+    if (fptr == NULL) {
+       printf("Error: %s(): dlsym(): %s\n", __class_func__, dlerror());
+       return;
+    }
+     
+    dlrunfun(fptr, NULL, NULL, this, acceleration);
+}
+
 /*move*/
 void CLinkbotL::move(double j1, double j2, double j3) {
     void *fptr;
@@ -505,6 +561,46 @@ void CLinkbotL::moveToZeroNB() {
      
     dlrunfun(fptr, NULL, NULL, this);
 }
+
+/*Gripper functions*/
+void CLinkbotL::openGripper(double angle)
+{
+    moveJoint(JOINT1, -angle);
+}
+
+void CLinkbotL::openGripperNB(double angle) {
+    
+    moveJointNB(JOINT1, -angle);
+}
+
+void CLinkbotL::closeGripper(void) {
+    double gripperAngleOld= 0;
+    double gripperAngleNew;
+
+    getJointAngle(JOINT1, gripperAngleNew); // get the new position
+    /* Close the gripper to grab an object */
+    while(fabs(gripperAngleNew - gripperAngleOld) > 5) {
+        gripperAngleOld = gripperAngleNew;    // update the old position
+        getJointAngle(JOINT1, gripperAngleNew); // get the new position
+		moveNB( 8, 0, 0); // move 8 degrees
+        #ifndef _WIN32
+        usleep(500000);
+        #else
+        Sleep(500);
+        #endif
+        getJointAngle(JOINT1, gripperAngleNew); // get the new position
+    }
+    moveNB(3, 0, 0);            // try to move another 8 degrees 
+    #ifndef _WIN32
+        usleep(2000000);
+    #else
+        Sleep(2000);
+    #endif            // closing for 1 second              // closing for 1 second
+    setMovementStateNB(ROBOT_HOLD, ROBOT_HOLD, ROBOT_HOLD); // hold the object
+	stop();
+	return;
+}
+
 /*END MOVEMENT FUNCTIONS*/
 /*GET FUNCTIONS*/
 

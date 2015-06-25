@@ -101,6 +101,17 @@ class CLinkbotI {
 
         /* MOVEMENT */
 
+        void accelJointAngleNB(robotJointId_t id, double acceleration, double angle);
+        void accelJointTimeNB(robotJointId_t id, double acceleration, double time);
+        void accelJointToVelocityNB(robotJointId_t id, double acceleration, double speed);
+        void accelJointToMaxSpeedNB(robotJointId_t id, double acceleration);
+        void driveAccelJointTimeNB(double radius, double acceleration,
+                double time);
+        void driveAccelToVelocityNB(double radius, double acceleration,
+                double velocity);
+        void driveAccelToMaxSpeedNB(double radius, double acceleration);
+        void driveAccelDistanceNB(double radius, double acceleration, 
+                double distance);
 		void closeGripper();
 		void closeGripperNB();
 		void driveAngle(double angle);
@@ -243,6 +254,11 @@ class CLinkbotL {
 
         /* MOVEMENT */
 
+		void closeGripper();
+        void accelJointAngleNB(robotJointId_t id, double acceleration, double angle);
+        void accelJointTimeNB(robotJointId_t id, double acceleration, double time);
+        void accelJointToVelocityNB(robotJointId_t id, double acceleration, double speed);
+        void accelJointToMaxSpeedNB(robotJointId_t id, double acceleration);
 		void holdJoint(robotJointId_t id);
 		void holdJoints();
 		void holdJointsAtExit();
@@ -270,6 +286,8 @@ class CLinkbotL {
         void moveToByTrackPosNB(double angle1, double angle2, double angle3);
 		void moveToZero();
 		void moveToZeroNB();
+		void openGripper(double angle);
+		void openGripperNB(double angle);
 		void relaxJoint(robotJointId_t id);
 	    void relaxJoints();
 		void resetToZero();

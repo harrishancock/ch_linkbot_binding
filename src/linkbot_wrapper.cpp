@@ -23,18 +23,13 @@ namespace c_impl {
 
 #define M_PI            3.14159265358979323846
 
-#define RUNTIME_ERROR \
-    std::runtime_error(std::string("Exception in ") + std::string(__func__))
-
-#define CALL_C_IMPL(func, ...) \
-do { \
-    int rc = c_impl::func( m->linkbot, __VA_ARGS__ ); \
-    if(rc != 0) { \
-        throw std::runtime_error( \
-            std::string("Error encountered calling function: <" #func \
-                "> Error code: ") + std::to_string(rc)); \
+#define CALL_C_IMPL(func, ...) do { \
+    if (isConnected()) { \
+        if (auto rc = c_impl::func(m->linkbot, __VA_ARGS__)) { \
+            std::cerr << #func << " returned " << rc << std::endl; \
+        } \
     } \
-} while(0)
+} while (0);
 
 #define ABS(x) ( (x<0) ? (-(x)) : (x) )
 
@@ -50,8 +45,18 @@ struct LinkbotImpl
 {
     LinkbotImpl() 
     : jointsRecordingActive(false), 
-      userShiftDataThreshold(2.0)
-    { 
+      userShiftDataThreshold(2.0),
+      exitState(ROBOT_HOLD),
+      jointsRecordingMask(0),
+      userShiftData(false),
+      userInitTime(0),
+      userTimeInterval(0.1),
+      userRadius(3.5),
+      distanceOffset(0)
+    {
+        for (auto& x : jointSpeed) {
+            x = 45;
+        }
     }
     ~LinkbotImpl() {
     }
@@ -114,7 +119,6 @@ struct LinkbotImpl
     double** userRecordedTimes;
     double** userRecordedAngles[3];
 	double distanceOffset;
-	bool connected;
     double jointSpeed[3];
 };
 
@@ -131,16 +135,13 @@ void _jointEventCB(int joint, c_impl::barobo::JointState::Type state, int timest
 }
 
 Linkbot::Linkbot()
+    : m(new LinkbotImpl)
 {
-	m = new LinkbotImpl();
-
 	if (m->linkbot = c_impl::linkbotFromTcpEndpoint("127.0.0.1", "42010")){
-		m->connected = true;
 	}
 	else{
-		fprintf(stderr, "Could not connect to robot. Exiting..\n");
-		m->connected = false;
-		exit(-1);
+		std::cerr << "Could not connect to robot.\n";
+		return;
 	}
 
 	for (int i = 0; i < 3; i++) {
@@ -164,21 +165,18 @@ Linkbot::Linkbot()
 		m->motorMask = 0x07;
 		break;
 	}
-    getJointSpeeds( 
-        m->jointSpeed[0],
-        m->jointSpeed[1],
-        m->jointSpeed[2]);
+    /* Set the joint speeds to a default value */
+    setJointSpeeds(45, 45, 45);
 }
 
 Linkbot::Linkbot(const char* serialId)
+    : m(new LinkbotImpl)
 {
-	m = new LinkbotImpl();
-
 	if (m->linkbot = c_impl::linkbotFromSerialId(serialId)){
 	}
 	else{
-		fprintf(stderr, "Could not connect to robot. Exiting..\n");
-		exit(-1);
+        std::cerr << "Could not connect to " << serialId << std::endl;
+		return;
 	}
 	for (int i = 0; i < 3; i++) {
 		m->jointStates[i] = c_impl::barobo::JointState::HOLD;
@@ -281,23 +279,19 @@ int Linkbot::connectWithSerialID(const char* serialId)
 
 int Linkbot::disconnect()
 {
-    if(m && m->linkbot) {
+    if (m->linkbot) {
         c_impl::linkbotDelete(m->linkbot);
-        delete m;
-        m = nullptr;
+        m->linkbot = nullptr;
     }
     return 0;
 }
 
 Linkbot::~Linkbot()
 {
-	if(m && m->linkbot) { 
-		stop(); //stop motors
-	    setMovementStateNB(m->exitState, m->exitState, m->exitState);
-        disconnect();
-		
-	}
-	
+	stop(); //stop motors
+    setMovementStateNB(m->exitState, m->exitState, m->exitState);
+    disconnect();
+    delete m; m = nullptr;
 }
 
 /* GETTERS */
@@ -416,7 +410,7 @@ void Linkbot::getJointSpeed(robotJointId_t id, double &speed)
 
 void Linkbot::getJointSpeedRatio(robotJointId_t id, double &ratio)
 {
-    double speed;
+    double speed = 0;
     getJointSpeed(id, speed);
     ratio = speed / mMaxSpeed;
 }
@@ -611,6 +605,9 @@ void Linkbot::setMovementStateNB( robotJointState_t dir1,
                 robotJointState_t dir2,
                 robotJointState_t dir3)
 {
+    if (!isConnected()) {
+        return;
+    }
     robotJointState_t states[3];
     states[0] = dir1;
     states[1] = dir2;
@@ -758,6 +755,7 @@ void Linkbot::setSpeed(double speed, double radius)
 		omega = -240.0;
 	}
     setJointSpeeds(omega, 0, omega);
+
 }
 
 void Linkbot::setLEDColorRGB(int r, int g, int b)
@@ -792,6 +790,103 @@ void Linkbot::setJointSafetyAngleTimeout(double timeout)
 }
 
 /* MOVEMENT */
+
+void Linkbot::accelJointTimeNB(robotJointId_t id, double acceleration, double time)
+{
+    int mask = 1<<(id-1);
+    CALL_C_IMPL(linkbotSetAlphaI, mask, 
+        acceleration, acceleration, acceleration);
+    CALL_C_IMPL(linkbotMoveAccel,
+        mask, 0x07, 
+        acceleration, time, c_impl::barobo::JointState::HOLD,
+        acceleration, time, c_impl::barobo::JointState::HOLD,
+        acceleration, time, c_impl::barobo::JointState::HOLD);
+}
+
+void Linkbot::accelJointToVelocityNB(robotJointId_t id, double acceleration,
+    double velocity)
+{
+    int mask = 1<<(id-1);
+    float time = float(velocity/acceleration);
+    CALL_C_IMPL(linkbotSetAlphaI, mask, 
+        acceleration, acceleration, acceleration);
+    CALL_C_IMPL(linkbotMoveAccel,
+        mask, 0x07, 
+        0, time, c_impl::barobo::JointState::MOVING,
+        0, time, c_impl::barobo::JointState::MOVING,
+        0, time, c_impl::barobo::JointState::MOVING);
+}
+
+void Linkbot::accelJointAngleNB(robotJointId_t id, double acceleration,
+    double angle)
+{
+    auto timeout = sqrt(2.0*angle/acceleration);
+    accelJointTimeNB(id, acceleration, timeout);
+}
+
+void Linkbot::accelJointToMaxSpeedNB(robotJointId_t id, double acceleration)
+{
+    accelJointTimeNB(id, acceleration, 0);
+}
+
+
+void Linkbot::driveAccelJointTimeNB(double radius, double acceleration,
+    double time)
+{
+    auto alpha = acceleration/radius;
+    int mask = 0x07;
+    CALL_C_IMPL(linkbotSetAlphaI, mask, 
+        alpha, alpha, -alpha);
+    CALL_C_IMPL(linkbotMoveAccel,
+        mask, 0x07, 
+        acceleration, time, c_impl::barobo::JointState::HOLD,
+        acceleration, time, c_impl::barobo::JointState::HOLD,
+        acceleration, time, c_impl::barobo::JointState::HOLD);
+}
+
+void Linkbot::driveAccelToVelocityNB(double radius, double acceleration,
+    double velocity)
+{
+    auto timeout = velocity/acceleration;
+    auto alpha = acceleration/radius;
+    int mask = 0x07;
+    CALL_C_IMPL(linkbotSetAlphaI, mask, 
+        alpha, alpha, -alpha);
+    CALL_C_IMPL(linkbotMoveAccel,
+        mask, 0x07, 
+        acceleration, timeout, c_impl::barobo::JointState::MOVING,
+        acceleration, timeout, c_impl::barobo::JointState::MOVING,
+        acceleration, timeout, c_impl::barobo::JointState::MOVING);
+}
+
+void Linkbot::driveAccelToMaxSpeedNB(double radius, double acceleration)
+{
+    auto alpha = acceleration/radius;
+    int mask = 0x07;
+    CALL_C_IMPL(linkbotSetAlphaI, mask, 
+        alpha, alpha, -alpha);
+    CALL_C_IMPL(linkbotMoveAccel,
+        mask, 0x07, 
+        acceleration, 0, c_impl::barobo::JointState::MOVING,
+        acceleration, 0, c_impl::barobo::JointState::MOVING,
+        acceleration, 0, c_impl::barobo::JointState::MOVING);
+}
+
+void Linkbot::driveAccelDistanceNB(double radius, double acceleration, 
+    double distance)
+{
+    double angle = distance/radius;
+    double alpha = acceleration/radius;
+    auto timeout = sqrt(2.0*angle/alpha);
+    int mask = 0x07;
+    CALL_C_IMPL(linkbotSetAlphaI, mask, 
+        alpha, alpha, -alpha);
+    CALL_C_IMPL(linkbotMoveAccel,
+        mask, 0x07, 
+        acceleration, timeout, c_impl::barobo::JointState::HOLD,
+        acceleration, timeout, c_impl::barobo::JointState::HOLD,
+        acceleration, timeout, c_impl::barobo::JointState::HOLD);
+}
 
 void Linkbot::moveForeverNB()
 {
@@ -835,7 +930,7 @@ void Linkbot::moveJointTime(robotJointId_t id, double time)
 {
 	if (time < 0){
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", time);
-		exit(-1);
+		return;
 	}
 	moveJointTimeNB(id, time);
     moveWait(1<<(int(id)-1));
@@ -845,7 +940,7 @@ void Linkbot::moveJointTimeNB(robotJointId_t id, double time)
 {
 	if (time < 0){
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", time);
-		exit(-1);
+		return;
 	}
 	if(id == ROBOT_JOINT3) {
         setJointMovementStateTimeNB(id, ROBOT_BACKWARD, time);
@@ -858,7 +953,7 @@ void Linkbot::moveTime(double time)
 {
 	if (time < 0){
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", time);
-		exit(-1);
+		return;
 	}
 	moveTimeNB(time);
     moveWait();
@@ -868,7 +963,7 @@ void Linkbot::moveTimeNB(double time)
 {
 	if (time < 0){
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", time);
-		exit(-1);
+		return;
 	}
 	setMovementStateTimeNB(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_POSITIVE, time);
 }
@@ -906,28 +1001,39 @@ void Linkbot::driveBackward(double angle)
 
 void Linkbot::driveBackwardNB(double angle)
 {
-	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
-		"driveBackwardNB", "driveAngleNB(-angle)");
+	DEPRECATED("driveBackwardNB", "driveAngleNB(-angle)");
     driveAngleNB(-angle);
-	
 }
 
 void Linkbot::driveDistance(double distance, double radius)
 {
+    if (!m->jointSpeed[0]) {
+        fprintf(stdout, "Error: driveDistance called with zero joint one speed\n");
+        return;
+    }
+
     driveDistanceNB(distance, radius);
     moveWait();
 }
 
 void Linkbot::driveDistanceNB(double distance, double radius)
 {
+    if (!m->jointSpeed[0]) {
+        fprintf(stdout, "Error: driveDistanceNB called with zero joint one speed\n");
+        return;
+    }
+
 	double theta;
     theta = distance/radius; // in radians
 	theta = (theta *180.0)/M_PI; // in degrees
     auto time = theta/m->jointSpeed[0];
+    auto dir = distance < 0
+               ? ROBOT_BACKWARD
+               : ROBOT_FORWARD;
     setMovementStateTimeNB(
-        ROBOT_FORWARD,
-        ROBOT_FORWARD,
-        ROBOT_FORWARD,
+        dir,
+        dir,
+        dir,
         time);
 }
 
@@ -944,9 +1050,9 @@ void Linkbot::driveForward(double angle)
 }
 void Linkbot::driveForwardNB(double angle)
 {
-	fprintf(stdout, "Warning: The function \"%s()\" is deprecated. Please use \"%s\"\n",
-		"driveForwardNB", "driveAngle(angle)");
+    DEPRECATED("driveForwardNB", "driveAngle(angle)");
     driveAngleNB(angle);
+
 }
 
 void Linkbot::driveAngle(double angle)
@@ -958,14 +1064,14 @@ void Linkbot::driveAngle(double angle)
 void Linkbot::driveAngleNB(double angle)
 {
 	m->setJointsMovingFlag(0x07);
-    double angle1, angle3;
-    angle1 = angle3 = angle;
-    if(m->jointSpeed[0] < 0) {
-        angle1 *= -1;
-    }
-    if(m->jointSpeed[2] < 0) {
-        angle3 *= -1;
-    }
+	double angle1, angle3;
+	angle1 = angle3 = angle;
+	if (m->jointSpeed[0] < 0) {
+		angle1 *= -1;
+	}
+	if (m->jointSpeed[2] < 0) {
+		angle3 *= -1;
+	}
 	CALL_C_IMPL(linkbotMove, 0x07, angle1, 0, -angle3);
 }
 
@@ -973,7 +1079,7 @@ void Linkbot::driveTime(double seconds)
 {
 	if (seconds < 0){
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", seconds);
-		exit(-1);
+		return;
 	}
 	//setMovementStateTime(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_NEGATIVE, seconds);
 	driveTimeNB(seconds);
@@ -984,7 +1090,7 @@ void Linkbot::driveTimeNB(double seconds)
 {
 	if (seconds < 0){
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", seconds);
-		exit(-1);
+		return;
 	}
 	setMovementStateTimeNB(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_NEGATIVE, seconds);
 }
@@ -1018,6 +1124,9 @@ void Linkbot::moveNB(double j1, double j2, double j3)
 
 void Linkbot::moveWait(int mask)
 {
+    if (!isConnected()) {
+        return;
+    }
     /* Get the current joint states */
     int time;
     std::unique_lock<std::mutex> lock(m->jointStateMutex);
@@ -1045,6 +1154,9 @@ void Linkbot::moveJointWait(robotJointId_t id)
 
 int Linkbot::isMoving(int mask)
 {
+    if (!isConnected()) {
+        return 0;
+    }
     static std::chrono::time_point<std::chrono::system_clock> lastChecked;
     auto now = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsedTime = now-lastChecked;
@@ -1067,12 +1179,7 @@ int Linkbot::isMoving(int mask)
 
 int Linkbot::isConnected()
 {
-	if (m->connected){
-		return 1;
-	}
-	else {
-		return 0;
-	}
+    return !!m->linkbot;
 }
 
 void Linkbot::relaxJoint(robotJointId_t id)
@@ -1164,6 +1271,9 @@ void Linkbot::recordAnglesBegin(
             int mask,
 			int shiftData)
 {
+    if (!isConnected()) {
+        return;
+    }
     std::unique_lock<std::mutex> lock(m->recordAnglesMutex);
     if(m->jointsRecordingActive) {
         return;
@@ -1228,6 +1338,10 @@ void Linkbot::recordAnglesBegin(
 
 void Linkbot::recordAnglesEnd(int &num)
 {
+    if (!isConnected()) {
+        num = 0;
+        return;
+    }
     std::unique_lock<std::mutex> lock (m->recordAnglesMutex);
     uint8_t mask = m->jointsRecordingMask;
     if(!m->jointsRecordingActive) {
@@ -1349,6 +1463,11 @@ void Linkbot::recordAnglesBegin2(
 
 void Linkbot::recordAnglesEnd2( int &num )
 {
+    if (!isConnected()) {
+        num = 0;
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(m->recordAnglesMutex);
     c_impl::linkbotSetEncoderEventCallback(m->linkbot, nullptr, 0, nullptr);
     m->jointsRecordingMask = 0x0;
@@ -1445,8 +1564,6 @@ void Linkbot::closeGripper()
     #endif            // closing for 1 second
 	setMovementStateNB(ROBOT_HOLD, ROBOT_HOLD, ROBOT_HOLD); // hold the object
 	stop();
-	return;
-
 }
 
 void Linkbot::closeGripperNB()
