@@ -544,7 +544,18 @@ void Linkbot::setJointMovementStateTimeNB(robotJointId_t id, robotJointState_t d
 
 void Linkbot::setJointSpeed(robotJointId_t id, double speed)
 {
-    CALL_C_IMPL(linkbotSetJointSpeeds, 1<<(int(id)-1), speed, speed, speed);
+	if (speed > 200) {
+		std::cout << "Warning: cannot set joint speed to " << speed << " degrees/second." << std::endl;
+		std::cout << "It is beyond the limit of 200 degrees/second. Joint speed will be set to 200 degrees/second." << std::endl;
+		speed = 200.0;
+	}
+	else if (speed < -200){
+		std::cout << "Warning: cannot set joint speed to " << speed << " degrees/second." << std::endl;
+		std::cout << "It is beyond the limit of -200 degrees/second. Joint speed will be set to -200 degrees/second." << std::endl;
+		speed = -200.0;
+	}
+	
+	CALL_C_IMPL(linkbotSetJointSpeeds, 1<<(int(id)-1), speed, speed, speed);
     m->jointSpeed[int(id)-1] = speed;
 }
 
@@ -744,15 +755,15 @@ void Linkbot::setSpeed(double speed, double radius)
 	double omega;
 	omega = speed/radius; // in rad/s
 	omega = (omega*180.0)/M_PI; // in deg/s
-	if (omega >= 240) {
+	if (omega > 200) {
 		std::cout<<"Warning: cannot set joint speeds to "<<omega<<" degrees/second."<<std::endl;
-		std::cout<<"It is beyond the limit of 240 degrees/second. Joints speeds will be set to 240 degrees/second."<<std::endl;
-		omega = 240.0;
+		std::cout<<"It is beyond the limit of 200 degrees/second. Joints speeds will be set to 200 degrees/second."<<std::endl;
+		omega = 200.0;
 	}
-	else if (omega <= -240){
+	else if (omega < -200){
 		std::cout << "Warning: cannot set joint speeds to " << omega << " degrees/second." << std::endl;
-		std::cout << "It is beyond the limit of -240 degrees/second. Joints speeds will be set to -240 degrees/second." << std::endl;
-		omega = -240.0;
+		std::cout << "It is beyond the limit of -200 degrees/second. Joints speeds will be set to -200 degrees/second." << std::endl;
+		omega = -200.0;
 	}
     setJointSpeeds(omega, 0, omega);
 
