@@ -523,6 +523,20 @@ void LinkbotGroup::setSpeed(double speed, double radius)
 	}
 }
 
+void LinkbotGroup::setLEDColorRGB(int r, int g, int b)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->setLEDColorRGB(r,g,b);
+	}
+}
+
+void LinkbotGroup::setLEDColor(char* color)
+{
+	for (Linkbot* robot : m->robots) {
+		robot->setLEDColor(color);
+	}
+}
+
 
 
 
