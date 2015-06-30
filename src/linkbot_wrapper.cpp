@@ -544,6 +544,7 @@ void Linkbot::setJointMovementStateTimeNB(robotJointId_t id, robotJointState_t d
 
 void Linkbot::setJointSpeed(robotJointId_t id, double speed)
 {
+	double speeds[3] = { 0, 0, 0 };
 	if (speed > 200) {
 		std::cout << "Warning: cannot set joint speed to " << speed << " degrees/second." << std::endl;
 		std::cout << "It is beyond the limit of 200 degrees/second. Joint speed will be set to 200 degrees/second." << std::endl;
@@ -554,8 +555,8 @@ void Linkbot::setJointSpeed(robotJointId_t id, double speed)
 		std::cout << "It is beyond the limit of -200 degrees/second. Joint speed will be set to -200 degrees/second." << std::endl;
 		speed = -200.0;
 	}
-	
-	CALL_C_IMPL(linkbotSetJointSpeeds, 1<<(int(id)-1), speed, speed, speed);
+	speeds[(id - 1)] = speed;
+	CALL_C_IMPL(linkbotSetJointSpeeds, 1<<(int(id)-1), speeds[0], speeds[1], speeds[2]);
     m->jointSpeed[int(id)-1] = speed;
 }
 
@@ -912,8 +913,17 @@ void Linkbot::moveJoint(robotJointId_t id, double angle)
 
 void Linkbot::moveJointNB(robotJointId_t id, double angle)
 {
-    m->setJointsMovingFlag(1<<(int(id)-1));
-    CALL_C_IMPL(linkbotMove, 1<<(int(id)-1), angle, angle, angle);
+	double angles[3] = { 0, 0, 0 };
+	m->setJointsMovingFlag(0x07);
+		if (m->jointSpeed[(id - 1)] < 0){
+		angles[(id - 1)] = -angle;
+	}
+	else {
+		angles[(id - 1)] = angle;
+	}
+	
+	CALL_C_IMPL(linkbotMove, 0x07, angles[0], angles[1], angles[2]);
+	
 }
 
 void Linkbot::moveJointTo(robotJointId_t id, double angle)
