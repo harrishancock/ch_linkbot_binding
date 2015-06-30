@@ -914,7 +914,20 @@ void Linkbot::moveJoint(robotJointId_t id, double angle)
 void Linkbot::moveJointNB(robotJointId_t id, double angle)
 {
 	double angles[3] = { 0, 0, 0 };
-	m->setJointsMovingFlag(0x07);
+	int mask;
+	if (id == ROBOT_JOINT1) {
+		mask = 0x01;
+	}
+	else if (id == ROBOT_JOINT2) {
+		mask = 0x02;
+	}
+	else if (id == ROBOT_JOINT3) {
+		mask = 0x04;
+	}
+	else {
+		mask = 0x07;
+	}
+	m->setJointsMovingFlag(mask);
 		if (m->jointSpeed[(id - 1)] < 0){
 		angles[(id - 1)] = -angle;
 	}
@@ -922,7 +935,7 @@ void Linkbot::moveJointNB(robotJointId_t id, double angle)
 		angles[(id - 1)] = angle;
 	}
 	
-	CALL_C_IMPL(linkbotMove, 0x07, angles[0], angles[1], angles[2]);
+	CALL_C_IMPL(linkbotMove, mask, angles[0], angles[1], angles[2]);
 	
 }
 
