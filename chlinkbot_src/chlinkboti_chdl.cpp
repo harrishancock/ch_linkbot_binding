@@ -1853,6 +1853,7 @@ EXPORTCH void CLinkbotI_recordAngleBegin_chdl(void *varg) {
 	robotJointId_t id;
 	double** time;
 	double** angle;
+	double* angle1;
 	double* angle2;
 	double* angle3;
 	double seconds;
@@ -1867,7 +1868,15 @@ EXPORTCH void CLinkbotI_recordAngleBegin_chdl(void *varg) {
 	seconds = Ch_VaArg(interp, ap, double);
 	shiftData = Ch_VaArg(interp, ap, int);
 
-	l->recordAnglesBegin(*time, *angle, angle2, angle3, seconds, 1 << (int(id) - 1), shiftData);
+	if (id == ROBOT_JOINT1) {
+		l->recordAnglesBegin(*time, *angle, angle2, angle3, seconds, 1 << (int(id) - 1), shiftData);
+	}
+	else if (id == ROBOT_JOINT2) {
+		l->recordAnglesBegin(*time, angle1, *angle, angle3, seconds, 1 << (int(id) - 1), shiftData);
+	}
+	else {
+		l->recordAnglesBegin(*time, angle1, angle2, *angle, seconds, 1 << (int(id) - 1), shiftData);
+	}
 
 	Ch_VaEnd(interp, ap);
 	return;
