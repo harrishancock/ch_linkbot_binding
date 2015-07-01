@@ -2065,6 +2065,42 @@ EXPORTCH void CLinkbotLGroup_setJointSpeedRatios_chdl(void *varg) {
     return;
 }
 
+/*linkbotGroup setLEDColorRGB*/
+EXPORTCH void CLinkbotLGroup_setLEDColorRGB_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class LinkbotGroup *g;
+	int r;
+	int gr;
+	int b;
+
+	Ch_VaStart(interp, ap, varg);
+
+	g = Ch_VaArg(interp, ap, class LinkbotGroup *);
+	r = Ch_VaArg(interp, ap, int);
+	gr = Ch_VaArg(interp, ap, int);
+	b = Ch_VaArg(interp, ap, int);
+	g->setLEDColorRGB(r, gr, b);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
+/*linkbotGroup setLEDColorRGB*/
+EXPORTCH void CLinkbotLGroup_setLEDColor_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class LinkbotGroup *g;
+	char* color;
+
+	Ch_VaStart(interp, ap, varg);
+
+	g = Ch_VaArg(interp, ap, class LinkbotGroup *);
+	color = Ch_VaArg(interp, ap, char*);
+	g->setLEDColor(color);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
 /*linkbotGroup resetToZero*/
 EXPORTCH void CLinkbotLGroup_resetToZero_chdl(void *varg) {
     ChInterp_t interp;

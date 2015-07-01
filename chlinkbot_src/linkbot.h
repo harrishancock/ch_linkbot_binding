@@ -393,6 +393,8 @@ public:
     void setJointSpeedRatio(robotJointId_t id, double ratio);
     void setJointSpeedRatios(double ratios1, double ratios2, double ratios3);
 	void setSpeed(double speed, double radius);
+	void setLEDColorRGB(int r, int g, int b);
+	void setLEDColor(char *color);
 
 private:
 	CLinkbotI **_robots;
@@ -455,6 +457,8 @@ public:
     void setJointSpeeds(double speed1, double speed2, double speed3);
     void setJointSpeedRatio(robotJointId_t id, double ratio);
     void setJointSpeedRatios(double ratios1, double ratios2, double ratios3);
+	void setLEDColorRGB(int r, int g, int b);
+	void setLEDColor(char *color);
 
 private:
 	CLinkbotL **_robots;
