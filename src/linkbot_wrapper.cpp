@@ -1403,7 +1403,11 @@ void Linkbot::recordAnglesEnd(int &num)
                 if(! ((1<<j)&mask) ) continue;
                 if(ABS(angles[j]-initangles[j]) > m->userShiftDataThreshold) {
                     startingIndex = i;
-                    i = num;
+                    i = num; // break outer loop
+                    // if the inner loop is not done yet, we could end up
+                    // setting startingIndex = num, so we need to break the
+                    // inner loop, too
+                    break;
                 }
             }
         }
