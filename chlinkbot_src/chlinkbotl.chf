@@ -1139,6 +1139,37 @@ void CLinkbotL::recordAngleEnd(int id, int &num) {
     dlrunfun(fptr, NULL, NULL, this, id, &num);
 }
 
+/*recordAnglesBegin*/
+void CLinkbotL::recordAnglesBegin(double* &time, double* &angle1, double* &angle2, double seconds) {
+    void *fptr;
+    va_list ap;
+    int shiftData = 1;
+    int mask;
+    va_start(ap, seconds);
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_recordAnglesBegin_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+
+    dlrunfun(fptr, NULL, NULL, this, &time, &angle1, &angle2, seconds, shiftData);
+
+    va_end(ap);
+}
+/*recordAnglesEnd*/
+void CLinkbotL::recordAnglesEnd(int &num) {
+    void *fptr;
+    int retval;
+
+    fptr = dlsym(g_chlinkbot_dlhandle, "CLinkbotL_recordAnglesEnd_chdl");
+    if(fptr == NULL) {
+        fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
+        return;
+    }
+    dlrunfun(fptr, NULL, NULL, this, &num);
+}
+
 /*enableRecordDataShift*/
 void CLinkbotL::enableRecordDataShift() {
    DEPRECATED("enableRecordDataShift", "recordDataShift");
