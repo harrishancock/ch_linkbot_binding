@@ -1152,6 +1152,9 @@ void Linkbot::move(double j1, double j2, double j3)
 
 void Linkbot::moveNB(double j1, double j2, double j3)
 {
+    j1 = m->jointSpeed[0] < 0 ? -j1 : j1;
+    j2 = m->jointSpeed[1] < 0 ? -j2 : j2;
+    j3 = m->jointSpeed[2] < 0 ? -j3 : j3;
     m->setJointsMovingFlag(0x07);
     CALL_C_IMPL(linkbotMove, 0x07, j1, j2, j3);
 }
