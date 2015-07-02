@@ -1900,6 +1900,50 @@ EXPORTCH void CLinkbotI_recordAngleEnd_chdl(void *varg) {
 	return;
 }
 
+/*linkbot recordAnglesBegin*/
+EXPORTCH void CLinkbotI_recordAnglesBegin_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	double** time;
+	double** angle1;
+	double** angle3;
+	double* angle2;
+	double seconds;
+	int shiftData;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	time = Ch_VaArg(interp, ap, double**);
+	angle1 = Ch_VaArg(interp, ap, double**);
+	angle3 = Ch_VaArg(interp, ap, double**);
+	seconds = Ch_VaArg(interp, ap, double);
+	shiftData = Ch_VaArg(interp, ap, int);
+	
+	/*Record joint1 and joint3*/
+	l->recordAnglesBegin(*time, *angle1, angle2, *angle3, seconds, 0x05, shiftData);
+
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
+/*linkbot recordAnglesEnd*/
+EXPORTCH void CLinkbotI_recordAnglesEnd_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class Linkbot *l;
+	int *num;
+
+	Ch_VaStart(interp, ap, varg);
+
+	l = Ch_VaArg(interp, ap, class Linkbot *);
+	num = Ch_VaArg(interp, ap, int*);
+	l->recordAnglesEnd(*num);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
 /*linkbot recordDistanceBegin*/
 EXPORTCH void CLinkbotI_recordDistanceBegin_chdl(void *varg) {
 	ChInterp_t interp;
