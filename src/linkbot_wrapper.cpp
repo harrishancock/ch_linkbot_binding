@@ -199,10 +199,8 @@ Linkbot::Linkbot(const char* serialId)
 		m->motorMask = 0x07;
 		break;
 	}
-    getJointSpeeds( 
-        m->jointSpeed[0],
-        m->jointSpeed[1],
-        m->jointSpeed[2]);
+    /* Set the joint speeds to a default value */
+    setJointSpeeds(45, 45, 45);
 }
 
 int Linkbot::connect()
@@ -927,8 +925,10 @@ void Linkbot::moveJointNB(robotJointId_t id, double angle)
 	else {
 		mask = 0x07;
 	}
+
 	m->setJointsMovingFlag(mask);
-		if (m->jointSpeed[(id - 1)] < 0){
+
+	if (m->jointSpeed[(id - 1)] < 0){
 		angles[(id - 1)] = -angle;
 	}
 	else {
@@ -1152,6 +1152,9 @@ void Linkbot::move(double j1, double j2, double j3)
 
 void Linkbot::moveNB(double j1, double j2, double j3)
 {
+    j1 = m->jointSpeed[0] < 0 ? -j1 : j1;
+    j2 = m->jointSpeed[1] < 0 ? -j2 : j2;
+    j3 = m->jointSpeed[2] < 0 ? -j3 : j3;
     m->setJointsMovingFlag(0x07);
     CALL_C_IMPL(linkbotMove, 0x07, j1, j2, j3);
 }
@@ -1162,7 +1165,6 @@ void Linkbot::moveWait(int mask)
         return;
     }
     /* Get the current joint states */
-    int time;
     std::unique_lock<std::mutex> lock(m->jointStateMutex);
     /* Check to see if we've already stopped moving first */
     m->refreshJointStates();
@@ -1403,7 +1405,11 @@ void Linkbot::recordAnglesEnd(int &num)
                 if(! ((1<<j)&mask) ) continue;
                 if(ABS(angles[j]-initangles[j]) > m->userShiftDataThreshold) {
                     startingIndex = i;
-                    i = num;
+                    i = num; // break outer loop
+                    // if the inner loop is not done yet, we could end up
+                    // setting startingIndex = num, so we need to break the
+                    // inner loop, too
+                    break;
                 }
             }
         }

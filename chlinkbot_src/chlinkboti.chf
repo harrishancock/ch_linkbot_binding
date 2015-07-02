@@ -1439,9 +1439,9 @@ void CLinkbotI::recordAnglesBegin(double* &time, double* &angle1, double* &angle
         fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
         return;
     }
-    
+
     dlrunfun(fptr, NULL, NULL, this, &time, &angle1, &angle3, seconds, shiftData);
-    
+
     va_end(ap);
 }
 /*recordAnglesEnd*/

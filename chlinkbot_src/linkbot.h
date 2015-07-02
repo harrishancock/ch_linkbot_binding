@@ -320,6 +320,10 @@ class CLinkbotL {
 			robotRecordData_t &angle2,
 			double seconds);
 		void recordAnglesEnd(int &num);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 232ecb86cc20e9d57d2e3e6b0a1e7496fe7ea6ec
 		void enableRecordDataShift();
 		void disableRecordDataShift();
 		void recordNoDataShift();
