@@ -927,8 +927,10 @@ void Linkbot::moveJointNB(robotJointId_t id, double angle)
 	else {
 		mask = 0x07;
 	}
+
 	m->setJointsMovingFlag(mask);
-		if (m->jointSpeed[(id - 1)] < 0){
+
+	if (m->jointSpeed[(id - 1)] < 0){
 		angles[(id - 1)] = -angle;
 	}
 	else {
@@ -1162,7 +1164,6 @@ void Linkbot::moveWait(int mask)
         return;
     }
     /* Get the current joint states */
-    int time;
     std::unique_lock<std::mutex> lock(m->jointStateMutex);
     /* Check to see if we've already stopped moving first */
     m->refreshJointStates();
