@@ -177,6 +177,12 @@ class CLinkbotI {
 			robotRecordData_t &angle,
 			double seconds);
 		void recordAngleEnd(robotJointId_t id, int &num);
+		void recordAnglesBegin(
+			robotRecordData_t &time,
+			robotRecordData_t &angle1,
+			robotRecordData_t &angle3,
+			double seconds);
+		void recordAnglesEnd(int &num);
 		void recordDistanceBegin(
 			robotRecordData_t &time,
 			robotRecordData_t &distance,
@@ -254,6 +260,7 @@ class CLinkbotL {
 
         /* MOVEMENT */
 
+		void closeGripper();
         void accelJointAngleNB(robotJointId_t id, double acceleration, double angle);
         void accelJointTimeNB(robotJointId_t id, double acceleration, double time);
         void accelJointToVelocityNB(robotJointId_t id, double acceleration, double speed);
@@ -285,6 +292,8 @@ class CLinkbotL {
         void moveToByTrackPosNB(double angle1, double angle2, double angle3);
 		void moveToZero();
 		void moveToZeroNB();
+		void openGripper(double angle);
+		void openGripperNB(double angle);
 		void relaxJoint(robotJointId_t id);
 	    void relaxJoints();
 		void resetToZero();
@@ -305,6 +314,13 @@ class CLinkbotL {
 			robotRecordData_t &angle,
 			double seconds);
 		void recordAngleEnd(robotJointId_t id, int &num);
+		void recordAnglesBegin(
+			robotRecordData_t &time,
+			robotRecordData_t &angle1,
+			robotRecordData_t &angle2,
+			double seconds);
+		void recordAnglesEnd(int &num);
+
 		void enableRecordDataShift();
 		void disableRecordDataShift();
 		void recordNoDataShift();
@@ -390,6 +406,8 @@ public:
     void setJointSpeedRatio(robotJointId_t id, double ratio);
     void setJointSpeedRatios(double ratios1, double ratios2, double ratios3);
 	void setSpeed(double speed, double radius);
+	void setLEDColorRGB(int r, int g, int b);
+	void setLEDColor(char *color);
 
 private:
 	CLinkbotI **_robots;
@@ -452,6 +470,8 @@ public:
     void setJointSpeeds(double speed1, double speed2, double speed3);
     void setJointSpeedRatio(robotJointId_t id, double ratio);
     void setJointSpeedRatios(double ratios1, double ratios2, double ratios3);
+	void setLEDColorRGB(int r, int g, int b);
+	void setLEDColor(char *color);
 
 private:
 	CLinkbotL **_robots;

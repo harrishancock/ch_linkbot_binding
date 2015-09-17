@@ -1,6 +1,6 @@
 #!/bin/sh
 PACKAGE=chbarobo
-VERSION=1.0.6
+VERSION=1.0.9
 ARCH=windows-multi
 PKGDIR=$PACKAGE-$VERSION-$ARCH/$PACKAGE
 
@@ -23,4 +23,5 @@ cp build-msvc64/Release/liblinkbot.dl $PKGDIR/dl/win64
 cp linkbot.h $PKGDIR/include
 cp dlls/win32/* $PKGDIR/bin/win32
 cp dlls/win64/* $PKGDIR/bin/win64
+cp -R dlls/Microsoft.VC80.CRT $PKGDIR/dl
 zip -rq $PACKAGE-$VERSION-$ARCH.zip $PACKAGE-$VERSION-$ARCH

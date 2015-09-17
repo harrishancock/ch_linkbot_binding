@@ -4,15 +4,14 @@ project(liblinkbot C CXX)
 # Give subprojects access to LinkbotLabs.cmake
 list(INSERT CMAKE_MODULE_PATH 0 "${PROJECT_SOURCE_DIR}/../cmake-modules")
 
-include(LinkbotLabs)
-ll_add_dependency(baromesh/library baromesh)
-
 if(CMAKE_CROSSCOMPILING)
     find_library(PTHREAD pthread ${CMAKE_PREFIX_PATH} REQUIRED)
     #set(Boost_COMPILER -gcc)
     #add_compile_options(${CMAKE_CROSSCOMPILE_C_FLAGS})
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_CROSSCOMPILE_C_FLAGS} -static-libstdc++ -static-libgcc")
 endif(CMAKE_CROSSCOMPILING)
+
+add_subdirectory(sdk)
 
 ##############################################################################
 # Boost

@@ -1456,6 +1456,51 @@ EXPORTCH void CLinkbotL_recordAngleEnd_chdl(void *varg) {
 	return;
 }
 
+/*linkbot recordAnglesBegin*/
+EXPORTCH void CLinkbotL_recordAnglesBegin_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    double** time;
+    double** angle1;
+    double** angle2;
+    double* ignored = 0;
+    double seconds;
+    int shiftData;
+
+    Ch_VaStart(interp, ap, varg);
+
+    l = Ch_VaArg(interp, ap, class Linkbot *);
+    time = Ch_VaArg(interp, ap, double**);
+    angle1 = Ch_VaArg(interp, ap, double**);
+    angle2 = Ch_VaArg(interp, ap, double**);
+    seconds = Ch_VaArg(interp, ap, double);
+    shiftData = Ch_VaArg(interp, ap, int);
+
+    const int mask = 1<<(ROBOT_JOINT1-1) | 1<<(ROBOT_JOINT2-1);
+    l->recordAnglesBegin(*time, *angle1, *angle2, ignored, seconds, mask, shiftData);
+
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+/*linkbot recordAnglesEnd*/
+EXPORTCH void CLinkbotL_recordAnglesEnd_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    class Linkbot *l;
+    int *num;
+
+    Ch_VaStart(interp, ap, varg);
+
+    l = Ch_VaArg(interp, ap, class Linkbot *);
+    num = Ch_VaArg(interp, ap, int*);
+    l->recordAnglesEnd(*num);
+    Ch_VaEnd(interp, ap);
+    return;
+}
+
+
 /*linkbot enableRecordDataShift*/
 EXPORTCH void CLinkbotL_enableRecordDataShift_chdl(void *varg) {
 	ChInterp_t interp;
@@ -2063,6 +2108,42 @@ EXPORTCH void CLinkbotLGroup_setJointSpeedRatios_chdl(void *varg) {
     g->setJointSpeedRatios(ratio1, ratio2, ratio3);
     Ch_VaEnd(interp, ap);
     return;
+}
+
+/*linkbotGroup setLEDColorRGB*/
+EXPORTCH void CLinkbotLGroup_setLEDColorRGB_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class LinkbotGroup *g;
+	int r;
+	int gr;
+	int b;
+
+	Ch_VaStart(interp, ap, varg);
+
+	g = Ch_VaArg(interp, ap, class LinkbotGroup *);
+	r = Ch_VaArg(interp, ap, int);
+	gr = Ch_VaArg(interp, ap, int);
+	b = Ch_VaArg(interp, ap, int);
+	g->setLEDColorRGB(r, gr, b);
+	Ch_VaEnd(interp, ap);
+	return;
+}
+
+/*linkbotGroup setLEDColorRGB*/
+EXPORTCH void CLinkbotLGroup_setLEDColor_chdl(void *varg) {
+	ChInterp_t interp;
+	ChVaList_t ap;
+	class LinkbotGroup *g;
+	char* color;
+
+	Ch_VaStart(interp, ap, varg);
+
+	g = Ch_VaArg(interp, ap, class LinkbotGroup *);
+	color = Ch_VaArg(interp, ap, char*);
+	g->setLEDColor(color);
+	Ch_VaEnd(interp, ap);
+	return;
 }
 
 /*linkbotGroup resetToZero*/
