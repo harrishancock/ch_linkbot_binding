@@ -1167,11 +1167,7 @@ void CLinkbotL::recordAnglesEnd(int &num) {
         fprintf(_stderr, "Error: %s(): dlsym(): %s\n", __func__,  dlerror());
         return;
     }
-<<<<<<< HEAD
     dlrunfun(fptr, NULL, NULL, this,&num);
-=======
-    dlrunfun(fptr, NULL, NULL, this, &num);
->>>>>>> 232ecb86cc20e9d57d2e3e6b0a1e7496fe7ea6ec
 }
 
 /*enableRecordDataShift*/
@@ -1227,6 +1223,58 @@ void CLinkbotL::blinkLED(double delay, int numBlinks) {
      
     dlrunfun(fptr, NULL, NULL, this, delay, numBlinks);
 }
+/*END MISCELLANEOUS FUNCTIONS*/
+/*ROBOSIM COMPATIBILITY FUNCTIONS*/
+void CLinkbotL::getxy(double &x, double &y)
+{
+	printf("Warning: function getxy() not implemented on hardware robots\n");
+	return;
+}
+
+void CLinkbotL::line(double x1, double y1, double z1, double x2, double y2, double z2, int linewidth, char *color)
+{
+	printf("Warning: function line()not implemented on hardware robots\n");
+	return;
+}
+
+void CLinkbotL::point(double x, double y, double z, int pointsize, char *color)
+{
+	printf("Warning: function point()not implemented on hardware robots\n");
+	return;
+}
+
+void CLinkbotL::text(double x, double y, double z, char *text)
+{
+	printf("Warning: function text() not implemented on hardware robots\n");
+	return;
+}
+
+void CLinkbotL::traceOn(void)
+{
+	printf("Warning: function traceOn() not implemented on hardware robots\n");
+	return;
+}
+
+void CLinkbotL::traceOff(void)
+{
+	printf("Warning: function traceOff() not implemented on hardware robots\n");
+	return;
+}
+
+void CLinkbotL::recordxyBegin(robotRecordData_t &x, robotRecordData_t &y, double seconds, ...)
+{
+	printf("Warning: function recordxyBegin() not implemented on hardware robots\n");
+	return;
+}
+
+void CLinkbotL::recordxyEnd(int &num)
+{
+	printf("Warning: function recordxyEnd() not implemented on hardware robots\n");
+	return;
+}
+
+/*END ROBOSIM COMPATIBILITY FUNCTIONS*/
+
 
 /*CLinkbotLGroup class */
 
@@ -1874,4 +1922,18 @@ void CLinkbotLGroup::moveTimeNB(double time) {
     dlrunfun(fptr, NULL, NULL, this, time);
     return;
 }
+
+/*ROBOSIM COMPATIBILITY FUNCTIONS*/
+void CLinkbotLGroup::traceOn(void)
+{
+	printf("Warning: function traceOn() not implemented on hardware robots\n");
+	return;
+}
+
+void CLinkbotLGroup::traceOff(void)
+{
+	printf("Warning: function traceOff() not implemented on hardware robots\n");
+	return;
+}
+/*END ROBOSIM COMPATIBILITY FUNCTIONS*/
 
