@@ -3,7 +3,7 @@
 namespace c_impl {
 #include "baromesh/linkbot.h"
 }
-#include "barobo/linkbot.hpp"
+#include "linkbot_wrapper.hpp"
 #include <string>
 #include <thread>
 #include <mutex>
@@ -19,7 +19,7 @@ namespace c_impl {
 #include <unistd.h>
 #endif
 
-#include "../include/rgbhashtable.h"
+#include "rgbhashtable.h"
 
 #define M_PI            3.14159265358979323846
 

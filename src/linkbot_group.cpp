@@ -3,7 +3,7 @@
 namespace c_impl {
 #include "baromesh/linkbot.h"
 }
-#include "barobo/linkbot.hpp"
+#include "linkbot_wrapper.hpp"
 #include "boost/thread/mutex.hpp"
 #include "boost/thread/condition_variable.hpp"
 #ifdef _WIN32
@@ -14,7 +14,7 @@ namespace c_impl {
 #include <stdlib.h>
 #include <string.h>
 
-#include "../include/rgbhashtable.h"
+#include "rgbhashtable.h"
 
 #define M_PI            3.14159265358979323846
 
