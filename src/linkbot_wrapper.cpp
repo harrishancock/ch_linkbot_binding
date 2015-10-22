@@ -1046,6 +1046,7 @@ void Linkbot::driveDistance(double distance, double radius)
         return;
     }
 
+    if(distance == 0) { return; }
     driveDistanceNB(distance, radius);
     moveWait();
 }
@@ -1061,6 +1062,7 @@ void Linkbot::driveDistanceNB(double distance, double radius)
     theta = distance/radius; // in radians
 	theta = (theta *180.0)/M_PI; // in degrees
     auto time = theta/m->jointSpeed[0];
+    if(time == 0) { return; }
     auto dir = distance < 0
                ? ROBOT_BACKWARD
                : ROBOT_FORWARD;
@@ -1126,6 +1128,7 @@ void Linkbot::driveTimeNB(double seconds)
 		fprintf(stdout, "Error: time cannot have value %.2lf.\nExit...\n", seconds);
 		return;
 	}
+    if(seconds == 0) {return;}
 	setMovementStateTimeNB(ROBOT_POSITIVE, ROBOT_POSITIVE, ROBOT_NEGATIVE, seconds);
 }
 

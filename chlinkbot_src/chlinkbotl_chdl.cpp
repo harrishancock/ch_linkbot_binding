@@ -1500,7 +1500,6 @@ EXPORTCH void CLinkbotL_recordAnglesEnd_chdl(void *varg) {
     return;
 }
 
-
 /*linkbot enableRecordDataShift*/
 EXPORTCH void CLinkbotL_enableRecordDataShift_chdl(void *varg) {
 	ChInterp_t interp;

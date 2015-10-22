@@ -195,6 +195,26 @@ class CLinkbotI {
 		void recordDistanceOffset(double distance);
 		void recordDataShift();
 
+		/*ROBOSIM COMPATIBILITY*/
+		void drivexy(double x, double y, double radius, double trackwidth);
+		void drivexyNB(double x, double y, double radius, double trackwidth);
+		void drivexyTo(double x, double y, double radius, double trackwidth);
+		void drivexyToNB(double x, double y, double radius, double trackwidth);
+		void drivexyToExpr(double x0, double xf, int n, char *expr, double radius, double trackwidth);
+		void drivexyToExprNB(double x0, double xf, int n, char *expr, double radius, double trackwidth);
+		void drivexyToFunc(double x0, double xf, int n, double(*func)(double x), double radius, double trackwidth);
+		void drivexyToFuncNB(double x0, double xf, int n, double(*func)(double x), double radius, double trackwidth);
+		void drivexyWait(void);
+		void getxy(double &x, double &y);
+		void line(double x1, double y1, double z1, double x2, double y2, double z2, int linewidth, char *color);
+		void point(double x, double y, double z, int pointsize, char *color);
+		void recordxyBegin(robotRecordData_t &x, robotRecordData_t &y, double seconds, ...);
+		void recordxyEnd(int &num);
+		void text(double x, double y, double z, char *text);
+		void traceOff(void);
+		void traceOn(void);
+
+
         LinkbotImpl *m;
 
         static void *g_chlinkbot_dlhandle;
@@ -320,11 +340,20 @@ class CLinkbotL {
 			robotRecordData_t &angle2,
 			double seconds);
 		void recordAnglesEnd(int &num);
-
 		void enableRecordDataShift();
 		void disableRecordDataShift();
 		void recordNoDataShift();
 		void recordDataShift();
+
+		/*ROBOSIM COMPATIBILITY*/
+		void getxy(double &x, double &y);
+		void line(double x1, double y1, double z1, double x2, double y2, double z2, int linewidth, char *color);
+		void point(double x, double y, double z, int pointsize, char *color);
+		void recordxyBegin(robotRecordData_t &x, robotRecordData_t &y, double seconds, ...);
+		void recordxyEnd(int &num);
+		void text(double x, double y, double z, char *text);
+		void traceOff(void);
+		void traceOn(void);
 
         LinkbotImpl *m;
 
@@ -409,6 +438,10 @@ public:
 	void setLEDColorRGB(int r, int g, int b);
 	void setLEDColor(char *color);
 
+	/*ROBOSIM COMPATIBILITY*/
+	void traceOff(void);
+	void traceOn(void);
+
 private:
 	CLinkbotI **_robots;
 	int _numRobots;
@@ -465,13 +498,16 @@ public:
     void stop();
 
 	/* SET FUNCTIONS */
-
 	void setJointSpeed(robotJointId_t id, double speed);
     void setJointSpeeds(double speed1, double speed2, double speed3);
     void setJointSpeedRatio(robotJointId_t id, double ratio);
     void setJointSpeedRatios(double ratios1, double ratios2, double ratios3);
 	void setLEDColorRGB(int r, int g, int b);
 	void setLEDColor(char *color);
+
+	/*ROBOSIM COMPATIBILITY*/
+	void traceOff(void);
+	void traceOn(void);
 
 private:
 	CLinkbotL **_robots;
