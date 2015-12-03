@@ -26,11 +26,10 @@ set(WRAPPER_SOURCES
     rgbhashtable.c.cpp
     )
 
-set_source_files_properties(${WRAPPER_SOURCES}
-    PROPERTIES CXX_STANDARD 11
-               CXX_STANDARD_REQUIRED ON)
-
 add_library(linkbot_wrapper STATIC ${WRAPPER_SOURCES})
+set_property(TARGET linkbot_wrapper PROPERTY CXX_STANDARD 11)
+set_property(TARGET linkbot_wrapper PROPERTY CXX_STANDARD_REQUIRED ON)
+
 target_include_directories(linkbot_wrapper PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(linkbot_wrapper PUBLIC
     baromesh
@@ -56,15 +55,12 @@ target_include_directories(chlinkbot
             ${CH_ROOT}/extern/include
     )
 
-# TODO these are Windows-specific paths. For a cross-platform CMake script, we
-# should use find_library or at least find_file/find_path to get the library
-# paths.
 if(WIN32)
-    set(chLibraries ${CH_ROOT}/extern/lib/chsdk.lib
-                    ${CH_ROOT}/extern/lib/ch.lib)
-else()
-    set(chLibraries ${CH_ROOT}/extern/lib/libchsdk.a)
+    find_library(CHLIB ch PATHS "${CH_ROOT}/extern/lib" NO_DEFAULT_PATH)
 endif()
+find_library(CHSDKLIB chsdk PATHS "${CH_ROOT}/extern/lib" NO_DEFAULT_PATH)
+set(chLibraries ${CHLIB} ${CHSDKLIB})
+message(STATUS "Found Ch libraries: ${chLibraries}")
 
 target_link_libraries(chlinkbot
     PRIVATE linkbot_wrapper
