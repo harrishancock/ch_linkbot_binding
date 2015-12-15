@@ -804,6 +804,7 @@ void Linkbot::setJointSafetyAngleTimeout(double timeout)
 void Linkbot::accelJointTimeNB(robotJointId_t id, double acceleration, double time)
 {
     int mask = 1<<(id-1);
+    setJointSpeed(id, acceleration*time);
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         acceleration, acceleration, acceleration);
     CALL_C_IMPL(linkbotMoveAccel,
@@ -817,6 +818,7 @@ void Linkbot::accelJointToVelocityNB(robotJointId_t id, double acceleration,
     double velocity)
 {
     int mask = 1<<(id-1);
+    setJointSpeed(id, velocity);
     float time = float(velocity/acceleration);
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         acceleration, acceleration, acceleration);
@@ -831,11 +833,13 @@ void Linkbot::accelJointAngleNB(robotJointId_t id, double acceleration,
     double angle)
 {
     auto timeout = sqrt(2.0*angle/acceleration);
+    setJointSpeed(id, acceleration*timeout);
     accelJointTimeNB(id, acceleration, timeout);
 }
 
 void Linkbot::accelJointToMaxSpeedNB(robotJointId_t id, double acceleration)
 {
+    setJointSpeed(id, 200);
     accelJointTimeNB(id, acceleration, 0);
 }
 
@@ -845,6 +849,10 @@ void Linkbot::driveAccelJointTimeNB(double radius, double acceleration,
 {
     auto alpha = acceleration/radius;
     int mask = 0x07;
+    setJointSpeeds(
+            alpha*time,
+            alpha*time,
+            alpha*time);
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
@@ -860,6 +868,10 @@ void Linkbot::driveAccelToVelocityNB(double radius, double acceleration,
     auto timeout = velocity/acceleration;
     auto alpha = acceleration/radius;
     int mask = 0x07;
+    setJointSpeeds(
+            velocity,
+            velocity,
+            velocity);
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
@@ -873,6 +885,7 @@ void Linkbot::driveAccelToMaxSpeedNB(double radius, double acceleration)
 {
     auto alpha = acceleration/radius;
     int mask = 0x07;
+    setJointSpeeds(200, 200, 200);
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
@@ -889,6 +902,10 @@ void Linkbot::driveAccelDistanceNB(double radius, double acceleration,
     double alpha = acceleration/radius;
     auto timeout = sqrt(2.0*angle/alpha);
     int mask = 0x07;
+    setJointSpeeds(
+            alpha*timeout,
+            alpha*timeout,
+            alpha*timeout);
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
