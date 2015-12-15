@@ -808,9 +808,9 @@ void Linkbot::accelJointTimeNB(robotJointId_t id, double acceleration, double ti
         acceleration, acceleration, acceleration);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        acceleration, time, c_impl::barobo::JointState::HOLD,
-        acceleration, time, c_impl::barobo::JointState::HOLD,
-        acceleration, time, c_impl::barobo::JointState::HOLD);
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::accelJointToVelocityNB(robotJointId_t id, double acceleration,
@@ -849,9 +849,9 @@ void Linkbot::driveAccelJointTimeNB(double radius, double acceleration,
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        acceleration, time, c_impl::barobo::JointState::HOLD,
-        acceleration, time, c_impl::barobo::JointState::HOLD,
-        acceleration, time, c_impl::barobo::JointState::HOLD);
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::driveAccelToVelocityNB(double radius, double acceleration,
@@ -864,9 +864,9 @@ void Linkbot::driveAccelToVelocityNB(double radius, double acceleration,
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        acceleration, timeout, c_impl::barobo::JointState::MOVING,
-        acceleration, timeout, c_impl::barobo::JointState::MOVING,
-        acceleration, timeout, c_impl::barobo::JointState::MOVING);
+        0, timeout, c_impl::barobo::JointState::MOVING,
+        0, timeout, c_impl::barobo::JointState::MOVING,
+        0, timeout, c_impl::barobo::JointState::MOVING);
 }
 
 void Linkbot::driveAccelToMaxSpeedNB(double radius, double acceleration)
@@ -877,9 +877,9 @@ void Linkbot::driveAccelToMaxSpeedNB(double radius, double acceleration)
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        acceleration, 0, c_impl::barobo::JointState::MOVING,
-        acceleration, 0, c_impl::barobo::JointState::MOVING,
-        acceleration, 0, c_impl::barobo::JointState::MOVING);
+        0, 0, c_impl::barobo::JointState::MOVING,
+        0, 0, c_impl::barobo::JointState::MOVING,
+        0, 0, c_impl::barobo::JointState::MOVING);
 }
 
 void Linkbot::driveAccelDistanceNB(double radius, double acceleration, 
@@ -893,9 +893,9 @@ void Linkbot::driveAccelDistanceNB(double radius, double acceleration,
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        acceleration, timeout, c_impl::barobo::JointState::HOLD,
-        acceleration, timeout, c_impl::barobo::JointState::HOLD,
-        acceleration, timeout, c_impl::barobo::JointState::HOLD);
+        0, timeout, c_impl::barobo::JointState::HOLD,
+        0, timeout, c_impl::barobo::JointState::HOLD,
+        0, timeout, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::moveForeverNB()
