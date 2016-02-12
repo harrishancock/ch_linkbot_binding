@@ -55,7 +55,7 @@ struct LinkbotImpl
       distanceOffset(0)
     {
         for (auto& x : jointSpeed) {
-            x = 45;
+            x = 90;
         }
     }
     ~LinkbotImpl() {
@@ -166,7 +166,7 @@ Linkbot::Linkbot()
 		break;
 	}
     /* Set the joint speeds to a default value */
-    setJointSpeeds(45, 45, 45);
+    setJointSpeeds(90, 90, 90);
 }
 
 Linkbot::Linkbot(const char* serialId)
@@ -200,7 +200,7 @@ Linkbot::Linkbot(const char* serialId)
 		break;
 	}
     /* Set the joint speeds to a default value */
-    setJointSpeeds(45, 45, 45);
+    setJointSpeeds(90, 90, 90);
 }
 
 int Linkbot::connect()
