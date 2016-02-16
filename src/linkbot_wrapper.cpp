@@ -837,8 +837,9 @@ void Linkbot::accelJointAngleNB(robotJointId_t id, double acceleration,
     auto timeout = sqrt(2.0*angle/acceleration);
     if ((timeout * acceleration) > 200.0) {
         fprintf(stderr, 
-                "Warning: Requested motion exceeds robot's maximum speed.\n"
-                "The movement will be altered to abide by motor speed limits.\n");
+"Warning: Requested motion exceeds robot's maximum speed. The robot will move\n"
+"at the maximum speed.\n"
+        );
     }
     setJointSpeed(id, acceleration*timeout);
     accelJointTimeNB(id, acceleration, timeout);
@@ -858,8 +859,9 @@ void Linkbot::driveAccelJointTimeNB(double radius, double acceleration,
     int mask = 0x07;
     if ((time * alpha) > 200.0) {
         fprintf(stderr, 
-                "Warning: Requested motion exceeds robot's maximum speed.\n"
-                "The movement will be altered to abide by motor speed limits.\n");
+"Warning: Requested motion exceeds robot's maximum speed. The robot will move\n"
+"at the maximum speed.\n"
+        );
     }
     setJointSpeeds(
             alpha*time,
@@ -916,8 +918,9 @@ void Linkbot::driveAccelDistanceNB(double radius, double acceleration,
     auto timeout = sqrt(2.0*angle/alpha);
     if ((timeout * alpha) > 200.0) {
         fprintf(stderr, 
-                "Warning: Requested motion exceeds robot's maximum speed.\n"
-                "The movement will be altered to abide by motor speed limits.\n");
+"Warning: Requested motion exceeds robot's maximum speed. The robot will move\n"
+"at the maximum speed.\n"
+        );
     }
     int mask = 0x07;
     setJointSpeeds(200, 200, 200);
