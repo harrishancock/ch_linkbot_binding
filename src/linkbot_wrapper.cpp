@@ -804,7 +804,9 @@ void Linkbot::setJointSafetyAngleTimeout(double timeout)
 void Linkbot::accelJointTimeNB(robotJointId_t id, double acceleration, double time)
 {
     int mask = 1<<(id-1);
-    setJointSpeed(id, acceleration*time);
+    if(time > 0) {
+        setJointSpeed(id, acceleration*time);
+    }
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         acceleration, acceleration, acceleration);
     CALL_C_IMPL(linkbotMoveAccel,

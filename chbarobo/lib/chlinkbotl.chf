@@ -160,7 +160,7 @@ void CLinkbotL::accelJointToMaxSpeedNB(robotJointId_t id, double acceleration) {
        return;
     }
      
-    dlrunfun(fptr, NULL, NULL, this, acceleration);
+    dlrunfun(fptr, NULL, NULL, this, id, acceleration);
 }
 
 /*move*/
