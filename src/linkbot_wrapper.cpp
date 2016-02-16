@@ -811,9 +811,9 @@ void Linkbot::accelJointTimeNB(robotJointId_t id, double acceleration, double ti
         acceleration, acceleration, acceleration);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        0, time, c_impl::barobo::JointState::COAST,
-        0, time, c_impl::barobo::JointState::COAST,
-        0, time, c_impl::barobo::JointState::COAST);
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::accelJointToVelocityNB(robotJointId_t id, double acceleration,
@@ -826,15 +826,20 @@ void Linkbot::accelJointToVelocityNB(robotJointId_t id, double acceleration,
         acceleration, acceleration, acceleration);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        0, time, c_impl::barobo::JointState::COAST,
-        0, time, c_impl::barobo::JointState::COAST,
-        0, time, c_impl::barobo::JointState::COAST);
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::accelJointAngleNB(robotJointId_t id, double acceleration,
     double angle)
 {
     auto timeout = sqrt(2.0*angle/acceleration);
+    if ((timeout * acceleration) > 200.0) {
+        fprintf(stderr, 
+                "Warning: Requested motion exceeds robot's maximum speed.\n"
+                "The movement will be altered to abide by motor speed limits.\n");
+    }
     setJointSpeed(id, acceleration*timeout);
     accelJointTimeNB(id, acceleration, timeout);
 }
@@ -849,8 +854,13 @@ void Linkbot::accelJointToMaxSpeedNB(robotJointId_t id, double acceleration)
 void Linkbot::driveAccelJointTimeNB(double radius, double acceleration,
     double time)
 {
-    auto alpha = acceleration/radius;
+    auto alpha = (acceleration/radius) * 180 / M_PI;
     int mask = 0x07;
+    if ((time * alpha) > 200.0) {
+        fprintf(stderr, 
+                "Warning: Requested motion exceeds robot's maximum speed.\n"
+                "The movement will be altered to abide by motor speed limits.\n");
+    }
     setJointSpeeds(
             alpha*time,
             alpha*time,
@@ -859,9 +869,9 @@ void Linkbot::driveAccelJointTimeNB(double radius, double acceleration,
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        0, time, c_impl::barobo::JointState::COAST,
-        0, time, c_impl::barobo::JointState::COAST,
-        0, time, c_impl::barobo::JointState::COAST);
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::driveAccelToVelocityNB(double radius, double acceleration,
@@ -878,9 +888,9 @@ void Linkbot::driveAccelToVelocityNB(double radius, double acceleration,
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        0, timeout, c_impl::barobo::JointState::COAST,
-        0, timeout, c_impl::barobo::JointState::COAST,
-        0, timeout, c_impl::barobo::JointState::COAST);
+        0, timeout, c_impl::barobo::JointState::HOLD,
+        0, timeout, c_impl::barobo::JointState::HOLD,
+        0, timeout, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::driveAccelToMaxSpeedNB(double radius, double acceleration)
@@ -893,9 +903,9 @@ void Linkbot::driveAccelToMaxSpeedNB(double radius, double acceleration)
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        0, timeout, c_impl::barobo::JointState::COAST,
-        0, timeout, c_impl::barobo::JointState::COAST,
-        0, timeout, c_impl::barobo::JointState::COAST);
+        0, timeout, c_impl::barobo::JointState::HOLD,
+        0, timeout, c_impl::barobo::JointState::HOLD,
+        0, timeout, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::driveAccelDistanceNB(double radius, double acceleration, 
@@ -904,6 +914,11 @@ void Linkbot::driveAccelDistanceNB(double radius, double acceleration,
     double angle = (distance/radius) * 180.0 / M_PI;
     double alpha = (acceleration/radius) * 180.0 / M_PI;
     auto timeout = sqrt(2.0*angle/alpha);
+    if ((timeout * alpha) > 200.0) {
+        fprintf(stderr, 
+                "Warning: Requested motion exceeds robot's maximum speed.\n"
+                "The movement will be altered to abide by motor speed limits.\n");
+    }
     int mask = 0x07;
     setJointSpeeds(200, 200, 200);
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
