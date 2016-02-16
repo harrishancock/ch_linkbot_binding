@@ -878,23 +878,24 @@ void Linkbot::driveAccelToVelocityNB(double radius, double acceleration,
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        0, timeout, c_impl::barobo::JointState::MOVING,
-        0, timeout, c_impl::barobo::JointState::MOVING,
-        0, timeout, c_impl::barobo::JointState::MOVING);
+        0, timeout, c_impl::barobo::JointState::COAST,
+        0, timeout, c_impl::barobo::JointState::COAST,
+        0, timeout, c_impl::barobo::JointState::COAST);
 }
 
 void Linkbot::driveAccelToMaxSpeedNB(double radius, double acceleration)
 {
-    auto alpha = acceleration/radius;
+    auto alpha = (acceleration/radius) * 180.0 / M_PI;
     int mask = 0x07;
     setJointSpeeds(200, 200, 200);
+    float timeout = 200.0 / alpha;
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        0, 0, c_impl::barobo::JointState::MOVING,
-        0, 0, c_impl::barobo::JointState::MOVING,
-        0, 0, c_impl::barobo::JointState::MOVING);
+        0, timeout, c_impl::barobo::JointState::COAST,
+        0, timeout, c_impl::barobo::JointState::COAST,
+        0, timeout, c_impl::barobo::JointState::COAST);
 }
 
 void Linkbot::driveAccelDistanceNB(double radius, double acceleration, 
