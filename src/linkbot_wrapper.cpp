@@ -569,6 +569,16 @@ void Linkbot::setJointSpeeds(double speed1, double speed2, double speed3)
 	int mask;
 	getFormFactor(type);
 
+    if(speed1 > maxSpeed()) {
+        speed1 = maxSpeed();
+    }
+    if(speed2 > maxSpeed()) {
+        speed2 = maxSpeed();
+    }
+    if(speed3 > maxSpeed()) {
+        speed3 = maxSpeed();
+    }
+
 	switch (type) {
 		case 0:
 			mask = 0x05;
