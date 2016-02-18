@@ -6,7 +6,7 @@
 #endif
 
 #include <iostream>
-#include "barobo/linkbot.hpp"
+#include "linkbot_wrapper.hpp"
 
 int main(int argc, char *argv[]) {
     if(argc != 2) {

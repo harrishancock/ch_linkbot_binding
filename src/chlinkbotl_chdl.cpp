@@ -1,4 +1,4 @@
-#include"../include/barobo/linkbot.hpp"
+#include"linkbot_wrapper.hpp"
 #include<ch.h>
 #include<stdio.h>
 

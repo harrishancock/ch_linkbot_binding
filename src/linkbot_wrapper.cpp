@@ -3,7 +3,7 @@
 namespace c_impl {
 #include "baromesh/linkbot.h"
 }
-#include "barobo/linkbot.hpp"
+#include "linkbot_wrapper.hpp"
 #include <string>
 #include <thread>
 #include <mutex>
@@ -19,7 +19,7 @@ namespace c_impl {
 #include <unistd.h>
 #endif
 
-#include "../include/rgbhashtable.h"
+#include "rgbhashtable.h"
 
 #define M_PI            3.14159265358979323846
 
@@ -55,7 +55,7 @@ struct LinkbotImpl
       distanceOffset(0)
     {
         for (auto& x : jointSpeed) {
-            x = 45;
+            x = 90;
         }
     }
     ~LinkbotImpl() {
@@ -166,7 +166,7 @@ Linkbot::Linkbot()
 		break;
 	}
     /* Set the joint speeds to a default value */
-    setJointSpeeds(45, 45, 45);
+    setJointSpeeds(90, 90, 90);
 }
 
 Linkbot::Linkbot(const char* serialId)
@@ -200,7 +200,7 @@ Linkbot::Linkbot(const char* serialId)
 		break;
 	}
     /* Set the joint speeds to a default value */
-    setJointSpeeds(45, 45, 45);
+    setJointSpeeds(90, 90, 90);
 }
 
 int Linkbot::connect()
@@ -804,54 +804,78 @@ void Linkbot::setJointSafetyAngleTimeout(double timeout)
 void Linkbot::accelJointTimeNB(robotJointId_t id, double acceleration, double time)
 {
     int mask = 1<<(id-1);
+    if(time > 0) {
+        setJointSpeed(id, acceleration*time);
+    }
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         acceleration, acceleration, acceleration);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        acceleration, time, c_impl::barobo::JointState::HOLD,
-        acceleration, time, c_impl::barobo::JointState::HOLD,
-        acceleration, time, c_impl::barobo::JointState::HOLD);
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::accelJointToVelocityNB(robotJointId_t id, double acceleration,
     double velocity)
 {
     int mask = 1<<(id-1);
+    setJointSpeed(id, velocity);
     float time = float(velocity/acceleration);
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         acceleration, acceleration, acceleration);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        0, time, c_impl::barobo::JointState::MOVING,
-        0, time, c_impl::barobo::JointState::MOVING,
-        0, time, c_impl::barobo::JointState::MOVING);
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::accelJointAngleNB(robotJointId_t id, double acceleration,
     double angle)
 {
     auto timeout = sqrt(2.0*angle/acceleration);
+    if ((timeout * acceleration) > 200.0) {
+        fprintf(stderr, 
+"Warning: Requested motion exceeds robot's maximum speed. The robot will\n"
+"accelerate until the maximum speed is reached and continue at its maximum\n"
+"speed.\n"
+        );
+    }
+    setJointSpeed(id, acceleration*timeout);
     accelJointTimeNB(id, acceleration, timeout);
 }
 
 void Linkbot::accelJointToMaxSpeedNB(robotJointId_t id, double acceleration)
 {
-    accelJointTimeNB(id, acceleration, 0);
+    setJointSpeed(id, 200);
+    accelJointTimeNB(id, acceleration, 200.0/acceleration);
 }
 
 
 void Linkbot::driveAccelJointTimeNB(double radius, double acceleration,
     double time)
 {
-    auto alpha = acceleration/radius;
+    auto alpha = (acceleration/radius) * 180 / M_PI;
     int mask = 0x07;
+    if ((time * alpha) > 200.0) {
+        fprintf(stderr, 
+"Warning: Requested motion exceeds robot's maximum speed. The robot will\n"
+"accelerate until the maximum speed is reached and continue at its maximum\n"
+"speed.\n"
+        );
+    }
+    setJointSpeeds(
+            alpha*time,
+            alpha*time,
+            alpha*time);
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        acceleration, time, c_impl::barobo::JointState::HOLD,
-        acceleration, time, c_impl::barobo::JointState::HOLD,
-        acceleration, time, c_impl::barobo::JointState::HOLD);
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD,
+        0, time, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::driveAccelToVelocityNB(double radius, double acceleration,
@@ -860,42 +884,56 @@ void Linkbot::driveAccelToVelocityNB(double radius, double acceleration,
     auto timeout = velocity/acceleration;
     auto alpha = acceleration/radius;
     int mask = 0x07;
+    setJointSpeeds(
+            velocity,
+            velocity,
+            velocity);
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        acceleration, timeout, c_impl::barobo::JointState::MOVING,
-        acceleration, timeout, c_impl::barobo::JointState::MOVING,
-        acceleration, timeout, c_impl::barobo::JointState::MOVING);
+        0, timeout, c_impl::barobo::JointState::HOLD,
+        0, timeout, c_impl::barobo::JointState::HOLD,
+        0, timeout, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::driveAccelToMaxSpeedNB(double radius, double acceleration)
 {
-    auto alpha = acceleration/radius;
+    auto alpha = (acceleration/radius) * 180.0 / M_PI;
     int mask = 0x07;
+    setJointSpeeds(200, 200, 200);
+    float timeout = 200.0 / alpha;
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
         mask, 0x07, 
-        acceleration, 0, c_impl::barobo::JointState::MOVING,
-        acceleration, 0, c_impl::barobo::JointState::MOVING,
-        acceleration, 0, c_impl::barobo::JointState::MOVING);
+        0, timeout, c_impl::barobo::JointState::HOLD,
+        0, timeout, c_impl::barobo::JointState::HOLD,
+        0, timeout, c_impl::barobo::JointState::HOLD);
 }
 
 void Linkbot::driveAccelDistanceNB(double radius, double acceleration, 
     double distance)
 {
-    double angle = distance/radius;
-    double alpha = acceleration/radius;
+    double angle = (distance/radius) * 180.0 / M_PI;
+    double alpha = (acceleration/radius) * 180.0 / M_PI;
     auto timeout = sqrt(2.0*angle/alpha);
+    if ((timeout * alpha) > 200.0) {
+        fprintf(stderr, 
+"Warning: Requested motion exceeds robot's maximum speed. The robot will\n"
+"accelerate until the maximum speed is reached and continue at its maximum\n"
+"speed.\n"
+        );
+    }
     int mask = 0x07;
+    setJointSpeeds(200, 200, 200);
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         alpha, alpha, -alpha);
-    CALL_C_IMPL(linkbotMoveAccel,
+    CALL_C_IMPL(linkbotSetAlphaF, mask, 
+        800, 800, 800);
+    CALL_C_IMPL(linkbotMoveSmooth,
         mask, 0x07, 
-        acceleration, timeout, c_impl::barobo::JointState::HOLD,
-        acceleration, timeout, c_impl::barobo::JointState::HOLD,
-        acceleration, timeout, c_impl::barobo::JointState::HOLD);
+        angle, angle, -angle);
 }
 
 void Linkbot::moveForeverNB()
