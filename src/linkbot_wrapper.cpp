@@ -134,6 +134,11 @@ void _jointEventCB(int joint, c_impl::barobo::JointState::Type state, int timest
     l->jointEventCB(joint, state);
 }
 
+static float maxSpeed()
+{
+    return 200.0;
+}
+
 Linkbot::Linkbot()
     : m(new LinkbotImpl)
 {
@@ -865,10 +870,11 @@ void Linkbot::driveAccelJointTimeNB(double radius, double acceleration,
 "speed.\n"
         );
     }
-    setJointSpeeds(
-            alpha*time,
-            alpha*time,
-            alpha*time);
+    auto speed = alpha*time;
+    if(speed > maxSpeed()) {
+        speed = maxSpeed();
+    }
+    setJointSpeeds(speed, speed, speed);
     CALL_C_IMPL(linkbotSetAlphaI, mask, 
         alpha, alpha, -alpha);
     CALL_C_IMPL(linkbotMoveAccel,
