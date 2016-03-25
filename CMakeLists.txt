@@ -26,14 +26,3 @@ if(WIN32)
                 DESTINATION chbarobo/dl)
     endif()
 endif()
-
-set(CPACK_PACKAGE_NAME "Linkbot Ch Package")
-set(CPACK_PACKAGE_VENDOR "Barobo, Inc.")
-set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
-
-# The upgrade GUID should remain constant for the lifetime of this codebase.
-set(CPACK_WIX_UPGRADE_GUID "0c082802-8077-4d4b-b372-799f50ed1fcb")
-set(CPACK_WIX_TEMPLATE "${CMAKE_CURRENT_SOURCE_DIR}/WIX.template.in")
-set(CPACK_WIX_PATCH_FILE "${CMAKE_CURRENT_SOURCE_DIR}/WIX.patches")
-
-include(CPack)
