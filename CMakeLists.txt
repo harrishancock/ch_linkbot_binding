@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2.1) 
+cmake_minimum_required(VERSION 3.2.1)
 project(liblinkbot VERSION 1.0.11 LANGUAGES C CXX)
 
 if(CMAKE_CROSSCOMPILING)
@@ -14,10 +14,15 @@ add_subdirectory(test)
 
 install(DIRECTORY chbarobo DESTINATION . PATTERN ".gitkeep" EXCLUDE)
 if(WIN32)
+    file(TO_CMAKE_PATH "$ENV{ProgramFiles\(x86\)}/Microsoft Visual Studio 12.0/VC/redist"
+                       vcredistDir)
     if(CMAKE_SIZEOF_VOID_P EQUAL 4)
-        install(DIRECTORY dlls/win32/ DESTINATION chbarobo/bin)
+        # The 32-bit version of the Ch SDK seems to depend on MSVC 8.0's runtime
         install(DIRECTORY dlls/Microsoft.VC80.CRT DESTINATION chbarobo/dl)
+        install(DIRECTORY "${vcredistDir}/x86/Microsoft.VC120.CRT"
+                DESTINATION chbarobo/dl)
     else()
-        install(DIRECTORY dlls/win64/ DESTINATION chbarobo/bin)
+        install(DIRECTORY "${vcredistDir}/x64/Microsoft.VC120.CRT"
+                DESTINATION chbarobo/dl)
     endif()
 endif()
