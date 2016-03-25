@@ -19,10 +19,10 @@ if(WIN32)
     if(CMAKE_SIZEOF_VOID_P EQUAL 4)
         # The 32-bit version of the Ch SDK seems to depend on MSVC 8.0's runtime
         install(DIRECTORY dlls/Microsoft.VC80.CRT DESTINATION chbarobo/dl)
-        install(DIRECTORY "${vcredistDir}/x86/Microsoft.VC120.CRT"
-                DESTINATION chbarobo/dl)
+        install(DIRECTORY "${vcredistDir}/x86/Microsoft.VC120.CRT/"
+                DESTINATION chbarobo/bin)
     else()
-        install(DIRECTORY "${vcredistDir}/x64/Microsoft.VC120.CRT"
-                DESTINATION chbarobo/dl)
+        install(DIRECTORY "${vcredistDir}/x64/Microsoft.VC120.CRT/"
+                DESTINATION chbarobo/bin)
     endif()
 endif()
