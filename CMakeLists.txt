@@ -8,6 +8,17 @@ if(CMAKE_CROSSCOMPILING)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_CROSSCOMPILE_C_FLAGS} -static-libstdc++ -static-libgcc")
 endif(CMAKE_CROSSCOMPILING)
 
+if(MSVC)
+  # Don't warn on using strncpy(), fopen() instead of Microsoft's _s versions.
+  add_compile_options(/W4
+    /DWINVER=0x0600
+    /D_WIN32_WINNT=0x0600
+    /D_CRT_SECURE_NO_WARNINGS # Don't warn on strncpy() vs strncpy_s(), etc.
+    /wd4714 # __forceinline function not inlined, happens in Boost.Log
+    /wd4512 # assignment operator could not be generated, happens in Qt
+    )
+endif()
+
 add_subdirectory(sdk)
 add_subdirectory(src)
 add_subdirectory(test)
